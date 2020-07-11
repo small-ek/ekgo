@@ -1,0 +1,11 @@
+ekgo/api.exe
+ekgo/api.exe~
+.idea/vcs.xml
+log/2020-03-28-00-00.log
+log/
+vendor
+
+.idea/workspace.xml
+.idea/ekgo/api.iml
+.idea/misc.xml
+.idea/modules.xml

@@ -1,0 +1,162 @@
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+
+#app {
+    font-family: "Helvetica";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    height: 100%;
+}
+
+#nprogress .bar {
+    background: #5677FC !important;
+}
+
+::-moz-selection {
+    background: #F56C6C;
+    color: #fff;
+}
+
+::selection {
+    background: #F56C6C;
+    color: #fff;
+}
+
+.red {
+    color: #F56C6C;
+}
+
+body {
+    margin: 0px;
+    height: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+a {
+    color: #3c8dbc;
+    text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    width: 1px;
+    height: 12px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #DDDDDD;
+}
+
+.box-card {
+    margin-bottom: 10px;
+}
+
+.search-box {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: auto;
+}
+
+.search-body {
+    margin-top: 50px;
+    padding: 10px;
+}
+
+.search-body form {
+    flex: 1;
+}
+
+.search-head {
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    text-align: center;
+    z-index: 1;
+}
+
+.search-head button {
+    width: 40%;
+}
+
+.table-box {
+    min-height: calc(54vh);
+    height: auto;
+}
+
+.form {
+    padding: 5px 10%;
+}
+
+.table-expand {
+    font-size: 0;
+}
+
+.table-expand label {
+    width: 190px;
+    color: #99a9bf;
+}
+
+.table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.el-icon-circle-close {
+    color: white;
+}
+
+
+.search-input .el-input__inner {
+    height: 40px !important;
+}
+
+.button-row {
+    text-align: right;
+    padding: 15px 0;
+}
+
+.el-collapse-item__header.is-active {
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.el-collapse-item__header {
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.left {
+    background: white;
+}
+
+.widen {
+    width: 100%;
+}

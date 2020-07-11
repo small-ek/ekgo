@@ -1,0 +1,48 @@
+basePath: /
+definitions:
+  service.AdminLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+info:
+  contact: {}
+  description: 请求接口
+  license: {}
+  title: 接口文档
+  version: 0.0.1
+paths:
+  /admin/login:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: 登录接口
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.AdminLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"","error":""}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 登录
+      tags:
+      - Admin
+securityDefinitions:
+  权限:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
