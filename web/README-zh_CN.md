@@ -46,6 +46,9 @@ SET GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,https://gopro
 # 安装go依赖包
 go mod tidy
 
+# 将依赖包复制到项目下的 vendor 目录
+go mod vendor
+
 # 运行
 go run main
 
