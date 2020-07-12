@@ -287,7 +287,6 @@
                     {"label": "checkbox", "value": "多选框"},
                     {"label": "radio", "value": "单选框"},
                     {"label": "select", "value": "下拉框"},
-                    /*{"label": "transfer", "value": "穿梭框"},*/
                     {"label": "edit", "value": "富文本"},
                     {"label": "upload", "value": "上传图片组件"},
                     {"label": "upload_video", "value": "上传视频组件"},
