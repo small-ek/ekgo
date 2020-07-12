@@ -8,6 +8,10 @@
 - Cache缓存：[cache](https://github.com/coocood/freecache)
 - 配置：[go-ini](https://github.com/go-ini/ini)
 - Go模块代理：[goproxy](https://goproxy.io/)
+- 代码演示:[https://go.smallek.com/]
+- 账号:admin
+- 密码:admin
+
 ## 1. 基本介绍
 
 > Ekgo是一个基于vue和gin开发的全栈前后端分离的后台管理系统，集成jwt登录鉴权、动态路由、动态菜单、casbin权限认证、表单生成器、代码生成器、高度代码解耦完全建立在DDD领域驱动设计、自定义数据验证器、语言包、LRU算法缓存库、基于协程队列、让您把更多时间专注在业务开发上。
