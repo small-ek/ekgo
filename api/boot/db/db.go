@@ -49,7 +49,7 @@ func RegisterMaster() *gorm.DB {
 	//超时
 	Master.DB().SetConnMaxLifetime(time.Second * 5)
 	if err != nil {
-		log.Println("MySQL启动异常,请检查连接状态:" + err.Error())
+		log.Println("数据库启动异常,请检查连接状态:" + err.Error())
 		os.Exit(1)
 	}
 	
@@ -75,7 +75,7 @@ func RegisterSlave() *gorm.DB {
 	Slave.DB().SetMaxOpenConns(100)
 
 	if err != nil {
-		log.Println("MySQL启动异常,请检查连接状态:" + err.Error())
+		log.Println("数据库启动异常,请检查连接状态:" + err.Error())
 		os.Exit(1)
 	}
 

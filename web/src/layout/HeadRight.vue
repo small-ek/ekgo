@@ -252,8 +252,6 @@
                     style.innerHTML = `
                         .left{
                             background: ${theme.menu_background} !important;
-                            box-shadow: 2px 0 8px 0 rgba(29,35,41,.05);
-                            z-index: 13;
                         }
                         .el-menu{
                             border-right:0px

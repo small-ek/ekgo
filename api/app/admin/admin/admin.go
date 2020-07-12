@@ -18,6 +18,7 @@ var Interface service.AdminInterface
 func Login(this *gin.Context) {
 	var data = model.Admin{}
 	this.ShouldBind(&data)
+
 	Interface = &service.Admin{Model: data, Db: db.Master}
 	this.SecureJSON(200, Interface.Login())
 }
@@ -27,7 +28,11 @@ func Index(this *gin.Context) {
 	var param = response.PageParam{CurrentPage: 1, PageSize: 10}
 	this.ShouldBindQuery(&param)
 	param.Filter = this.QueryArray("filter[]")
-	Interface = &service.Admin{PageParam: param, Db: db.Master}
+
+	Interface = &service.Admin{
+		PageParam: param,
+		Db:        db.Master,
+	}
 	this.SecureJSON(200, Interface.Index())
 }
 
@@ -35,8 +40,11 @@ func Index(this *gin.Context) {
 func Store(this *gin.Context) {
 	var data = model.Admin{}
 	this.ShouldBind(&data)
-	Interface = &service.Admin{Model: data, Db: db.Master}
 
+	Interface = &service.Admin{
+		Model: data,
+		Db:    db.Master,
+	}
 	this.SecureJSON(200, Interface.Store())
 }
 
@@ -44,8 +52,11 @@ func Store(this *gin.Context) {
 func Update(this *gin.Context) {
 	var data = model.Admin{}
 	this.ShouldBind(&data)
-	Interface = &service.Admin{Model: data, Db: db.Master}
 
+	Interface = &service.Admin{
+		Model: data,
+		Db:    db.Master,
+	}
 	this.SecureJSON(200, Interface.Update())
 }
 
@@ -53,8 +64,11 @@ func Update(this *gin.Context) {
 func Delete(this *gin.Context) {
 	var data = model.Admin{}
 	this.ShouldBindUri(&data)
-	Interface = &service.Admin{Model: data, Db: db.Master}
 
+	Interface = &service.Admin{
+		Model: data,
+		Db:    db.Master,
+	}
 	this.SecureJSON(200, Interface.Delete())
 }
 

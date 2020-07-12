@@ -4,6 +4,22 @@ export default {
      * @param parameter
      * @param self
      */
+    getList: function (self, callback) {
+        self.$confirm(self.$i18n.t('delete_tip'), self.$i18n.t('warning'), {
+            confirmButtonText: self.$i18n.t('ok'),
+            cancelButtonText: self.$i18n.t('cancel'),
+            type: 'warning'
+        }).then(() => {
+            callback()
+        }).catch(() => {
+
+        });
+    },
+    /**
+     * 通用删除提示
+     * @param parameter
+     * @param self
+     */
     deletePrompt: function (self, callback) {
         self.$confirm(self.$i18n.t('delete_tip'), self.$i18n.t('warning'), {
             confirmButtonText: self.$i18n.t('ok'),

@@ -1,7 +1,7 @@
 <template>
     <div class="left" v-if="$Config.theme.layout=='vertical'" style="height: 100vh">
         <div class="logo-container-vertical hidden-sm-and-down" v-if="$Config.logo" v-show="isCollapse==false">
-            <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="logo_img" alt="">
+            <img src="../assets/images/ek.jpg" class="logo_img" alt="">
             <h2 class="logo_title">
                 {{$Config.logoTitle}}
             </h2>

@@ -26,7 +26,10 @@ func Index(this *gin.Context) {
 func Read(this *gin.Context) {
 	var data = model.Api{}
 	this.ShouldBindUri(&data)
-	Interface = &service.Api{Model: data, Db: db.Master}
+	Interface = &service.Api{
+		Model: data,
+		Db:    db.Master,
+	}
 
 	this.SecureJSON(200, Interface.Show())
 }
@@ -35,7 +38,10 @@ func Read(this *gin.Context) {
 func Store(this *gin.Context) {
 	var data = model.Api{}
 	this.ShouldBind(&data)
-	Interface = &service.Api{Model: data, Db: db.Master}
+	Interface = &service.Api{
+		Model: data,
+		Db:    db.Master,
+	}
 
 	this.SecureJSON(200, Interface.Store())
 }
@@ -53,6 +59,18 @@ func Update(this *gin.Context) {
 func Delete(this *gin.Context) {
 	var data = model.Api{}
 	this.ShouldBindUri(&data)
-	Interface = &service.Api{Model: data, Db: db.Master}
-	this.SecureJSON(200, Interface.Delete())
+	var tx = db.Master.Begin()
+
+	Interface = &service.Api{Model: data, Db: tx}
+	var result = Interface.Delete()
+	if result.Code == 403 {
+		tx.Callback()
+	}
+	Interface = &service.Api{Model: data, Db: tx}
+	var result2 = Interface.Delete()
+	if result2.Code == 403 {
+		tx.Callback()
+	}
+	tx.Commit()
+	/*this.SecureJSON(200, Interface.Delete())*/
 }
