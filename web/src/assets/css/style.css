@@ -162,3 +162,11 @@ a {
 .widen {
     width: 100%;
 }
+
+.is-opened .el-menu {
+    /*border-left: 4px solid #4b4d4f;*/
+}
+
+.is-opened .el-submenu__title span {
+    color: white;
+}
