@@ -39,9 +39,9 @@ export const config = {
     //图片预览地址
     pictureUrl: 'https://ek-shop.oss-cn-shanghai.aliyuncs.com/',
     //本地环境请求地址 npm run serve
-    localUrl: 'http://127.0.0.1:100/',
+    localUrl: 'http://127.0.0.1:95/',
     //测试环境请求地址 npm run test
-    testUrl: 'http://127.0.0.1:100/',
+    testUrl: 'http://127.0.0.1:95/',
     //正式环境正式地址 npm run build
     url: 'https://go.smallek.com/v1/',
     //主题
