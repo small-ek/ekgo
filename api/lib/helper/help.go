@@ -2,21 +2,9 @@ package helper
 
 import (
 	"math/rand"
-	"net/url"
 	"reflect"
 	"time"
 )
-
-//map[string][]string转map对象
-func PostToMap(str url.Values) map[string]string {
-	maps := make(map[string]string)
-	for key, val := range str {
-		for _, subVal := range val {
-			maps[key] = subVal
-		}
-	}
-	return maps
-}
 
 //RandStringRunes 返回随机字符串
 func RandomString(n int) string {
@@ -72,37 +60,6 @@ func DeleteSliceInt(array []int, index int) []int {
 func DeleteSliceString(array []string, index int) []string {
 	array = append(array[:index], array[index+1:]...)
 	return array
-}
-
-//过滤切片最大数字
-func FilterMaxNumberUint64(str []uint64, max uint64) []uint64 {
-	var result []uint64
-	for _, v := range str {
-		if v < max {
-			result = append(result, v)
-		}
-	}
-	return result
-}
-
-//struct数组转Map数组
-func StructToListStrAny(array interface{}) []map[string]interface{} {
-	var result []map[string]interface{}
-	model := reflect.TypeOf(array)
-	arrayValue := reflect.ValueOf(array)
-	fileNum := model.Elem().NumField()
-	count := arrayValue.Len()
-
-	for i := 0; i < count; i++ {
-		value_m := map[string]interface{}{
-		}
-		for j := 0; j < fileNum; j++ {
-			value := arrayValue.Index(i).Field(j).Interface()
-			value_m[model.Elem().Field(j).Name] = value
-		}
-		result = append(result, value_m)
-	}
-	return result
 }
 
 //struct输入数组中某个单一列的值

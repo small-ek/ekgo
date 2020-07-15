@@ -6,7 +6,6 @@
 - Orm框架：[gorm](http://gorm.book.jasperxu.com)
 - Casbin鉴权：[casbin](https://gin-gonic.com/zh-cn/docs)    
 - Cache缓存：[cache](https://github.com/coocood/freecache)
-- 配置：[go-ini](https://github.com/go-ini/ini)
 - Go模块代理：[goproxy](https://goproxy.io/)
 - 代码演示:[https://go.smallek.com/]
 - 账号:admin
@@ -15,6 +14,30 @@
 ## 1. 基本介绍
 
 > Ekgo是一个基于vue和gin开发的全栈前后端分离的后台管理系统，表单生成器、代码生成器、集成jwt登录鉴权、动态路由、动态菜单、casbin权限认证、高度代码解耦完全建立在DDD领域驱动设计、自定义数据验证器、语言包、LRU算法缓存库、基于协程队列、Hook事件回调注册让您把更多时间专注在业务开发上。
+>Ekgo对底层架构做了进一步的改进，减少依赖，基于gin和vue开发的全栈前后端分离的后台管理系统其主要特性包括：
+ 
+  + 采用DDD领域驱动设计
+  + 路由跨域请求支持
+  + 自定义数据验证器
+  + 代码生成器(model、api、service、route、vue表单)
+  + 表单生成器
+  + 集成jwt登录鉴权
+  + LRU算法缓存
+  + 基于协程队列
+  + Hook钩子事件(插件模式)
+  + 依赖注入完善
+  + 中间件支持
+  + casbin权限认证(RBAC)
+  + 动态路由,动态菜单
+  + 数据类型转换
+  + Gorm,Scopes组件分页，自动构建where等常用方法
+  + Gorm时间类型转换和Json格式支持
+  + 常用的加密解密编码解码操作
+  + Redis集成
+  + Http请求
+  + 请求日志根据时间拆分
+  + 常用帮助方法
+
 ## 2. 使用说明
 
 ```
@@ -39,25 +62,25 @@ npm run serve
 npm run build
 ```
 
-### 2.2 server端
+### 2.2 api端
 
 ```bash
-#进入目录
+# 进入目录
 cd api
 
-#开启模块支持
+# 开启模块支持
 SET GO111MODULE=on
 
-#被墙设置GOPROXY环境变量
+# 被墙设置GOPROXY环境变量
 SET GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,https://goproxy.io,direct
 
 # 安装go依赖包
 go mod tidy
 
-#将依赖复制到项目路径的vendor文件夹中
+# 将依赖复制到项目路径的vendor文件夹中
 go mod vendor
 
-#运行(如果想享受静态语言的快乐请使用gowatch热编译)
+# 运行(如果想享受静态语言的快乐请使用gowatch热编译)
 go run main
 
 # 交叉编译Linux环境或者mac,目标平台的操作系统
@@ -65,7 +88,7 @@ SET GOOS=linux
 SET GOOS=darwin
 SET GOOS=windows
 
-#目标平台的体系架构
+# 目标平台的体系架构
 GOARCH=amd64
 GOARCH=386
 GOARCH=arm
@@ -79,10 +102,10 @@ go get github.com/silenceper/gowatch
 # 运行热编译
 gowatch
 
-#进入单元测试
+# 进入单元测试
 cd test
 
-#执行单元测试
+# 执行单元测试
 go test -v -cover
 ```
 
@@ -113,20 +136,22 @@ pkill main
     │  ├─app            （目录包含应用程序的核心代码）
     │  ├─├─admin        （控制器,处理进入应用程序请求的所有逻辑几乎都放置在此目录）
     │  ├─├─common        (公共接口）
+    │  ├─├─hook          (钩子）
     │  ├─├─middleware    (中间件）
     │  ├─├─model         (数据模型配置）
     │  ├─├─queue         (异步队列任务）
     │  ├─├─service       (接口服务层,一般用于封装数据接口的操作）
     │  ├─├─validate      (数据验证）
     │  ├─boot           （目录包含引导框架的）
-    │  ├─├─cache        （缓存）
     │  ├─├─casbin        (casbin鉴权）
     │  ├─├─config        (配置）
     │  ├─├─db            (数据库设置）
+    │  ├─├─freecache     （缓存）
     │  ├─├─logger        (日志设置）
+    │  ├─├─queue         (协程队列）
+    │  ├─├─redis         (Redis）
     │  ├─├─router        (路由注册）
     │  ├─├─serve         (程序启动服务,可以用于多个服务启动）
-    │  ├─├─validate      (验证器,可以用于数据数据参数验证）
     │  ├─config         （配置文件）
     │  ├─docs  	        （swagger文档目录）
     │  ├─lib            （公共的功能封装包，不包含业务需求实现。）
@@ -136,7 +161,7 @@ pkill main
         ├─public        （发布模板）
         └─src           （源码包）
             ├─assets	（静态文件）
-            ├─common    （工具库）
+            ├─common    （工具库,配置项等）
             ├─components（组件）
             ├─lang      （语言包）
             ├─layout    （后端布局）

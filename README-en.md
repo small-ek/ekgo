@@ -6,7 +6,6 @@
 -Orm framework: [gorm](http://gorm.book.jasperxu.com)
 -Casbin authentication: [casbin] (https://gin-gonic.com/zh-cn/docs)
 -Cache: [cache](https://github.com/coocood/freecache)
--Configuration: [go-ini](https://github.com/go-ini/ini)
 -Go module proxy: [goproxy](https://goproxy.io/)
 -Code demo: [https://go.smallek.com/]
 -Account: admin
@@ -14,7 +13,31 @@
 
 ## 1. Basic introduction
 
-> Ekgo is a full-stack front-end and back-end management system developed based on vue and gin. It integrates jwt login authentication, dynamic routing, dynamic menu, casbin authority authentication, form generator, code generator, and highly decoupled code. Driven design in the DDD field, custom data validators, language packs, LRU algorithm cache libraries, coroutine-based queues, Hook event callback registration allows you to focus more time on business development.
+> Ekgo is a full stack front-end and back-end management system developed based on vue and gin. The form generator, code generator, integrated jwt login authentication, dynamic routing, dynamic menu, casbin authority authentication, and highly code decoupling are fully established. Driven design in the DDD field, custom data validators, language packs, LRU algorithm cache libraries, coroutine-based queues, Hook event callback registration allows you to focus more time on business development.
+>Ekgo made further improvements to the underlying architecture to reduce dependence. The main features of the back-end management system based on the separation of the front and back ends of the full stack developed by gin and vue include:
+ 
+  + Adopt DDD field-driven design
+  + Routing cross domain request support
+  + Custom data validator
+  + Code generator (model, api, service, route, vue form)
+  + Form builder
+  + Integrated jwt login authentication
+  + LRU algorithm cache
+  + Based on coroutine queue
+  + Hook event (plug-in mode)
+  + Perfect dependency injection
+  + Middleware support
+  + casbin authority authentication (RBAC)
+  + Dynamic routing, dynamic menu
+  + Data type conversion
+  + Gorm, Scopes component paging, automatically build where and other common methods
+  + Gorm time type conversion and Json format support
+  + Common encryption and decryption encoding and decoding operations
+  + Redis integration
+  + Http request
+  + Request log split by time
+  + Common help methods
+
 ## 2. Instructions
 
 ```
@@ -39,25 +62,25 @@ npm run serve
 npm run build
 ```
 
-### 2.2 server
+### 2.2 api side
 
 ```bash
-#Enter the directory
+# Enter the directory
 cd api
 
-#Enable module support
+# Turn on module support
 SET GO111MODULE=on
 
-#GOPROXY environment variable set by the wall
+# Set GOPROXY environment variable by the wall
 SET GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,https://goproxy.io,direct
 
 # Install go dependencies
 go mod tidy
 
-#Copy the dependencies to the vendor folder of the project path
+# Copy the dependencies to the vendor folder of the project path
 go mod vendor
 
-#Run (If you want to enjoy the joy of static language, please use gowatch hot compilation)
+# Run (if you want to enjoy the joy of static language, please use gowatch hot compilation)
 go run main
 
 # Cross-compile the Linux environment or mac, the operating system of the target platform
@@ -65,7 +88,7 @@ SET GOOS=linux
 SET GOOS=darwin
 SET GOOS=windows
 
-#Target platform architecture
+# System architecture of target platform
 GOARCH=amd64
 GOARCH=386
 GOARCH=arm
@@ -79,10 +102,10 @@ go get github.com/silenceper/gowatch
 # Run hot compilation
 gowatch
 
-#Enter unit test
+# Enter unit test
 cd test
 
-#Execute unit test
+# Perform unit testing
 go test -v -cover
 ```
 
@@ -113,20 +136,22 @@ pkill main
     │ ├─app (the directory contains the core code of the application)
     │ ├─├─admin (controller, almost all the logic to handle the request to enter the application is placed in this directory)
     │ ├─├─common (public interface)
+    │ ├─├─hook (hook)
     │ ├─├─middleware (middleware)
     │ ├─├─model (data model configuration)
     │ ├─├─queue (asynchronous queue task)
     │ ├─├─service (interface service layer, generally used to encapsulate data interface operations)
     │ ├─├─validate (data verification)
     │ ├─boot (the directory contains the boot frame)
-    │ ├─├─cache (cache)
     │ ├─├─casbin (casbin authentication)
     │ ├─├─config (configuration)
     │ ├─├─db (database setting)
+    │ ├─├─freecache (cache)
     │ ├─├─logger (log setting)
+    │ ├─├─queue (coroutine queue)
+    │ ├─├─redis (Redis)
     │ ├─├─router (route registration)
     │ ├─├─serve (program start service, can be used to start multiple services)
-    │ ├─├─validate (validator, can be used for data data parameter verification)
     │ ├─config (configuration file)
     │ ├─docs (swagger document directory)
     │ ├─lib (public function package, does not include the realization of business requirements.)
@@ -136,7 +161,7 @@ pkill main
         ├─public (post template)
         └─src (source package)
             ├─assets (static files)
-            ├─common (tool library)
+            ├─common (tool library, configuration items, etc.)
             ├─components (components)
             ├─lang (language pack)
             ├─layout (back-end layout)
