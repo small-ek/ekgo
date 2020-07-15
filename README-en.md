@@ -13,7 +13,6 @@
 
 ## 1. Basic introduction
 
-> Ekgo is a full stack front-end and back-end management system developed based on vue and gin. The form generator, code generator, integrated jwt login authentication, dynamic routing, dynamic menu, casbin authority authentication, and highly code decoupling are fully established. Driven design in the DDD field, custom data validators, language packs, LRU algorithm cache libraries, coroutine-based queues, Hook event callback registration allows you to focus more time on business development.
 >Ekgo made further improvements to the underlying architecture to reduce dependence. The main features of the back-end management system based on the separation of the front and back ends of the full stack developed by gin and vue include:
  
   + Adopt DDD field-driven design
