@@ -7,7 +7,8 @@ import (
 
 //注册Hook
 func RegisterHook(this *gin.Context, plugin *plugins.New) {
-	/*plugin.Register(this, "/admin/menu", &hook.Test{})*/
+	/*plugin.Register(this, "/admin/menu", &hook.Test{})
+	plugin.Register(this, "/admin/menu", &hook.Test{})*/
 }
 
 //钩子
