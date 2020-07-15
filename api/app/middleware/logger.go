@@ -12,13 +12,11 @@ import (
 
 func Logger() gin.HandlerFunc {
 	//是否开启日志
-	close := config.Get.Section("log").Key("close").String()
-
 	return func(c *gin.Context) {
 		request := c.Request
 		if request.Method != "OPTIONS" {
 
-			if close == "false" {
+			if config.Get.Log.Close == false {
 
 				var body []byte
 				if c.Request.Body != nil {

@@ -21,7 +21,7 @@ func main() {
 	log.SetFlags(log.Llongfile | log.LstdFlags)
 
 	//设置配置文件打包路径,不设置默认
-	conf := flag.String("config", "./config/config.ini", "config file")
+	conf := flag.String("config", "./config/config.toml", "config file")
 
 	//设置日志文件打包路径,不设置默认
 	log_file := flag.String("log", "./log/", "log file")

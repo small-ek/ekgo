@@ -27,14 +27,16 @@ func RunServe() {
 	//加载路由
 	Router := router.Load()
 	//端口
-	address := config.Get.Section("system").Key("address").String()
+	address := config.Get.System.Address
 	//监听启动服务A,这里可以启动多个服务
 	srv := &http.Server{
-		Addr:           address,           //端口地址
-		Handler:        Router,            //路由
-		ReadTimeout:    300 * time.Second, //设置秒的读超时
-		WriteTimeout:   300 * time.Second, //设置秒的写超时
-		MaxHeaderBytes: 1 << 20,           //HTTP请求的头域最大允许长度1 MB
+		Addr:              address,           //端口地址
+		Handler:           Router,            //路由
+		ReadTimeout:       300 * time.Second, //设置秒的读超时
+		WriteTimeout:      300 * time.Second, //设置秒的写超时
+		ReadHeaderTimeout: 300 * time.Second, //读取头超时
+		IdleTimeout:       300 * time.Second, //空闲超时
+		MaxHeaderBytes:    1 << 20,           //HTTP请求的头域最大允许长度1 MB
 	}
 	//绑定ssl证书或者通过nginx绑定
 	//srv.ListenAndServeTLS("./service.key", "./service.pem")

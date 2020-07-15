@@ -112,7 +112,7 @@ func (this *Admin) Update() *response.Write {
 	countAdmin := model.CountAdminByUsername(this.Model.Name)
 
 	if countAdmin > 1 {
-		return response.Success("用户已名已存在")
+		return response.Fail("用户已名已存在")
 	} else {
 		if this.Model.Password != "" {
 			uuid := secret.GetUUID()

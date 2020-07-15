@@ -26,9 +26,9 @@ func Load(logPath string) *logrus.Logger {
 	Log.SetLevel(logrus.InfoLevel)
 
 	//文件最大保存时间
-	maximum := config.Get.Section("log").Key("maximum").MustInt(168)
+	maximum := config.Get.Log.Maximum
 	//文件最大保存时间
-	split := config.Get.Section("log").Key("split").MustInt(24)
+	split := config.Get.Log.Split
 
 	logWriter, err := rotatelogs.New(
 		logPath+"%Y-%m-%d-%H-%M.log",

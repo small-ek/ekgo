@@ -18,11 +18,11 @@ func Load() *gin.Engine {
 	//请求记录日志
 	Router.Use(middleware.Logger())
 	//跨域
-	var cors, err = config.Get.Section("system").Key("cors").Bool()
-	if cors == true && err == nil {
+	if config.Get.System.Cors == true {
 		Router.Use(middleware.Cors)
 	}
-
+	//钩子
+	Router.Use(middleware.Hook)
 	//swagger swag init
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//静态文件

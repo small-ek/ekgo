@@ -1,19 +1,65 @@
 package config
 
 import (
-	"github.com/go-ini/ini"
+	"github.com/BurntSushi/toml"
 	"log"
 	"os"
 )
 
-var Get *ini.File
-var CsrfExcept *ini.File
+type System struct {
+	Address  string
+	RbacPath string
+	Cors     bool
+}
+type Log struct {
+	Close   bool
+	Maximum int
+	Split   int
+}
+type Master struct {
+	Connection string
+	Host       string
+	Port       string
+	Database   string
+	Username   string
+	Password   string
+	Logmode    bool
+}
+type Slave struct {
+	Connection string
+	Host       string
+	Port       string
+	Database   string
+	Username   string
+	Password   string
+	Logmode    bool
+}
+type Oss struct {
+	KeyId     string
+	KeySecret string
+	Endpoint  string
+	Bucket    string
+}
+type Redis struct {
+	Address  string
+	Password string
+	Db       int
+}
+type Config struct {
+	System System
+	Log    Log
+	Master Master
+	Slave  Slave
+	Oss    Oss
+	Redis  Redis
+}
 
-func Load(configFile string) {
-	var err error
-	Get, err = ini.Load(configFile)
-	if err != nil {
-		log.Println("无法读取配置文件路径" + err.Error())
+var Get *Config
+
+func Load(path string) {
+	Get = &Config{}
+	if _, err := toml.DecodeFile(path, Get); err != nil {
+		log.Println("类型不正确或者配置文件路径不正确:" + err.Error())
 		os.Exit(1)
 	}
 }

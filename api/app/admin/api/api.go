@@ -6,6 +6,7 @@ import (
 	"ekgo/api/boot/db"
 	"ekgo/api/lib/response"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 //接口服务
@@ -17,7 +18,7 @@ func Index(this *gin.Context) {
 	this.ShouldBindQuery(&param)
 	param.Filter = this.QueryArray("filter[]")
 	Interface = &service.Api{PageParam: param, Db: db.Master}
-
+	log.Println("222222")
 	this.SecureJSON(200, Interface.Index())
 
 }

@@ -14,10 +14,10 @@ type UpLoadOSS struct {
 
 //获取阿里云token
 func (p *UpLoadOSS) GetToken() *response.Write {
-	Endpoint := config.Get.Section("oss").Key("Endpoint").String()
-	KeyId := config.Get.Section("oss").Key("KeyId").String()
-	KeySecret := config.Get.Section("oss").Key("KeySecret").String()
-	Bucket := config.Get.Section("oss").Key("Bucket").String()
+	Endpoint := config.Get.Oss.Endpoint
+	KeyId := config.Get.Oss.KeyId
+	KeySecret := config.Get.Oss.KeySecret
+	Bucket := config.Get.Oss.Bucket
 	client, err := oss.New(Endpoint, KeyId, KeySecret)
 
 	if err != nil {

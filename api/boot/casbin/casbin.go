@@ -25,7 +25,7 @@ func ParamsMatchFunc(args ...interface{}) (interface{}, error) {
 
 //持久化到数据库  引入自定义规则
 func Register() *casbin.Enforcer {
-	connection, userName, password, host, port, database, _ := db.GetDbConfig("databaseMaster")
+	connection, userName, password, host, port, database, _ := db.GetMasterConfig()
 
 	var Master string
 	switch connection {
@@ -40,8 +40,8 @@ func Register() *casbin.Enforcer {
 	if err != nil {
 		log.Println("数据库连接失败！" + err.Error())
 	}
-	var rbacPach = config.Get.Section("system").Key("rbacPath").String()
-	
+	var rbacPach = config.Get.System.RbacPath
+
 	e, err2 := casbin.NewEnforcer(rbacPach, a)
 	if err2 != nil {
 		log.Println("配置读取失败！" + err.Error())

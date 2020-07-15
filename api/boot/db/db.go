@@ -16,22 +16,21 @@ var Slave *gorm.DB
 
 var err error
 
-//获取数据库配置
-func GetDbConfig(database_name string) (connection, userName, password, host, port, database string, logmode bool) {
-	connection = config.Get.Section(database_name).Key("connection").String()
-	userName = config.Get.Section(database_name).Key("username").String()
-	password = config.Get.Section(database_name).Key("password").String()
-	host = config.Get.Section(database_name).Key("host").String()
-	port = config.Get.Section(database_name).Key("port").String()
-	database = config.Get.Section(database_name).Key("database").String()
-	logmode = config.Get.Section(database_name).Key("logmode").MustBool()
-
+//获取主库数据配置
+func GetMasterConfig() (connection, userName, password, host, port, database string, logmode bool) {
+	connection = config.Get.Master.Connection
+	userName = config.Get.Master.Username
+	password = config.Get.Master.Password
+	host = config.Get.Master.Host
+	port = config.Get.Master.Port
+	database = config.Get.Master.Database
+	logmode = config.Get.Master.Logmode
 	return connection, userName, password, host, port, database, logmode
 }
 
 //主库初始化
 func RegisterMaster() *gorm.DB {
-	connection, userName, password, host, port, database, logmode := GetDbConfig("databaseMaster")
+	connection, userName, password, host, port, database, logmode := GetMasterConfig()
 
 	switch connection {
 	case "mysql":
@@ -52,13 +51,25 @@ func RegisterMaster() *gorm.DB {
 		log.Println("数据库启动异常,请检查连接状态:" + err.Error())
 		os.Exit(1)
 	}
-	
+
 	return Master
+}
+
+//获取主库数据配置
+func GetSlaveConfig() (connection, userName, password, host, port, database string, logmode bool) {
+	connection = config.Get.Slave.Connection
+	userName = config.Get.Slave.Username
+	password = config.Get.Slave.Password
+	host = config.Get.Slave.Host
+	port = config.Get.Slave.Port
+	database = config.Get.Slave.Database
+	logmode = config.Get.Slave.Logmode
+	return connection, userName, password, host, port, database, logmode
 }
 
 //从库初始化
 func RegisterSlave() *gorm.DB {
-	connection, userName, password, host, port, database, logmode := GetDbConfig("databaseSlave")
+	connection, userName, password, host, port, database, logmode := GetSlaveConfig()
 
 	switch connection {
 	case "mysql":

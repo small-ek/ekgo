@@ -1,0 +1,51 @@
+#系统配置
+[system]
+    #启动地址
+    Address="127.0.0.1:95"
+    #权限配置路径
+    RbacPath="./config/rbac.conf"
+    #是否开启跨域
+    Cors=true
+
+#接口请求日志
+[log]
+    #是否开启日志
+    Close=false
+    #文件最长保存时间(小时)
+    Maximum=168
+    #分割时间(小时)
+    Split=24
+
+#主库设置
+[Master]
+    Connection="mysql"
+    Host="127.0.0.1"
+    Port="3306"
+    Database="ekgo"
+    Username="root"
+    Password=""
+    Logmode=true
+
+
+#从库设置没有设置主库
+[Slave]
+    Connection="mysql"
+    Host="127.0.0.1"
+    Port="3306"
+    Database="ekgo"
+    Username="root"
+    Password=""
+    Logmode=true
+
+#阿里云配置
+[oss]
+    KeyId=""
+    KeySecret=""
+    Endpoint=""
+    Bucket=""
+
+#Redis配置
+[redis]
+    Address="localhost:6379"
+    Password=""
+    Db=0
