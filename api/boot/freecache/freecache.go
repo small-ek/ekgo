@@ -11,25 +11,23 @@ const (
 
 var cache = freecache.NewCache(cacheSize)
 
-//key    建
-//value  值
-//expire 过期时间毫秒
+//设置值
 func Set(key []byte, val []byte, expire int) {
 	cache.Set(key, val, expire)
 }
 
-//根据key获取参数
+//根据key获取值
 func Get(key []byte) ([]byte, error) {
 	got, err := cache.Get(key)
 	return got, err
 }
-
+//删除
 func Del(key []byte) bool {
 	result := cache.Del(key)
 	return result
 
 }
-
+//清空
 func Clear() bool {
 	cache.Clear()
 	return true
