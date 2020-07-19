@@ -1,14 +1,16 @@
 package middleware
 
 import (
+	"ekgo/api/app/hook"
 	"ekgo/api/lib/plugins"
 	"github.com/gin-gonic/gin"
 )
 
 //注册Hook
 func RegisterHook(this *gin.Context, plugin *plugins.New) {
-	/*plugin.Register(this, "/admin/menu", &hook.Test{})
-	plugin.Register(this, "/admin/menu", &hook.Test{})*/
+	var Path = this.Request.URL.Path
+	plugin.Register(Path, "/admin/menu", &hook.Test{})
+	plugin.Register(Path, "/admin/menu", &hook.Test{})
 }
 
 //钩子

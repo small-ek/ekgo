@@ -7,9 +7,14 @@ import (
 )
 
 type System struct {
-	Address  string
-	RbacPath string
-	Cors     bool
+	Address           string
+	RbacPath          string
+	Cors              bool
+	ReadTimeout       int64
+	WriteTimeout      int64
+	ReadHeaderTimeout int64
+	IdleTimeout       int64
+	MaxHeaderBytes    int
 }
 type Log struct {
 	Close   bool
