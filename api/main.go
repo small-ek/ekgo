@@ -3,19 +3,16 @@ package main
 import (
 	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
-	"ekgo/api/boot/logger"
-	"ekgo/api/boot/serve"
+	"ekgo/api/ek/logger"
+
+	"ekgo/api/boot/router"
+	"ekgo/api/ek/frame/serve"
 	"flag"
 	"log"
+	"net/http"
+	"time"
 )
 
-// @title 接口文档
-// @version 0.0.1
-// @description 请求接口
-// @securityDefinitions.apikey 权限
-// @in header
-// @name Authorization
-// @BasePath /
 func main() {
 	//设置打印日志行号和文件名
 	log.SetFlags(log.Llongfile | log.LstdFlags)
@@ -36,6 +33,16 @@ func main() {
 	//加载主数据库
 	db.RegisterMaster()
 
-	//运行服务,可以添加多个服务
-	serve.RunServe()
+	//运行服务,也可以添加多个服务
+	var service = serve.Option{Server: &http.Server{
+		Addr:              config.Get.System.Address,
+		ReadTimeout:       time.Duration(config.Get.System.ReadTimeout) * time.Second,       //设置秒的读超时
+		WriteTimeout:      time.Duration(config.Get.System.WriteTimeout) * time.Second,      //设置秒的写超时
+		ReadHeaderTimeout: time.Duration(config.Get.System.ReadHeaderTimeout) * time.Second, //读取头超时
+		IdleTimeout:       time.Duration(config.Get.System.IdleTimeout) * time.Second,       //空闲超时
+		MaxHeaderBytes:    config.Get.System.MaxHeaderBytes,
+		Handler:           router.Load(),
+	}}
+	service.Run()
+	service.Wait()
 }

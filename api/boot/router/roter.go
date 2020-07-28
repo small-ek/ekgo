@@ -8,11 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"net/http"
 )
 
 //初始化路由
-func Load() *gin.Engine {
-	var Router = gin.Default()
+func Load() http.Handler {
+	var Router = gin.New()
 	//https配置
 	//Router.Use(middleware.LoadTls())
 	//请求记录日志

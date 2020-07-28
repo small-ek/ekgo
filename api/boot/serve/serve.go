@@ -24,6 +24,7 @@ func RunServe() {
 	gin.ForceConsoleColor()
 	//加载路由
 	Router := router.Load()
+	log.Println(Router.RouterGroup)
 	//端口
 	address := config.Get.System.Address
 	//监听启动服务A,这里可以启动多个服务
