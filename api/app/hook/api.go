@@ -1,7 +1,7 @@
 package hook
 
 import (
-	"ekgo/api/lib/response"
+	"ekgo/api/ek/response"
 	"log"
 )
 

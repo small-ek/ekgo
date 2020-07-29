@@ -3,10 +3,9 @@ package main
 import (
 	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
-	"ekgo/api/ek/logger"
-
 	"ekgo/api/boot/router"
 	"ekgo/api/ek/frame/serve"
+	"ekgo/api/ek/logger"
 	"flag"
 	"log"
 	"net/http"
@@ -17,18 +16,13 @@ func main() {
 	//设置打印日志行号和文件名
 	log.SetFlags(log.Llongfile | log.LstdFlags)
 
-	//设置配置文件打包路径,不设置默认
-	conf := flag.String("config", "./config/config.toml", "config file")
-
-	//设置日志文件打包路径,不设置默认
-	log_file := flag.String("log", "./log/", "log file")
 	flag.Parse()
 
 	//加载配置文件
-	config.Load(*conf)
+	config.Load(*flag.String("config", "./config/config.toml", "config file"))
 
 	//加载请求日志
-	logger.Load(*log_file)
+	logger.Load(*flag.String("log", "./log/", "log file"))
 
 	//加载主数据库
 	db.RegisterMaster()

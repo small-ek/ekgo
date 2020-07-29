@@ -3,7 +3,7 @@ package middleware
 import (
 	"bytes"
 	"ekgo/api/boot/config"
-	"ekgo/api/boot/logger"
+	"ekgo/api/ek/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"

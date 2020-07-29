@@ -1,7 +1,7 @@
 package plugins
 
 import (
-	"ek/response"
+	"ekgo/api/ek/response"
 )
 
 //定义一个接口，里面有两个方法
@@ -21,8 +21,8 @@ func (p *New) Init() {
 }
 
 //注册插件
-func (p *New) Register(Path, name string, plugin pluginfunc) {
-	if Path == name {
+func (p *New) Register(path, name string, plugin pluginfunc) {
+	if path == name {
 		p.List[name] = plugin
 	}
 }

@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"ekgo/api/app/hook"
-	"ekgo/api/lib/plugins"
+	"ekgo/api/ek/plugins"
 	"github.com/gin-gonic/gin"
 )
 
