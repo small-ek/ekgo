@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	//加载配置文件
-	config.Load(*flag.String("config", "./config/config.toml", "config file"))
+	config.Load(*flag.String("config", "./config/config.toml", "config file"), &config.Config{})
 
 	//加载请求日志
 	logger.Load(*flag.String("log", "./log/", "log file"))

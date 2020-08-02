@@ -11,9 +11,9 @@ import (
 
 var Log = logrus.New()
 
-//日志初始化
+// 日志加载(Log load)
+// @logPath 日志路径(Log path)
 func Load(logPath string) *logrus.Logger {
-
 	src, err := os.OpenFile(os.DevNull, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 
 	if err != nil {

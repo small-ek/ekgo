@@ -15,7 +15,7 @@ type New struct {
 	Scene   []string            //检测的字段
 }
 
-//表单验证器规则
+// 表单验证器规则
 func (this *New) CheckRule() error {
 	var Scene = this.Scene
 	var request map[string]string

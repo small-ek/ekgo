@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-//有值的时候模糊搜索
+// 有值的时候模糊搜索
 func Like(key, value string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		if key != "" && value != "" {
@@ -16,7 +16,7 @@ func Like(key, value string) func(db *gorm.DB) *gorm.DB {
 	}
 }
 
-//有值的时候模糊搜索
+// 有值的时候模糊搜索
 func Ilike(key, value string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		if key != "" && value != "" {
@@ -26,7 +26,7 @@ func Ilike(key, value string) func(db *gorm.DB) *gorm.DB {
 	}
 }
 
-//有值的时候whereIn搜索
+// 有值的时候whereIn搜索
 func WhereIn(key string, value interface{}) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		switch value := value.(type) {
@@ -63,7 +63,7 @@ func WhereIn(key string, value interface{}) func(db *gorm.DB) *gorm.DB {
 	}
 }
 
-//有值的时候where搜索
+// 有值的时候where搜索
 func Where(key, conditions string, value interface{}) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 
@@ -75,7 +75,7 @@ func Where(key, conditions string, value interface{}) func(db *gorm.DB) *gorm.DB
 	}
 }
 
-//构建where查询filter[]: ["test","like","test"]
+// 构建where查询filter[]: ["test","like","test"]
 func WhereQueryBuild(where interface{}) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		if where == nil {
@@ -116,7 +116,7 @@ func WhereQueryBuild(where interface{}) func(db *gorm.DB) *gorm.DB {
 	}
 }
 
-//排序
+// 排序
 func Order(str string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		if str == "" {
@@ -127,7 +127,7 @@ func Order(str string) func(db *gorm.DB) *gorm.DB {
 	}
 }
 
-//分页
+// 分页
 func Paginate(page_size, current_page int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Limit(page_size).Offset((current_page - 1) * page_size)

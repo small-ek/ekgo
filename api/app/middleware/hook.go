@@ -22,6 +22,7 @@ func Hook(this *gin.Context) {
 		//处理之前请求Hook
 		for _, plugin := range plugin.List {
 			var result = plugin.Before()
+
 			if result != nil {
 				this.JSON(200, result)
 				this.Abort()

@@ -6,7 +6,6 @@ import (
 	"ekgo/api/boot/db"
 	"ekgo/api/lib/conv"
 	"ekgo/api/lib/jwt"
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +16,6 @@ func AdminAuth() gin.HandlerFunc {
 	return func(this *gin.Context) {
 		token := this.Request.Header.Get("Authorization")
 		if token == "" || token == "null" || token == "undefined" {
-			fmt.Println(token)
 			this.JSON(200, gin.H{
 				"code": 402,
 				"msg":  "权限不足,请求失败",

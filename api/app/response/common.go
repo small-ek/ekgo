@@ -15,15 +15,6 @@ type Write struct {
 	Error string      `json:"error"`
 }
 
-//分页参数
-type PageParam struct {
-	CurrentPage int         `form:"current_page"`
-	PageSize    int         `form:"page_size"`
-	Total       int         `form:"total"`
-	Filter      interface{} `form:"filter"`
-	Order       string      `form:"order"`
-}
-
 //分页返回
 type Page struct {
 	Total int         `json:"total"`

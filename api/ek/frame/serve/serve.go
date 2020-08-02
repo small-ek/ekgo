@@ -22,7 +22,7 @@ type Option struct {
 	Server *http.Server
 }
 
-//运行服务A
+// 运行服务(Run the service)
 func (this *Option) Run() *Option {
 	gin.ForceConsoleColor()
 
@@ -36,11 +36,13 @@ func (this *Option) Run() *Option {
 	if err := g.Wait(); err != nil {
 		log.Println("启动失败,可能端口冲突请修改配置端口" + err.Error())
 	}
+
 	fmt.Println("  App running at:")
 	fmt.Println("  -Local: http://" + this.Server.Addr)
 	return this
 }
 
+// 服务等待,多服务情况在最后等待(Service waiting)
 func (this *Option) Wait() *Option {
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)

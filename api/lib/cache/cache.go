@@ -1,9 +1,9 @@
 package cache
 
 import (
-	"ekgo/api/boot/freecache"
 	"ekgo/api/lib/conv"
 	"ekgo/api/lib/secret"
+	"github.com/coocood/freecache"
 )
 
 type New struct {
@@ -12,20 +12,39 @@ type New struct {
 	Expire int
 }
 
-//获取缓存数据(LUR算法)
+const (
+	//Sets the start memory size
+	cacheSize = 1024 * 1024
+)
+
+var cache = freecache.NewCache(cacheSize)
+
+//Get cached data
 func (this *New) Get() []byte {
 	//判断是否有缓存
 	var hash = secret.Sha256(this.Group + this.Key)
-	getData, _ := freecache.Get([]byte(hash))
+	getData, _ := cache.Get([]byte(hash))
 	return getData
 }
 
-//设置缓存数据(LUR算法)
+//Set the cache data
 func (this *New) Set(data interface{}) {
 	//判断是否有缓存
 	if this.Expire == 0 {
 		this.Expire = 10000
 	}
 	var hash = secret.Sha256(this.Group + this.Key)
-	go freecache.Set([]byte(hash), conv.StructToBytes(data), this.Expire)
+	go cache.Set([]byte(hash), conv.StructToBytes(data), this.Expire)
+}
+
+//Delete the cache
+func Del(key []byte) bool {
+	result := cache.Del(key)
+	return result
+}
+
+//Clear the cache
+func Clear() bool {
+	cache.Clear()
+	return true
 }

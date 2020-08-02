@@ -1,96 +1,152 @@
-package lib
+package http
 
 import (
-	"bytes"
+	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"net/url"
+	"strings"
+	"sync"
 )
 
-//post请求
-func Post(url string, data map[string]interface{}, header map[string]string) []byte {
-	configdata, _ := json.Marshal(data)
-	post_data := bytes.NewBuffer(configdata)
-	req, _ := http.NewRequest("POST", url, post_data)
-	client := &http.Client{}
+var (
+	GET           = "GET"
+	POST          = "POST"
+	PUT           = "PUT"
+	DELETE        = "DELETE"
+	SENDTYPE_FROM = "from"
+	SENDTYPE_JSON = "json"
+)
 
-	req.Header.Set("Content-Type", "application/json")
-	if len(header) > 0 {
-		for k, v := range header {
-			req.Header.Set(k, v)
-		}
-	}
-
-	resp, _ := client.Do(req)
-	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Println(body)
-	if err != nil {
-		log.Print(url + "请求失败" + err.Error())
-	}
-	return body
+type HttpSend struct {
+	Link     string
+	SendType string
+	Header   map[string]string
+	Body     map[string]string
+	sync.RWMutex
 }
 
-//post请求
-func Delete(url string, data map[string]interface{}, header map[string]string) []byte {
-	configdata, _ := json.Marshal(data)
-	post_data := bytes.NewBuffer(configdata)
-	req, _ := http.NewRequest("DELETE", url, post_data)
-	client := &http.Client{}
-
-	req.Header.Set("Content-Type", "application/json")
-	if len(header) > 0 {
-		for k, v := range header {
-			req.Header.Set(k, v)
-		}
+func NewClient(link string) *HttpSend {
+	return &HttpSend{
+		Link:     link,
+		SendType: SENDTYPE_JSON,
 	}
-
-	resp, _ := client.Do(req)
-	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Println(body)
-	if err != nil {
-		log.Print(url + "请求失败" + err.Error())
-	}
-	return body
 }
 
-//put请求
-func Put(url string, data map[string]interface{}, header map[string]string) []byte {
-	configdata, _ := json.Marshal(data)
-	post_data := bytes.NewBuffer(configdata)
-	req, _ := http.NewRequest("PUT", url, post_data)
-	client := &http.Client{}
-
-	req.Header.Set("Content-Type", "application/json")
-	if len(header) > 0 {
-		for k, v := range header {
-			req.Header.Set(k, v)
-		}
-	}
-
-	resp, _ := client.Do(req)
-	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Println(body)
-	if err != nil {
-		log.Print(url + "请求失败" + err.Error())
-	}
-	return body
+func (h *HttpSend) SetBody(body map[string]string) {
+	h.Lock()
+	defer h.Unlock()
+	h.Body = body
 }
 
-//get请求
-func Get(url string, header map[string]string) []byte {
-	client := &http.Client{}
-	req, _ := http.NewRequest("GET", url, nil)
-	if len(header) > 0 {
-		for k, v := range header {
-			req.Header.Set(k, v)
+func (h *HttpSend) SetHeader(header map[string]string) {
+	h.Lock()
+	defer h.Unlock()
+	h.Header = header
+}
+
+func (h *HttpSend) SetSendType(send_type string) {
+	h.Lock()
+	defer h.Unlock()
+	h.SendType = send_type
+}
+
+func (h *HttpSend) Get() ([]byte, error) {
+	return h.send(GET)
+}
+
+func (h *HttpSend) Post() ([]byte, error) {
+	return h.send(POST)
+}
+
+func (h *HttpSend) Put() ([]byte, error) {
+	return h.send(PUT)
+}
+
+func (h *HttpSend) DELETE() ([]byte, error) {
+	return h.send(DELETE)
+}
+
+func GetUrlBuild(link string, data map[string]string) string {
+	u, _ := url.Parse(link)
+	q := u.Query()
+	for k, v := range data {
+		q.Set(k, v)
+	}
+	u.RawQuery = q.Encode()
+	return u.String()
+}
+
+func (h *HttpSend) send(method string) ([]byte, error) {
+	var (
+		req       *http.Request
+		resp      *http.Response
+		client    http.Client
+		send_data string
+		err       error
+	)
+
+	if len(h.Body) > 0 {
+		if strings.ToLower(h.SendType) == SENDTYPE_JSON {
+			send_body, json_err := json.Marshal(h.Body)
+			if json_err != nil {
+				return nil, json_err
+			}
+			send_data = string(send_body)
+		} else {
+			send_body := http.Request{}
+			send_body.ParseForm()
+			for k, v := range h.Body {
+				send_body.Form.Add(k, v)
+			}
+			send_data = send_body.Form.Encode()
 		}
 	}
-	resp, _ := client.Do(req)
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Print(url + "请求失败" + err.Error())
+
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-	return body
+
+	req, err = http.NewRequest(method, h.Link, strings.NewReader(send_data))
+	if err != nil {
+		return nil, err
+	}
+	defer req.Body.Close()
+
+	//设置默认header
+	if len(h.Header) == 0 {
+		//json
+		if strings.ToLower(h.SendType) == SENDTYPE_JSON {
+			h.Header = map[string]string{
+				"Content-Type": "application/json; charset=utf-8",
+			}
+		} else { //form
+			h.Header = map[string]string{
+				"Content-Type": "application/x-www-form-urlencoded",
+			}
+		}
+	}
+
+	for k, v := range h.Header {
+		if strings.ToLower(k) == "host" {
+			req.Host = v
+		} else {
+			req.Header.Add(k, v)
+		}
+	}
+
+	resp, err = client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(fmt.Sprintf("error http code :%d", resp.StatusCode))
+	}
+
+	return ioutil.ReadAll(resp.Body)
 }

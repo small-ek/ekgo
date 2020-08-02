@@ -1,13 +1,12 @@
 package hook
 
 import (
-	"ekgo/api/ek/response"
 	"log"
 )
 
 type Test struct{}
 
-func (p *Test) Before() *response.Write {
+func (p *Test) Before() interface{} {
 	log.Println("在之前执行")
 	return nil
 }
