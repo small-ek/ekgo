@@ -1,7 +1,7 @@
 package validator
 
 import (
-	"ek/conv"
+	"ekgo/api/ek/conv"
 	"errors"
 	"log"
 	"regexp"

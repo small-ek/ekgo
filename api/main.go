@@ -4,8 +4,8 @@ import (
 	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
 	"ekgo/api/boot/router"
-	"ekgo/api/ek/frame/serve"
-	"ekgo/api/ek/logger"
+	"github.com/small-ek/ginp/frame/serve"
+	"github.com/small-ek/ginp/logger"
 	"flag"
 	"log"
 	"net/http"
@@ -26,6 +26,7 @@ func main() {
 
 	//加载主数据库
 	db.RegisterMaster()
+
 
 	//运行服务,也可以添加多个服务
 	var service = serve.Option{Server: &http.Server{

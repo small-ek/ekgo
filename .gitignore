@@ -2,3 +2,4 @@
 *.exe~
 .idea/
 api/main
+log/
