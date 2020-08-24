@@ -16,7 +16,9 @@ func Load() *gin.Engine {
 	//https配置
 	//Router.Use(middleware.LoadTls())
 	//请求记录日志
-	Router.Use(middleware.Logger())
+	go func() {
+		Router.Use(middleware.Logger())
+	}()
 	//跨域
 	if config.Get.System.Cors == true {
 		Router.Use(middleware.Cors)

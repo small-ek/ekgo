@@ -4,9 +4,9 @@ import (
 	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
 	"ekgo/api/boot/router"
-	"github.com/small-ek/ginp/frame/serve"
-	"github.com/small-ek/ginp/logger"
+	"ekgo/api/ek/logger"
 	"flag"
+	"github.com/small-ek/ginp/frame/serve"
 	"log"
 	"net/http"
 	"time"
@@ -20,13 +20,11 @@ func main() {
 
 	//加载配置文件
 	config.Load(*flag.String("config", "./config/config.toml", "config file"), &config.Config{})
-
 	//加载请求日志
-	logger.Load(*flag.String("log", "./log/", "log file"))
+	logger.Load(*flag.String("log", "./log/", "log file"), "debug")
 
 	//加载主数据库
 	db.RegisterMaster()
-
 
 	//运行服务,也可以添加多个服务
 	var service = serve.Option{Server: &http.Server{
