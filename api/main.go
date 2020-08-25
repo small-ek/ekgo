@@ -17,11 +17,13 @@ func main() {
 	log.SetFlags(log.Llongfile | log.LstdFlags)
 
 	flag.Parse()
-
 	//加载配置文件
 	config.Load(*flag.String("config", "./config/config.toml", "config file"), &config.Config{})
 	//加载请求日志
-	logger.Load(*flag.String("log", "./log/", "log file"), "debug")
+	/*var Log = logger.New{
+		Path: *flag.String("log", "./log/ek.log", "log file"),
+	}*/
+	logger.Default(*flag.String("log", "./log/ek.log", "log file")).Load()
 
 	//加载主数据库
 	db.RegisterMaster()
@@ -38,4 +40,5 @@ func main() {
 	}}
 	service.Run()
 	service.Wait()
+
 }

@@ -1,25 +1,46 @@
 package logger
 
 import (
+	"fmt"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"log"
 )
 
 var Log *zap.Logger
 
+type New struct {
+	Path        string //保存路径
+	Level       string //设置日志级别,info debug warn
+	MaxBackups  int    //保留30个备份，默认300个
+	MaxSize     int    //每个日志文件保存10M，默认 10M
+	MaxAge      int    //保留7天，默认30天
+	Compress    bool   //是否压缩,默认不压缩
+	ServiceName string //日志服务名称,默认serviceName1
+}
+
+//默认设置日志
+func Default(path string) *New {
+	return &New{
+		Path:        path,
+		MaxSize:     10,
+		MaxBackups:  300,
+		MaxAge:      30,
+		Compress:    false,
+		ServiceName: "serviceName1",
+	}
+}
+
 // logpath 日志文件路径
 // loglevel 日志级别
-func Load(logpath string, loglevel string) {
-	log.Print(logpath)
+func (this *New) Load() *zap.Logger {
 	// 日志分割
 	hook := lumberjack.Logger{
-		Filename:   logpath, // 日志文件路径，默认 os.TempDir()
-		MaxSize:    10,      // 每个日志文件保存10M，默认 100M
-		MaxBackups: 30,      // 保留30个备份，默认不限
-		MaxAge:     7,       // 保留7天，默认不限
-		Compress:   true,    // 是否压缩，默认不压缩
+		Filename:   this.Path,       // 日志文件路径，默认 os.TempDir()
+		MaxSize:    this.MaxSize,    // 每个日志文件保存10M，默认 100M
+		MaxBackups: this.MaxBackups, // 保留30个备份，默认不限
+		MaxAge:     this.MaxAge,     // 保留7天，默认不限
+		Compress:   this.Compress,   // 是否压缩，默认不压缩
 	}
 	write := zapcore.AddSync(&hook)
 	// 设置日志级别
@@ -28,7 +49,7 @@ func Load(logpath string, loglevel string) {
 	// warn  只能打印 warn
 	// debug->info->warn->error
 	var level zapcore.Level
-	switch loglevel {
+	switch this.Level {
 	case "debug":
 		level = zap.DebugLevel
 	case "info":
@@ -38,6 +59,7 @@ func Load(logpath string, loglevel string) {
 	default:
 		level = zap.InfoLevel
 	}
+
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",
 		LevelKey:       "level",
@@ -58,7 +80,7 @@ func Load(logpath string, loglevel string) {
 	core := zapcore.NewCore(
 		// zapcore.NewConsoleEncoder(encoderConfig),
 		zapcore.NewJSONEncoder(encoderConfig),
-		// zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&write)), // 打印到控制台和文件
+		//zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&write)), // 打印到控制台和文件
 		write,
 		level,
 	)
@@ -67,8 +89,57 @@ func Load(logpath string, loglevel string) {
 	// 开启文件及行号
 	development := zap.Development()
 	// 设置初始化字段,如：添加一个服务器名称
-	filed := zap.Fields(zap.String("serviceName", "serviceName"))
+	filed := zap.Fields(zap.String("serviceName", this.ServiceName))
 	// 构造日志
 	Log = zap.New(core, caller, development, filed)
-	Log.Info("DefaultLogger init success")
+	defer Log.Sync()
+	return Log
+}
+
+func ToJsonData(args []interface{}) zap.Field {
+	det := make([]string, 0)
+	if len(args) > 0 {
+		for _, v := range args {
+			det = append(det, fmt.Sprintf("%+v", v))
+		}
+	}
+	zap := zap.Any("detail", det)
+	return zap
+}
+
+func FormateLog(args []interface{}) *zap.Logger {
+	log := Log.With(ToJsonData(args))
+	return log
+}
+
+//调试打印 debug
+func Debug(msg string, args ...interface{}) {
+	FormateLog(args).Sugar().Debugf(msg)
+}
+
+//打印 error
+func Error(msg string, args ...interface{}) {
+	FormateLog(args).Sugar().Errorf(msg)
+}
+
+//打印 warn
+func Warn(msg string, args ...interface{}) {
+	FormateLog(args).Sugar().Warn(msg)
+}
+
+//打印 Panic报错并记录
+func Panic(msg string, args ...interface{}) {
+	FormateLog(args).Sugar().Panic(msg)
+}
+
+//默认打印 info
+func Info(msg string, args ...interface{}) {
+	FormateLog(args).Sugar().Infof(msg)
+}
+
+//异步打印 info
+func AsyncInfo(msg string, args ...interface{}) {
+	go func() {
+		FormateLog(args).Sugar().Infof(msg)
+	}()
 }

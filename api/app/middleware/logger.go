@@ -3,11 +3,8 @@ package middleware
 import (
 	"bytes"
 	"ekgo/api/boot/config"
-	"ekgo/api/ek/logger"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"io/ioutil"
-	"time"
 )
 
 //中间件记录日志模块
@@ -50,11 +47,11 @@ func Logger() gin.HandlerFunc {
 				"method":   method,
 				"header":   request.Header,
 			}).Info()*/
-			logger.Log.Debug("test",
+			/*logger.Log.Debug("test",
 				zap.String("string", "string"),
 				zap.Int("int", 3),
 				zap.Duration("time", time.Second),
-			)
+			)*/
 		}
 	}
 }
