@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var Log *zap.Logger
+var Write *zap.Logger
 
 type New struct {
 	Path        string //保存路径
@@ -42,7 +42,7 @@ func (this *New) Load() *zap.Logger {
 		MaxAge:     this.MaxAge,     // 保留7天，默认不限
 		Compress:   this.Compress,   // 是否压缩，默认不压缩
 	}
-	write := zapcore.AddSync(&hook)
+	WriteSyncer := zapcore.AddSync(&hook)
 	// 设置日志级别
 	// debug 可以打印出 info debug warn
 	// info  级别可以打印 warn info
@@ -81,7 +81,7 @@ func (this *New) Load() *zap.Logger {
 		// zapcore.NewConsoleEncoder(encoderConfig),
 		zapcore.NewJSONEncoder(encoderConfig),
 		//zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&write)), // 打印到控制台和文件
-		write,
+		WriteSyncer,
 		level,
 	)
 	// 开启开发模式，堆栈跟踪
@@ -91,9 +91,9 @@ func (this *New) Load() *zap.Logger {
 	// 设置初始化字段,如：添加一个服务器名称
 	filed := zap.Fields(zap.String("serviceName", this.ServiceName))
 	// 构造日志
-	Log = zap.New(core, caller, development, filed)
-	defer Log.Sync()
-	return Log
+	Write = zap.New(core, caller, development, filed)
+	defer Write.Sync()
+	return Write
 }
 
 func ToJsonData(args []interface{}) zap.Field {
@@ -108,7 +108,7 @@ func ToJsonData(args []interface{}) zap.Field {
 }
 
 func FormateLog(args []interface{}) *zap.Logger {
-	log := Log.With(ToJsonData(args))
+	log := Write.With(ToJsonData(args))
 	return log
 }
 

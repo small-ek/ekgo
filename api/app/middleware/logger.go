@@ -3,8 +3,11 @@ package middleware
 import (
 	"bytes"
 	"ekgo/api/boot/config"
+	"ekgo/api/ek/logger"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"io/ioutil"
+	"time"
 )
 
 //中间件记录日志模块
@@ -22,11 +25,11 @@ func Logger() gin.HandlerFunc {
 			}
 
 			// 开始时间
-			/*start := time.Now()*/
+			start := time.Now()
 			// 处理请求
 			c.Next()
 			// 结束时间
-			/*end := time.Now()
+			end := time.Now()
 			// 执行时间
 			run_time := end.Sub(start)
 			// 请求URL
@@ -36,22 +39,18 @@ func Logger() gin.HandlerFunc {
 			// 请求类型
 			method := c.Request.Method
 			// 请求状态
-			status := c.Writer.Status()*/
+			status := c.Writer.Status()
+
 			// 写入日志
-			/*logger.Log.WithFields(logrus.Fields{
-				"ip":       ip,
-				"path":     path,
-				"request":  string(body),
-				"run_time": run_time,
-				"status":   status,
-				"method":   method,
-				"header":   request.Header,
-			}).Info()*/
-			/*logger.Log.Debug("test",
-				zap.String("string", "string"),
-				zap.Int("int", 3),
-				zap.Duration("time", time.Second),
-			)*/
+			logger.Write.Info("接口请求",
+				zap.Any("ip", ip),
+				zap.Any("path", path),
+				zap.Any("request", string(body)),
+				zap.Any("run_time", run_time),
+				zap.Any("status", status),
+				zap.Any("method", method),
+				zap.Any("header", request.Header),
+			)
 		}
 	}
 }
