@@ -1,4 +1,4 @@
-package encoding
+package base64
 
 import (
 	"encoding/base64"
@@ -7,7 +7,7 @@ import (
 
 // 使用BASE64算法对字节进行编码(Encode bytes using BASE64 algorithm)
 // @str 编码参数(Encoding parameters)
-func Encode(str [] byte) string {
+func Encode(str []byte) string {
 	encodeString := base64.StdEncoding.EncodeToString(str)
 	return encodeString
 }

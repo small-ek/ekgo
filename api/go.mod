@@ -18,6 +18,7 @@ require (
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/go-redis/redis/v8 v8.0.0-beta.6
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/grokify/html-strip-tags-go v0.0.0-20200322061010-ea0c1cf2f119
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/lib/pq v1.7.0
@@ -25,7 +26,6 @@ require (
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/satori/go.uuid v1.2.0
-	github.com/small-ek/ginp v1.0.3
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.7
 	github.com/unrolled/secure v1.0.8
