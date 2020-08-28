@@ -4,10 +4,9 @@ import (
 	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
 	"ekgo/api/boot/router"
-	"ekgo/api/ek/frame/serve"
 	"ekgo/api/ek/logger"
 	"flag"
-
+	"github.com/small-ek/ginp/frame/serve"
 	"log"
 )
 
@@ -21,6 +20,7 @@ func main() {
 	logger.Default(*flag.String("log", "./log/ek.log", "log file")).Load()
 	//加载主数据库
 	db.RegisterMaster()
+
 	//运行服务
 	serve.Default(router.Load(), "95").Run()
 	serve.Wait()
