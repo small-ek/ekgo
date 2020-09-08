@@ -28,6 +28,7 @@ func Default(path string) *New {
 		MaxAge:      30,
 		Compress:    false,
 		ServiceName: "serviceName1",
+		Level:"panic",
 	}
 }
 
@@ -54,8 +55,14 @@ func (this *New) Load() *zap.Logger {
 		level = zap.DebugLevel
 	case "info":
 		level = zap.InfoLevel
+	case "warn":
+		level = zap.WarnLevel
 	case "error":
 		level = zap.ErrorLevel
+	case "panic":
+		level = zap.PanicLevel
+	case "fatal":
+		level = zap.FatalLevel
 	default:
 		level = zap.InfoLevel
 	}

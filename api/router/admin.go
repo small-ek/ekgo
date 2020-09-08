@@ -17,6 +17,7 @@ func Admin(Router *gin.RouterGroup) {
 
 	Group := Router.Group("/admin").Use(middleware.AdminAuth()).Use(middleware.CasbinHandler())
 	{
+
 		//数据库表操作
 		Group.GET("/get_all_table", common.GetAllTable) //获取所有表列表
 		Group.GET("/get_table/:name", common.GetTable)  //获取单表信息

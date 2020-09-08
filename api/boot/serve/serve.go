@@ -1,68 +1,52 @@
 package serve
 
 import (
-	"context"
-	"ekgo/api/boot/config"
-	"ekgo/api/boot/router"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/errgroup"
 	"log"
 	"net/http"
-	"os"
-	"os/signal"
 	"time"
 )
 
 var (
-	g errgroup.Group
+	Group errgroup.Group
 )
 
-//运行服务A
-func RunServe() {
-	// 强制日志颜色化
+var Engine *gin.Engine
+
+type Option struct {
+	Server *http.Server
+}
+
+func Default(router *gin.Engine, port string) *Option {
+	return &Option{
+		&http.Server{
+			Addr:              "127.0.0.1:" + port,
+			ReadTimeout:       120 * time.Second,                                          //设置秒的读超时
+			WriteTimeout:      120 * time.Second,                                          //设置秒的写超时
+			ReadHeaderTimeout: 60 * time.Second,                                           //读取头超时
+			IdleTimeout:       120 * time.Second, //空闲超时
+			MaxHeaderBytes:    2097152,
+			Handler:           router,
+		},
+	}
+}
+
+// 运行服务(Run the service)
+func (this *Option) Run() *Option {
 	gin.ForceConsoleColor()
-	//加载路由
-	Router := router.Load()
-	log.Println(Router.RouterGroup)
-	//端口
-	address := config.Get.System.Address
-	//监听启动服务A,这里可以启动多个服务
-	srv := &http.Server{
-		Addr:              address,                                                          //端口地址
-		Handler:           Router,                                                           //路由
-		ReadTimeout:       time.Duration(config.Get.System.ReadTimeout) * time.Second,       //设置秒的读超时
-		WriteTimeout:      time.Duration(config.Get.System.WriteTimeout) * time.Second,      //设置秒的写超时
-		ReadHeaderTimeout: time.Duration(config.Get.System.ReadHeaderTimeout) * time.Second, //读取头超时
-		IdleTimeout:       time.Duration(config.Get.System.IdleTimeout) * time.Second,       //空闲超时
-		MaxHeaderBytes:    config.Get.System.MaxHeaderBytes,                                 //HTTP请求的头域最大允许长度1 MB
-	}
-	//绑定ssl证书或者通过nginx绑定
-	//srv.ListenAndServeTLS("./service.key", "./service.pem")
+	Group.Go(func() error {
+		return this.Server.ListenAndServe()
+	})
 	fmt.Println("  App running at:")
-	fmt.Println("  -Local: http://" + address)
+	fmt.Println("  -Local: http://" + this.Server.Addr)
+	return this
+}
 
-	go func() {
-		// 服务连接
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Println("服务连接失败,可能端口冲突" + err.Error())
-		}
-	}()
-
-	if err := g.Wait(); err != nil {
-		log.Println("启动失败,可能端口冲突请修改配置端口" + err.Error())
+// 服务等待,多服务情况在最后等待(Service waiting)
+func Wait() {
+	if err := Group.Wait(); err != nil {
+		log.Fatal(err)
 	}
-
-	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间） )
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-	log.Println("关闭服务器...")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Println("服务器关闭:" + err.Error())
-	}
-	log.Println("服务器退出")
-
 }

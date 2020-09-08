@@ -43,7 +43,7 @@ export const config = {
     //测试环境请求地址 npm run test
     testUrl: 'http://127.0.0.1:95/',
     //正式环境正式地址 npm run build
-    url: 'https://go.smallek.com/v1/',
+    url: 'https://stage-admin.shoplitlive.com/',
     //主题
     theme: {
         //横纵布局 horizontal vertical
