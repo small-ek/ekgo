@@ -27,7 +27,7 @@ require (
 	github.com/micro/go-micro/v2 v2.9.1
 	github.com/micro/micro/v2 v2.9.3 // indirect
 	github.com/micro/micro/v3 v3.0.0-beta.4 // indirect
-	github.com/micro/services v0.10.0
+	github.com/micro/services v0.10.0 // indirect
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/satori/go.uuid v1.2.0

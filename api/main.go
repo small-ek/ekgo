@@ -3,12 +3,11 @@ package main
 import (
 	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
+	"ekgo/api/boot/router"
 	"ekgo/api/ek/logger"
 	"flag"
-	"github.com/micro/go-micro/v2"
-	proto "github.com/micro/services/helloworld/proto"
+	"github.com/micro/go-micro/v2/web"
 	"log"
-	"time"
 )
 
 func main() {
@@ -22,26 +21,12 @@ func main() {
 	//加载主数据库
 	db.RegisterMaster()
 
-	service := micro.NewService()
-	service.Init()
-
-	// create the proto client for helloworld
-	client := proto.NewHelloworldService("go.micro.service.helloworld", service.Client())
-
-	// call an endpoint on the service
-	rsp, err := client.Call(context.Background(), &proto.Request{
-		Name: "John",
-	})
-	if err != nil {
-		log.Println("Error calling helloworld: ", err)
-		return
-	}
-
-	// print the response
-	log.Println("Response: ", rsp.Msg)
-
-	// let's delay the process for exiting for reasons you'll see below
-	time.Sleep(time.Second * 5)
+	var server = web.NewService(
+		web.Name("123"),
+		web.Address(":10082"),
+		web.Handler(router.Load()),
+	)
+	server.Run()
 	//运行服务
 	/*serve.Default(router.Load(), "95").Run()
 	serve.Wait()*/
