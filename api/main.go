@@ -27,7 +27,7 @@ func main() {
 	var server = web.NewService(
 		web.Registry(etcdReg),
 		web.Name("dev"),
-		/*web.Address(":10082"),*/
+		web.Address(":8001"),
 		web.Handler(router.Load()),
 	)
 	server.Init()
