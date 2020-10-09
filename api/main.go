@@ -6,6 +6,8 @@ import (
 	"ekgo/api/boot/router"
 	"ekgo/api/ek/logger"
 	"flag"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-micro/v2/registry/etcd"
 	"github.com/micro/go-micro/v2/web"
 	"log"
 )
@@ -21,11 +23,14 @@ func main() {
 	//加载主数据库
 	db.RegisterMaster()
 
+	etcdReg := etcd.NewRegistry(registry.Addrs("127.0.0.1:2379"))
 	var server = web.NewService(
-		web.Name("123"),
-		web.Address(":10082"),
+		web.Registry(etcdReg),
+		web.Name("dev"),
+		/*web.Address(":10082"),*/
 		web.Handler(router.Load()),
 	)
+	server.Init()
 	server.Run()
 	//运行服务
 	/*serve.Default(router.Load(), "95").Run()
