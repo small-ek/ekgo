@@ -29,28 +29,17 @@
 #主库设置
 [Master]
     Connection="mysql"
-    Host="47.103.147.249"
+    Host="127.0.0.1"
     Port="3306"
     Database="ekgo"
     Username="root"
-    Password="pi3.1415926"
-    Logmode=true
-
-
-#从库设置没有设置主库
-[Slave]
-    Connection="mysql"
-    Host="47.103.147.249"
-    Port="3306"
-    Database="ekgo"
-    Username="root"
-    Password="pi3.1415926"
+    Password=""
     Logmode=true
 
 #阿里云配置
 [oss]
-    KeyId="LTAI4FiMGdHjMVpBZJJ2Tw9c"
-    KeySecret="NJXJttlz7WjQPeeWlBSibxZVB5mZ3e"
+    KeyId=""
+    KeySecret=""
     Endpoint="https://oss-cn-shanghai.aliyuncs.com"
     Bucket="ek-shop"
 
