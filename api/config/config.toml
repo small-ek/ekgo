@@ -6,16 +6,6 @@
     RbacPath="./config/rbac.conf"
     #是否开启跨域
     Cors=true
-    #设置秒的读超时
-    ReadTimeout=300
-    #设置秒的写超时
-    WriteTimeout=300
-    #读取头超时
-    ReadHeaderTimeout=300
-    #空闲超时
-    IdleTimeout=300
-    #HTTP请求的头域bytes最大允许长度1 MB
-    MaxHeaderBytes=1045876
 
 #接口请求日志
 [log]
@@ -36,12 +26,23 @@
     Password=""
     Logmode=true
 
+
+#从库设置没有设置主库
+[Slave]
+    Connection="mysql"
+    Host="127.0.0.1"
+    Port="3306"
+    Database="ekgo"
+    Username="root"
+    Password=""
+    Logmode=true
+
 #阿里云配置
 [oss]
     KeyId=""
     KeySecret=""
-    Endpoint="https://oss-cn-shanghai.aliyuncs.com"
-    Bucket="ek-shop"
+    Endpoint=""
+    Bucket=""
 
 #Redis配置
 [redis]
