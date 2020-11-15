@@ -1,8 +1,8 @@
 package testJob
 
 import (
-	"ekgo/api/boot/queue"
 	"fmt"
+	"github.com/small-ek/ginp/queue"
 	"time"
 )
 

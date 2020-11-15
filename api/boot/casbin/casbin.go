@@ -1,12 +1,12 @@
 package casbin
 
 import (
-	"ekgo/api/boot/config"
 	"ekgo/api/boot/db"
 	"github.com/casbin/casbin/util"
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v2"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/small-ek/ginp/os/config"
 	"log"
 )
 
@@ -25,7 +25,7 @@ func ParamsMatchFunc(args ...interface{}) (interface{}, error) {
 
 //持久化到数据库  引入自定义规则
 func Register() *casbin.Enforcer {
-	connection, userName, password, host, port, database, _ := db.GetMasterConfig()
+	connection, userName, password, host, port, database, _ := db.GetDbConfig()
 
 	var Master string
 	switch connection {
@@ -40,7 +40,7 @@ func Register() *casbin.Enforcer {
 	if err != nil {
 		log.Println("数据库连接失败！" + err.Error())
 	}
-	var rbacPach = config.Get.System.RbacPath
+	var rbacPach = config.Decode().Get("casbin").Get("path").String()
 
 	e, err2 := casbin.NewEnforcer(rbacPach, a)
 	if err2 != nil {

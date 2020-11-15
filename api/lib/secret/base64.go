@@ -6,7 +6,7 @@ import (
 )
 
 //base64加密
-func Encode(str [] byte) string {
+func Encode(str []byte) string {
 	encodeString := base64.StdEncoding.EncodeToString(str)
 	return encodeString
 }

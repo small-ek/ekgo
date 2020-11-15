@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"bytes"
-	"ekgo/api/boot/config"
-	"ekgo/api/ek/logger"
 	"github.com/gin-gonic/gin"
+	"github.com/small-ek/ginp/os/config"
+	"github.com/small-ek/ginp/os/logger"
 	"go.uber.org/zap"
 	"io/ioutil"
 	"time"
@@ -15,7 +15,8 @@ func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		request := c.Request
 		//请求状态不是OPTIONS和日志开启
-		if request.Method != "OPTIONS" && config.Get.Log.Close == false {
+
+		if request.Method != "OPTIONS" && config.Decode().Get("log").Get("close").Bool() == false {
 			var body []byte
 
 			if c.Request.Body != nil {

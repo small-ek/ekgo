@@ -1,9 +1,9 @@
 package service
 
 import (
-	"ekgo/api/boot/config"
 	"ekgo/api/lib/response"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/small-ek/ginp/os/config"
 	"mime"
 	"path/filepath"
 )
@@ -14,10 +14,11 @@ type UpLoadOSS struct {
 
 //获取阿里云token
 func (p *UpLoadOSS) GetToken() *response.Write {
-	Endpoint := config.Get.Oss.Endpoint
-	KeyId := config.Get.Oss.KeyId
-	KeySecret := config.Get.Oss.KeySecret
-	Bucket := config.Get.Oss.Bucket
+	config := config.Decode().Get("oss").Map()
+	Endpoint := config["endpoint"].(string)
+	KeyId := config["key_id"].(string)
+	KeySecret := config["key_secret"].(string)
+	Bucket := config["bucket"].(string)
 	client, err := oss.New(Endpoint, KeyId, KeySecret)
 
 	if err != nil {

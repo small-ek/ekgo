@@ -61,7 +61,6 @@ func Admin(Router *gin.RouterGroup) {
 		Group.DELETE("/content/:id", content.Delete) //删除
 		Group.PUT("/content/:id", content.Update)    //修改
 
-
 	}
 
 }

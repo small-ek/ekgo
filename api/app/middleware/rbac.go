@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"ekgo/api/boot/casbin"
-	"ekgo/api/lib/conv"
+	"github.com/small-ek/ginp/conv"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
 
-//casbin验证角色权限
+//CasbinHandler 验证角色权限
 func CasbinHandler() gin.HandlerFunc {
 	return func(this *gin.Context) {
 		var user = GetAdmin(this)

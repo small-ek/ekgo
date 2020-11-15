@@ -2,6 +2,7 @@ package model
 
 import (
 	"ekgo/api/boot/db"
+	"ekgo/api/lib/conv"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -61,8 +62,8 @@ func (this *Admin) AfterDelete(scope *gorm.Scope) error {
 }
 
 //查询用户名
-func CountAdminByUsername(username string) int {
-	var count = 0
+func CountAdminByUsername(username string) int64 {
+	var count = conv.Int64(0)
 	db.Master.Model(&Admin{}).Where("username=?", username).Count(&count)
 	return count
 }

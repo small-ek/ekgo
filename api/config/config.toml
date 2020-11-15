@@ -1,51 +1,56 @@
 #系统配置
 [system]
     #启动地址
-    Address="127.0.0.1:95"
+    address="127.0.0.1:95"
     #权限配置路径
-    RbacPath="./config/rbac.conf"
+    rbac_path="./config/rbac.conf"
     #是否开启跨域
-    Cors=true
+    cors=true
+    #是否开发调试模式
+    debug=true
+#权限配置文件目录
+[casbin]
+    path="rbac.conf"
 
 #接口请求日志
 [log]
     #是否开启日志
-    Close=false
+    close=false
     #文件最长保存时间(小时)
-    Maximum=168
+    maximum=168
     #分割时间(小时)
-    Split=24
+    split=24
 
 #主库设置
-[Master]
-    Connection="mysql"
-    Host="127.0.0.1"
-    Port="3306"
-    Database="ekgo"
-    Username="root"
-    Password=""
-    Logmode=true
-
-
-#从库设置没有设置主库
-[Slave]
-    Connection="mysql"
-    Host="127.0.0.1"
-    Port="3306"
-    Database="ekgo"
-    Username="root"
-    Password=""
-    Logmode=true
+[database]
+    connection="mysql"
+    host="127.0.0.1"
+    port="3306"
+    database="ekgo"
+    username="root"
+    password=""
+    config="charset=utf8mb4&parseTime=True&loc=Local"
 
 #阿里云配置
 [oss]
-    KeyId=""
-    KeySecret=""
-    Endpoint=""
-    Bucket=""
+    key_id=""
+    key_secret=""
+    endpoint=""
+    bucket=""
 
 #Redis配置
 [redis]
-    Address="localhost:6379"
-    Password=""
-    Db=0
+    address="localhost:6379"
+    password=""
+    db=0
+#邮箱警报发送
+[emaill]
+    switch=true
+    to=['56494565@qq.com']
+    from= '56494565@qq.com'
+    host= 'smtp.qq.com:25'
+    secret= 'fdtshicbbvybbiic'
+#Json web token
+[jwt]
+    private_key=''
+    public_key=''
