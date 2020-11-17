@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"ekgo/api/app/service"
-	"github.com/gin-gonic/gin"
 )
 
 var Interface service.AdminInterface
@@ -58,7 +57,7 @@ var Interface service.AdminInterface
 //}
 //
 ////获取商家用户信息
-func GetAdmin(this *gin.Context) model.Admin {
-	user := this.MustGet("user").(model.Admin)
-	return user
-}
+//func GetAdmin(this *gin.Context) model.Admin {
+//	user := this.MustGet("user").(model.Admin)
+//	return user
+//}
