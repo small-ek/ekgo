@@ -1,7 +1,7 @@
 package casbin
 
 import (
-	"ekgo/api/boot/db"
+	"ekgo/boot/db"
 	"github.com/casbin/casbin/util"
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v2"

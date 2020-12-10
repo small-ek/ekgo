@@ -1,10 +1,10 @@
 package content
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/app/service"
-	"ekgo/api/boot/db"
-	"ekgo/api/lib/response"
+	"ekgo/app/model"
+	"ekgo/app/service"
+	"ekgo/boot/db"
+	"ekgo/lib/response"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"ekgo/api/boot/db"
+	"ekgo/boot/db"
 	"time"
 )
 

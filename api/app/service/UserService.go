@@ -1,10 +1,10 @@
 package service
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/boot/db"
-	"ekgo/api/lib/orm"
-	"ekgo/api/lib/response"
+	"ekgo/app/model"
+	"ekgo/boot/db"
+	"ekgo/lib/orm"
+	"ekgo/lib/response"
 	"github.com/jinzhu/gorm"
 )
 

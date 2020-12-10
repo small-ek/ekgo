@@ -1,7 +1,7 @@
 package plugins
 
 import (
-	"ekgo/api/lib/response"
+	"ekgo/lib/response"
 )
 
 //定义一个接口，里面有两个方法

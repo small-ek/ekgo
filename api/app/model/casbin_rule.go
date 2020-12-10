@@ -1,8 +1,8 @@
 package model
 
 import (
-	"ekgo/api/boot/db"
-	"ekgo/api/lib/conv"
+	"ekgo/boot/db"
+	"ekgo/lib/conv"
 )
 
 //角色表

@@ -1,13 +1,13 @@
 package service
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/lib/cache"
-	"ekgo/api/lib/conv"
-	"ekgo/api/lib/jwt"
-	"ekgo/api/lib/orm"
-	"ekgo/api/lib/response"
-	"ekgo/api/lib/secret"
+	"ekgo/app/model"
+	"ekgo/lib/cache"
+	"ekgo/lib/conv"
+	"ekgo/lib/jwt"
+	"ekgo/lib/orm"
+	"ekgo/lib/response"
+	"ekgo/lib/secret"
 	"github.com/jinzhu/gorm"
 	"log"
 	"time"

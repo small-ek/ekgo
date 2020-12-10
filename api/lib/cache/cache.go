@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"ekgo/api/lib/conv"
-	"ekgo/api/lib/secret"
+	"ekgo/lib/conv"
+	"ekgo/lib/secret"
 	"github.com/coocood/freecache"
 )
 

@@ -1,13 +1,13 @@
 package validate
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/app/service"
-	"ekgo/api/boot/db"
-	"ekgo/api/lib/conv"
-	"ekgo/api/lib/response"
-	"ekgo/api/lib/secret"
-	"ekgo/api/lib/validator"
+	"ekgo/app/model"
+	"ekgo/app/service"
+	"ekgo/boot/db"
+	"ekgo/lib/conv"
+	"ekgo/lib/response"
+	"ekgo/lib/secret"
+	"ekgo/lib/validator"
 )
 
 var Interface service.AdminInterface

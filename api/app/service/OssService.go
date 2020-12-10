@@ -1,7 +1,7 @@
 package service
 
 import (
-	"ekgo/api/lib/response"
+	"ekgo/lib/response"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/small-ek/ginp/os/config"
 	"mime"

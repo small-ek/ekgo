@@ -1,6 +1,6 @@
 package main
 
-import "ekgo/api/boot/serve"
+import "ekgo/boot/serve"
 
 func main() {
 	serve.Load()

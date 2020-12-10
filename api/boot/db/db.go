@@ -38,9 +38,7 @@ func Mysql() *gorm.DB {
 		DontSupportRenameColumn:   true,  // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{})
-	if err != nil {
-		logger.Error(err.Error())
-	}
+	logger.Error(err)
 	return db
 }
 
@@ -59,8 +57,6 @@ func Register() {
 //Close 关闭数据库
 func Close(Master *gorm.DB) {
 	var db, err = Master.DB()
-	if err != nil {
-		logger.Error(err.Error())
-	}
+	logger.Error(err)
 	db.Close()
 }

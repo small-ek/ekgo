@@ -1,10 +1,10 @@
 package service
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/lib/orm"
-	"ekgo/api/lib/response"
-	"github.com/jinzhu/gorm"
+	"ekgo/app/model"
+	"github.com/small-ek/ginp/orm"
+	"ekgo/lib/response"
+	"gorm.io/gorm"
 )
 
 type RoleInterface interface {
@@ -26,7 +26,7 @@ func (this *Role) Index() *response.Write {
 	var list = []model.Role{}
 
 	err := this.Db.Scopes(
-		orm.WhereQueryBuild(this.PageParam.Filter),
+		orm.WhereBuildQuery(this.PageParam.Filter),
 		orm.Order(this.PageParam.Order),
 		orm.Paginate(this.PageParam.PageSize, this.PageParam.CurrentPage),
 	).Find(&list).Offset(0).Count(&this.PageParam.Total).Error
@@ -68,7 +68,7 @@ func (this *Role) Store() *response.Write {
 
 //修改
 func (this *Role) Update() *response.Write {
-	err := this.Db.Model(&this.Model).Update(this.Model).Error
+	err := this.Db.Model(&this.Model).Updates(this.Model).Error
 
 	if err == nil {
 		return response.Success("修改成功")

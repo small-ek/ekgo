@@ -1,13 +1,13 @@
 package admin
 
 import (
-	"ekgo/api/app/middleware"
-	"ekgo/api/app/model"
-	"ekgo/api/app/service"
-	"ekgo/api/app/validate"
-	"ekgo/api/boot/db"
-	"ekgo/api/lib/request"
-	"ekgo/api/lib/response"
+	"ekgo/app/middleware"
+	"ekgo/app/model"
+	"ekgo/app/service"
+	"ekgo/app/validate"
+	"ekgo/boot/db"
+	"ekgo/lib/request"
+	"ekgo/lib/response"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,8 +1,8 @@
 package service
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/lib/response"
+	"ekgo/app/model"
+	"ekgo/lib/response"
 	"github.com/jinzhu/gorm"
 )
 

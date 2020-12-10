@@ -1,7 +1,7 @@
 package common
 
 import (
-	"ekgo/api/app/service"
+	"ekgo/app/service"
 	"github.com/gin-gonic/gin"
 )
 

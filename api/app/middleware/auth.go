@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"ekgo/api/app/service"
+	"ekgo/app/service"
 )
 
 var Interface service.AdminInterface

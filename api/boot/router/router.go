@@ -1,10 +1,10 @@
 package router
 
 import (
-	"ekgo/api/app/middleware"
+	"ekgo/app/middleware"
 	"github.com/small-ek/ginp/os/config"
 
-	"ekgo/api/router"
+	"ekgo/router"
 	"github.com/gin-gonic/gin"
 )
 

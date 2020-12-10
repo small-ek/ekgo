@@ -1,9 +1,9 @@
 package common
 
 import (
-	"ekgo/api/app/model"
-	"ekgo/api/boot/db"
-	"ekgo/api/lib/response"
+	"ekgo/app/model"
+	"ekgo/boot/db"
+	"ekgo/lib/response"
 	"github.com/gin-gonic/gin"
 	"github.com/small-ek/ginp/orm"
 )
