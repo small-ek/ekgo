@@ -2,9 +2,13 @@ package db
 
 import (
 	"github.com/small-ek/ginp/os/config"
-	"github.com/small-ek/ginp/os/logger"
+	loggers "github.com/small-ek/ginp/os/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"log"
+	"os"
+	"time"
 )
 
 var Master *gorm.DB
@@ -18,7 +22,7 @@ func GetDbConfig() (connection, userName, password, host, port, database, conf s
 	userName = db.Get("username").String()
 	password = db.Get("password").String()
 	host = db.Get("host").String()
-	port = db.Get("connection").String()
+	port = db.Get("port").String()
 	database = db.Get("database").String()
 	conf = db.Get("config").String()
 	return connection, userName, password, host, port, database, conf
@@ -29,7 +33,14 @@ func Mysql() *gorm.DB {
 	var _, userName, password, host, port, database, conf = GetDbConfig()
 
 	var dns = userName + ":" + password + "@tcp(" + host + ":" + port + ")/" + database + "?" + conf
-
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold: time.Second,   // 慢 SQL 阈值
+			LogLevel:      logger.Silent, // Log level
+			Colorful:      false,         // 禁用彩色打印
+		},
+	)
 	var db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dns,   // DSN data source name
 		DefaultStringSize:         256,   // string 类型字段的默认长度
@@ -37,26 +48,30 @@ func Mysql() *gorm.DB {
 		DontSupportRenameIndex:    true,  // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
 		DontSupportRenameColumn:   true,  // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
-	}), &gorm.Config{})
-	logger.Error(err)
+	}), &gorm.Config{
+		Logger: newLogger,
+	})
+	if err != nil {
+		loggers.Error(err)
+		os.Exit(0)
+	}
 	return db
 }
 
 //Register 数据库连接注册
 func Register() {
-	var connection = config.Decode().Get("database").Get("connection").String()
-	switch connection {
+	switch config.Decode().Get("database").Get("connection").String() {
 	case "mysql":
 		Master = Mysql()
 	default:
 		Master = Mysql()
 	}
-	defer Close(Master)
+	//defer Close(Master)
 }
 
 //Close 关闭数据库
 func Close(Master *gorm.DB) {
 	var db, err = Master.DB()
-	logger.Error(err)
+	loggers.Error(err)
 	db.Close()
 }

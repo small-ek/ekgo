@@ -1,11 +1,5 @@
 package middleware
 
-import (
-	"ekgo/app/service"
-)
-
-var Interface service.AdminInterface
-
 //后台管理中间件授权认证登录
 //func AdminAuth() gin.HandlerFunc {
 //	return func(this *gin.Context) {

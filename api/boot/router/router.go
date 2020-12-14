@@ -2,10 +2,10 @@ package router
 
 import (
 	"ekgo/app/middleware"
-	"github.com/small-ek/ginp/os/config"
-
 	"ekgo/router"
 	"github.com/gin-gonic/gin"
+	"github.com/small-ek/ginp/os/config"
+	"github.com/small-ek/ginp/request"
 )
 
 //初始化路由
@@ -17,12 +17,15 @@ func Load() *gin.Engine {
 	go func() {
 		Router.Use(middleware.Logger())
 	}()
+	var system = config.Decode().Get("system")
 	//跨域
-	if config.Decode().Get("system").Get("cors").Bool() == true {
-		Router.Use(middleware.Cors)
+	if system.Get("cors").Bool() == true {
+		Router.Use(request.Cors)
 	}
+	//设置语言
+	Router.Use(middleware.Lang())
 	//钩子
-	/*Router.Use(middleware.Hook)*/
+	//Router.Use(middleware.Hook)
 	//swagger swag init
 	//Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//静态文件
@@ -32,7 +35,7 @@ func Load() *gin.Engine {
 	//注册公共组件路由
 	router.Common(Group)
 	//注册后台路由
-	//router.Admin(Group)
+	router.Admin(Group)
 
 	return Router
 }

@@ -2,7 +2,7 @@ package service
 
 import (
 	"ekgo/app/model"
-	"ekgo/lib/response"
+	"github.com/small-ek/ginp/response"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,7 +16,7 @@ type MenuInterface interface {
 
 type Menu struct {
 	ID        int
-	PageParam response.PageParam
+	PageParam response.Page
 	Model     model.Menu
 	Db        *gorm.DB
 }
@@ -82,5 +82,4 @@ func (this *Menu) LeftMenu(user *model.Admin) *response.Write {
 		Code: 200,
 		Data: menu,
 	}
-
 }

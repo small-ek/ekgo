@@ -2,7 +2,6 @@ package model
 
 import (
 	"ekgo/boot/db"
-	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -20,41 +19,6 @@ type Api struct {
 
 func (Api) TableName() string {
 	return "s_api"
-}
-
-//查询之后
-func (this *Api) AfterFind(scope *gorm.Scope) error {
-	return nil
-}
-
-//创建之前
-func (this *Api) BeforeCreate(scope *gorm.Scope) error {
-	return nil
-}
-
-//创建之后
-func (this *Api) AfterCreate(scope *gorm.Scope) error {
-	return nil
-}
-
-//更新之前
-func (this *Api) BeforeUpdate(scope *gorm.Scope) error {
-	return nil
-}
-
-//更新之后
-func (this *Api) AfterUpdate(scope *gorm.Scope) error {
-	return nil
-}
-
-//删除之前
-func (this *Api) BeforeDelete(scope *gorm.Scope) error {
-	return nil
-}
-
-//删除之后
-func (this *Api) AfterDelete(scope *gorm.Scope) error {
-	return nil
 }
 
 //获取所有API

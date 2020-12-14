@@ -2,7 +2,7 @@ package common
 
 import (
 	"ekgo/boot/db"
-	"ekgo/lib/response"
+	"github.com/small-ek/ginp/response"
 	"github.com/gin-gonic/gin"
 )
 

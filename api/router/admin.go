@@ -1,22 +1,22 @@
 package router
 
 import (
+	"ekgo/app/admin/admins"
 	"github.com/gin-gonic/gin"
 )
 
-//后台路由
+//后台管理
 func Admin(Router *gin.RouterGroup) {
-	Router.GET("/", func(c *gin.Context) {
-		c.Header("Content-Type", "text/html; charset=utf-8")
-		c.String(200, `<h1 style="text-align: center;margin: 200px auto;color: #343434;text-shadow: -3px -3px #ccc;font-size: 60px;">Hello Ekgo</h1>`)
-	})
 
-	//登陆不需要权限
-	//Group := Router.Group("/admin").Use(middleware.AdminAuth())
-	//{
-	//	Group.GET("/left_menu", menu.LeftMenu) //左侧权限菜单
-	//}
-	//Router.POST("/admin/login", admin.Login) //登录接口
-	//Router.GET("/upload/oss", common.Oss)    //阿里云上传凭证
-	//Router.GET("/geo/:pid", common.GeoAll)   //中国省市区地理信息
+	Group := Router.Group("/admin")
+	{
+		//管理员
+		Group.GET("/admins", admins.Index) //分页
+		/*Group.POST("/admins", admin.Store)                       //添加管理员
+		Group.DELETE("/admins/:id", admin.Delete)                //删除管理员
+		Group.PUT("/admins/:id", admin.Update)                   //修改管理员
+		Group.PUT("/updateAdminPassword", admin.UpdatePassword) //修改管理员密码
+		Group.GET("/checkLogin", admin.CheckLogin)              //检测登录*/
+	}
+
 }

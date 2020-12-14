@@ -3,7 +3,8 @@ package service
 import (
 	"ekgo/app/model"
 	"github.com/small-ek/ginp/orm"
-	"ekgo/lib/response"
+	"github.com/small-ek/ginp/request"
+	"github.com/small-ek/ginp/response"
 	"gorm.io/gorm"
 )
 
@@ -16,7 +17,7 @@ type RoleInterface interface {
 }
 
 type Role struct {
-	PageParam response.PageParam
+	PageParam request.PageParam
 	Model     model.Role
 	Db        *gorm.DB
 }

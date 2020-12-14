@@ -1,0 +1,10 @@
+{
+  "zh-CN": {
+    "success": "成功",
+    "failed": "失败"
+  },
+  "en-US": {
+    "success": "Success",
+    "failed": "Failed"
+  }
+}

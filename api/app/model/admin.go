@@ -1,9 +1,6 @@
 package model
 
 import (
-	"ekgo/boot/db"
-	"ekgo/lib/conv"
-	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -22,48 +19,7 @@ type Admin struct {
 	DeletedAt *time.Time `json:"deleted_at"`                     //删除时间
 }
 
+//TableName
 func (Admin) TableName() string {
 	return "s_admin"
-}
-
-//查询之后
-func (this *Admin) AfterFind(scope *gorm.Scope) error {
-	return nil
-}
-
-//创建之前
-func (this *Admin) BeforeCreate(scope *gorm.Scope) error {
-	return nil
-}
-
-//创建之后
-func (this *Admin) AfterCreate(scope *gorm.Scope) error {
-	return nil
-}
-
-//更新之前
-func (this *Admin) BeforeUpdate(scope *gorm.Scope) error {
-	return nil
-}
-
-//更新之后
-func (this *Admin) AfterUpdate(scope *gorm.Scope) error {
-	return nil
-}
-
-//删除之前
-func (this *Admin) BeforeDelete(scope *gorm.Scope) error {
-	return nil
-}
-
-//删除之后
-func (this *Admin) AfterDelete(scope *gorm.Scope) error {
-	return nil
-}
-
-//查询用户名
-func CountAdminByUsername(username string) int64 {
-	var count = conv.Int64(0)
-	db.Master.Model(&Admin{}).Where("username=?", username).Count(&count)
-	return count
 }

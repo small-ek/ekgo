@@ -3,7 +3,7 @@ package common
 import (
 	"ekgo/app/model"
 	"ekgo/boot/db"
-	"ekgo/lib/response"
+	"github.com/small-ek/ginp/response"
 	"github.com/gin-gonic/gin"
 	"github.com/small-ek/ginp/orm"
 )
