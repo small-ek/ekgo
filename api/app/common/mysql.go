@@ -2,8 +2,8 @@ package common
 
 import (
 	"ekgo/boot/db"
-	"github.com/small-ek/ginp/response"
 	"github.com/gin-gonic/gin"
+	"github.com/small-ek/antgo/response"
 )
 
 type TableAll struct {

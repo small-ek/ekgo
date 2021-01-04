@@ -2,8 +2,8 @@ package response
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/small-ek/ginp/i18n"
-	"github.com/small-ek/ginp/response"
+	"github.com/small-ek/antgo/i18n"
+	"github.com/small-ek/antgo/response"
 )
 
 //Fail

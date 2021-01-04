@@ -3,42 +3,41 @@ package service
 import (
 	"ekgo/app/model"
 	"ekgo/app/repository"
-	"github.com/small-ek/ginp/request"
-	"github.com/small-ek/ginp/response"
+	"ekgo/boot/db"
+	"github.com/small-ek/antgo/request"
+	"github.com/small-ek/antgo/response"
 )
 
 type Admin struct {
 	PageParam request.PageParam
-	Interface repository.AdminInterface
+	Factory   repository.AdminFactory
 	Model     model.Admin
 }
 
-
-
 //Index 分页
-func (get *Admin) Index() (*response.Page, error) {
-	get.Interface = repository.Admin(get.Model)
-	var list, err = get.Interface.GetPage(get.PageParam)
-	return list, err
+func (s *Admin) Index() (*response.Page, error) {
+	s.Factory = repository.Admin(s.Model, db.Master)
+	var result, err = s.Factory.GetPage(s.PageParam)
+	return result, err
 }
 
 //Store 添加
-func (get *Admin) Store() (*model.Admin, error) {
-	get.Interface = repository.Admin(get.Model)
-	var result, err = get.Interface.Create()
+func (s *Admin) Store() (*model.Admin, error) {
+	s.Factory = repository.Admin(s.Model, db.Master)
+	var result, err = s.Factory.Create()
 	return result, err
 }
 
 //Update 修改
-func (get *Admin) Update() error {
-	get.Interface = repository.Admin(get.Model)
-	var err = get.Interface.Update()
+func (s *Admin) Update() error {
+	s.Factory = repository.Admin(s.Model, db.Master)
+	var err = s.Factory.Update()
 	return err
 }
 
 //Delete 修改
-func (get *Admin) Delete() error {
-	get.Interface = repository.Admin(get.Model)
-	var err = get.Interface.Delete()
+func (s *Admin) Delete() error {
+	s.Factory = repository.Admin(s.Model, db.Master)
+	var err = s.Factory.Delete()
 	return err
 }

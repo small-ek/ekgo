@@ -2,8 +2,8 @@ package service
 
 import (
 	"ekgo/app/model"
-	"github.com/small-ek/ginp/response"
 	"github.com/jinzhu/gorm"
+	"github.com/small-ek/antgo/response"
 )
 
 type MenuInterface interface {

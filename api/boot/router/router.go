@@ -4,8 +4,8 @@ import (
 	"ekgo/app/middleware"
 	"ekgo/router"
 	"github.com/gin-gonic/gin"
-	"github.com/small-ek/ginp/os/config"
-	"github.com/small-ek/ginp/request"
+	"github.com/small-ek/antgo/os/config"
+	"github.com/small-ek/antgo/request"
 )
 
 //初始化路由

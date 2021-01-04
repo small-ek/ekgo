@@ -5,20 +5,23 @@ import (
 	"ekgo/app/service"
 	"ekgo/lib/response"
 	"github.com/gin-gonic/gin"
-	"github.com/small-ek/ginp/request"
+	"github.com/small-ek/antgo/request"
+	"log"
 )
 
 //Index 查询分页
 func Index(c *gin.Context) {
 	var param = request.DefaultPage()
 	c.ShouldBindQuery(&param)
-	param.Filter = c.QueryArray("filter[]")
+	param.Filter = c.QueryArray("filters[]")
+	log.Println(param.Filter)
+
 	var service = service.Admin{PageParam: param}
-	var list, err = service.Index()
+	var result, err = service.Index()
 	if err != nil {
 		response.Fail(c, "failed", err)
 	} else {
-		response.Success(c, "success", list)
+		response.Success(c, "success", result)
 	}
 }
 
@@ -57,7 +60,6 @@ func Delete(c *gin.Context) {
 	if err != nil {
 		response.Fail(c, "failed", err)
 	} else {
-		response.Success(c, "failed")
-
+		response.Success(c, "success")
 	}
 }

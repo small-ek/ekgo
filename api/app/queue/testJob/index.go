@@ -2,7 +2,7 @@ package testJob
 
 import (
 	"fmt"
-	"github.com/small-ek/ginp/queue"
+	"github.com/small-ek/antgo/queue"
 	"time"
 )
 

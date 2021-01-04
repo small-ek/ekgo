@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/small-ek/ginp/response"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/small-ek/ginp/os/config"
+	"github.com/small-ek/antgo/os/config"
+	"github.com/small-ek/antgo/response"
 	"mime"
 	"path/filepath"
 )

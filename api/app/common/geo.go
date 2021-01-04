@@ -3,9 +3,9 @@ package common
 import (
 	"ekgo/app/model"
 	"ekgo/boot/db"
-	"github.com/small-ek/ginp/response"
 	"github.com/gin-gonic/gin"
-	"github.com/small-ek/ginp/orm"
+	"github.com/small-ek/antgo/orm"
+	"github.com/small-ek/antgo/response"
 )
 
 //查询所有地理

@@ -4,10 +4,10 @@ import (
 	"ekgo/boot/db"
 	"ekgo/boot/router"
 	"flag"
-	"github.com/small-ek/ginp/frame/serve"
-	"github.com/small-ek/ginp/i18n"
-	"github.com/small-ek/ginp/os/config"
-	"github.com/small-ek/ginp/os/logger"
+	"github.com/small-ek/antgo/frame/serve"
+	"github.com/small-ek/antgo/i18n"
+	"github.com/small-ek/antgo/os/config"
+	"github.com/small-ek/antgo/os/logger"
 	"log"
 )
 
@@ -23,6 +23,7 @@ func Load() {
 	logger.Default(*flag.String("log", "./log/ek.log", "log file")).Register()
 	//设置数据库
 	db.Register()
+	defer db.Close()
 	//获取配置地址
 	var address = config.Decode().Get("system").Get("address").String()
 	//启动服务

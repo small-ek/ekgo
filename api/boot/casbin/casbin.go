@@ -6,7 +6,7 @@ import (
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v2"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/small-ek/ginp/os/config"
+	"github.com/small-ek/antgo/os/config"
 	"log"
 )
 

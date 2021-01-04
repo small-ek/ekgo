@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"ekgo/app/hook"
-	"github.com/small-ek/ginp/plugins"
 	"github.com/gin-gonic/gin"
+	"github.com/small-ek/antgo/plugins"
 )
 
 //注册Hook

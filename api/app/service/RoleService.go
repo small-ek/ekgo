@@ -2,9 +2,9 @@ package service
 
 import (
 	"ekgo/app/model"
-	"github.com/small-ek/ginp/orm"
-	"github.com/small-ek/ginp/request"
-	"github.com/small-ek/ginp/response"
+	"github.com/small-ek/antgo/orm"
+	"github.com/small-ek/antgo/request"
+	"github.com/small-ek/antgo/response"
 	"gorm.io/gorm"
 )
 
@@ -27,7 +27,7 @@ func (this *Role) Index() *response.Write {
 	var list = []model.Role{}
 
 	err := this.Db.Scopes(
-		orm.WhereBuildQuery(this.PageParam.Filter),
+		orm.Filters(this.PageParam.Filter),
 		orm.Order(this.PageParam.Order),
 		orm.Paginate(this.PageParam.PageSize, this.PageParam.CurrentPage),
 	).Find(&list).Offset(0).Count(&this.PageParam.Total).Error

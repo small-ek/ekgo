@@ -2,7 +2,7 @@ package model
 
 import (
 	"ekgo/boot/db"
-	"github.com/small-ek/ginp/conv"
+	"github.com/small-ek/antgo/conv"
 )
 
 //角色表

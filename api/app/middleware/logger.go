@@ -3,8 +3,8 @@ package middleware
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
-	"github.com/small-ek/ginp/os/config"
-	"github.com/small-ek/ginp/os/logger"
+	"github.com/small-ek/antgo/os/config"
+	"github.com/small-ek/antgo/os/logger"
 	"go.uber.org/zap"
 	"io/ioutil"
 	"time"
