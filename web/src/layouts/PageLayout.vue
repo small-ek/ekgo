@@ -1,19 +1,21 @@
 <template>
   <div class="page-layout">
     <page-header ref="pageHeader" :style="`margin-top: ${multiPage ? 0 : -24}px`" :breadcrumb="breadcrumb" :title="pageTitle" :logo="logo" :avatar="avatar">
-      <slot name="action"  slot="action"></slot>
+      <slot name="action" slot="action"></slot>
       <slot slot="content" name="headerContent"></slot>
       <div slot="content" v-if="!this.$slots.headerContent && desc">
-        <p>{{desc}}</p>
+        <p>{{ desc }}</p>
         <div v-if="this.linkList" class="link">
-          <template  v-for="(link, index) in linkList">
-            <a :key="index" :href="link.href"><a-icon :type="link.icon" />{{link.title}}</a>
+          <template v-for="(link, index) in linkList" :key="link.title">
+            <a :key="index" :href="link.href">
+              <a-icon :type="link.icon"/>
+              {{ link.title }}</a>
           </template>
         </div>
       </div>
       <slot v-if="this.$slots.extra" slot="extra" name="extra"></slot>
     </page-header>
-    <div ref="page" :class="['page-content', layout, pageWidth]" >
+    <div ref="page" :class="['page-content', layout, pageWidth]">
       <slot></slot>
     </div>
   </div>
@@ -21,14 +23,14 @@
 
 <script>
 import PageHeader from '@/components/page/header/PageHeader'
-import {mapState, mapMutations} from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import {getI18nKey} from '@/utils/routerUtil'
 
 export default {
   name: 'PageLayout',
   components: {PageHeader},
   props: ['desc', 'logo', 'title', 'avatar', 'linkList', 'extraImage'],
-  data () {
+  data() {
     return {
       page: {},
       pageHeaderHeight: 0,
@@ -114,29 +116,35 @@ export default {
 </script>
 
 <style lang="less">
-  .page-header{
-    margin: 0 -24px 0;
-  }
-  .link{
-    /*margin-top: 16px;*/
-    line-height: 24px;
-    a{
-      font-size: 14px;
-      margin-right: 32px;
-      i{
-        font-size: 22px;
-        margin-right: 8px;
-      }
+.page-header {
+  margin: 0 -24px 0;
+}
+
+.link {
+  /*margin-top: 16px;*/
+  line-height: 24px;
+
+  a {
+    font-size: 14px;
+    margin-right: 32px;
+
+    i {
+      font-size: 22px;
+      margin-right: 8px;
     }
   }
-  .page-content{
-    position: relative;
-    padding: 24px 0 0;
-    &.side{
-    }
-    &.head.fixed{
-      margin: 0 auto;
-      max-width: 1400px;
-    }
+}
+
+.page-content {
+  position: relative;
+  padding: 24px 0 0;
+
+  &.side {
   }
+
+  &.head.fixed {
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+}
 </style>

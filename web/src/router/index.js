@@ -3,6 +3,16 @@ import Home from '../views/Home.vue'
 
 const routes = [
   {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/exception/404'),
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/exception/403'),
+  },
+  {
     path: '/',
     name: 'Home',
     component: Home
