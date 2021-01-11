@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import {createApp} from 'vue'
 import VueI18n from 'vue-i18n'
 import routesI18n from '@/router/i18n'
 import './Objects'
@@ -11,7 +11,7 @@ import {getI18nKey} from '@/utils/routerUtil'
  * @returns {VueI18n}
  */
 function initI18n(locale, fallback) {
-  Vue.use(VueI18n)
+  createApp().use(VueI18n)
   let i18nOptions = {
     locale,
     fallbackLocale: fallback,
