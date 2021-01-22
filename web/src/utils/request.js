@@ -1,168 +1,125 @@
 import axios from 'axios'
-import Cookie from 'js-cookie'
+import {
+  baseURL,
+  contentType,
+  debounce,
+  requestTimeout,
+  successCode,
+  tokenName,
+} from '@/config'
+import store from '@/store'
+import qs from 'qs'
+import router from '@/router'
+import { isArray } from '@/utils/validate'
+import { message } from 'ant-design-vue'
 
-// 跨域认证信息 header 名
-const xsrfHeaderName = 'Authorization'
-
-axios.defaults.timeout = 5000
-axios.defaults.withCredentials= true
-axios.defaults.xsrfHeaderName= xsrfHeaderName
-axios.defaults.xsrfCookieName= xsrfHeaderName
-
-// 认证类型
-const AUTH_TYPE = {
-  BEARER: 'Bearer',
-  BASIC: 'basic',
-  AUTH1: 'auth1',
-  AUTH2: 'auth2',
-}
-
-// http method
-const METHOD = {
-  GET: 'get',
-  POST: 'post'
-}
+let loadingInstance
 
 /**
- * axios请求
- * @param url 请求地址
- * @param method {METHOD} http method
- * @param params 请求参数
- * @returns {Promise<AxiosResponse<T>>}
+ * @author chuzhixin 1204505056@qq.com
+ * @description 处理code异常
+ * @param {*} code
+ * @param {*} msg
  */
-async function request(url, method, params) {
-  switch (method) {
-    case METHOD.GET:
-      return axios.get(url, {params})
-    case METHOD.POST:
-      return axios.post(url, params)
-    default:
-      return axios.get(url, {params})
-  }
-}
-
-/**
- * 设置认证信息
- * @param auth {Object}
- * @param authType {AUTH_TYPE} 认证类型，默认：{AUTH_TYPE.BEARER}
- */
-function setAuthorization(auth, authType = AUTH_TYPE.BEARER) {
-  switch (authType) {
-    case AUTH_TYPE.BEARER:
-      Cookie.set(xsrfHeaderName, 'Bearer ' + auth.token, {expires: auth.expireAt})
+const handleCode = (code, msg) => {
+  switch (code) {
+    case 401:
+      message.error(msg || '登录失效')
+      store.dispatch('user/resetAll').catch(() => {})
       break
-    case AUTH_TYPE.BASIC:
-    case AUTH_TYPE.AUTH1:
-    case AUTH_TYPE.AUTH2:
+    case 403:
+      router.push({ path: '/401' }).catch(() => {})
+      break
     default:
+      message.error(msg || `后端接口${code}异常`)
       break
   }
 }
 
 /**
- * 移出认证信息
- * @param authType {AUTH_TYPE} 认证类型
+ * @author chuzhixin 1204505056@qq.com
+ * @description axios初始化
  */
-function removeAuthorization(authType = AUTH_TYPE.BEARER) {
-  switch (authType) {
-    case AUTH_TYPE.BEARER:
-      Cookie.remove(xsrfHeaderName)
-      break
-    case AUTH_TYPE.BASIC:
-    case AUTH_TYPE.AUTH1:
-    case AUTH_TYPE.AUTH2:
-    default:
-      break
-  }
-}
+const instance = axios.create({
+  baseURL,
+  timeout: requestTimeout,
+  headers: {
+    'Content-Type': contentType,
+  },
+})
 
 /**
- * 检查认证信息
- * @param authType
- * @returns {boolean}
+ * @author chuzhixin 1204505056@qq.com
+ * @description axios请求拦截器
  */
-function checkAuthorization(authType = AUTH_TYPE.BEARER) {
-  switch (authType) {
-    case AUTH_TYPE.BEARER:
-      if (Cookie.get(xsrfHeaderName)) {
-        return true
+instance.interceptors.request.use(
+  (config) => {
+    if (store.getters['user/accessToken'])
+      config.headers[tokenName] = store.getters['user/accessToken']
+    if (
+      config.data &&
+      config.headers['Content-Type'] ===
+        'application/x-www-form-urlencoded;charset=UTF-8'
+    )
+      config.data = qs.stringify(config.data)
+    if (debounce.some((item) => config.url.includes(item))) {
+      //这里写加载动画
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+/**
+ * @author chuzhixin 1204505056@qq.com
+ * @description axios响应拦截器
+ */
+instance.interceptors.response.use(
+  (response) => {
+    if (loadingInstance) loadingInstance.close()
+
+    const { data, config } = response
+    const { code, msg } = data
+    // 操作正常Code数组
+    const codeVerificationArray = isArray(successCode)
+      ? [...successCode]
+      : [...[successCode]]
+    // 是否操作正常
+    if (codeVerificationArray.includes(code)) {
+      return data
+    } else {
+      handleCode(code, msg)
+      return Promise.reject(
+        'vue-admin-beautiful请求异常拦截:' +
+          JSON.stringify({ url: config.url, code, msg }) || 'Error'
+      )
+    }
+  },
+  (error) => {
+    if (loadingInstance) loadingInstance.close()
+    const { response, message } = error
+    if (error.response && error.response.data) {
+      const { status, data } = response
+      handleCode(status, data.msg || message)
+      return Promise.reject(error)
+    } else {
+      let { message } = error
+      if (message === 'Network Error') {
+        message = '后端接口连接异常'
       }
-      break
-    case AUTH_TYPE.BASIC:
-    case AUTH_TYPE.AUTH1:
-    case AUTH_TYPE.AUTH2:
-    default:
-      break
+      if (message.includes('timeout')) {
+        message = '后端接口请求超时'
+      }
+      if (message.includes('Request failed with status code')) {
+        const code = message.substr(message.length - 3)
+        message = '后端接口' + code + '异常'
+      }
+      message.error(message || `后端接口未知异常`)
+      return Promise.reject(error)
+    }
   }
-  return false
-}
+)
 
-/**
- * 加载 axios 拦截器
- * @param interceptors
- * @param options
- */
-function loadInterceptors(interceptors, options) {
-  const {request, response} = interceptors
-  // 加载请求拦截器
-  request.forEach(item => {
-    let {onFulfilled, onRejected} = item
-    if (!onFulfilled || typeof onFulfilled !== 'function') {
-      onFulfilled = config => config
-    }
-    if (!onRejected || typeof onRejected !== 'function') {
-      onRejected = error => Promise.reject(error)
-    }
-    axios.interceptors.request.use(
-      config => onFulfilled(config, options),
-      error => onRejected(error, options)
-    )
-  })
-  // 加载响应拦截器
-  response.forEach(item => {
-    let {onFulfilled, onRejected} = item
-    if (!onFulfilled || typeof onFulfilled !== 'function') {
-      onFulfilled = response => response
-    }
-    if (!onRejected || typeof onRejected !== 'function') {
-      onRejected = error => Promise.reject(error)
-    }
-    axios.interceptors.response.use(
-      response => onFulfilled(response, options),
-      error => onRejected(error, options)
-    )
-  })
-}
-
-/**
- * 解析 url 中的参数
- * @param url
- * @returns {Object}
- */
-function parseUrlParams(url) {
-  const params = {}
-  if (!url || url === '' || typeof url !== 'string') {
-    return params
-  }
-  const paramsStr = url.split('?')[1]
-  if (!paramsStr) {
-    return params
-  }
-  const paramsArr = paramsStr.replace(/&|=/g, ' ').split(' ')
-  for (let i = 0; i < paramsArr.length / 2; i++) {
-    const value = paramsArr[i * 2 + 1]
-    params[paramsArr[i * 2]] = value === 'true' ? true : (value === 'false' ? false : value)
-  }
-  return params
-}
-
-export {
-  METHOD,
-  AUTH_TYPE,
-  request,
-  setAuthorization,
-  removeAuthorization,
-  checkAuthorization,
-  loadInterceptors,
-  parseUrlParams
-}
+export default instance

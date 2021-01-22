@@ -1,117 +1,88 @@
-let path = require('path')
-const webpack = require('webpack')
-const ThemeColorReplacer = require('webpack-theme-color-replacer')
-const {getThemeColors, modifyVars} = require('./src/utils/themeUtil')
-const {resolveCss} = require('./src/utils/theme-color-replacer-extend')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-
-const productionGzipExtensions = ['js', 'css']
-const isProd = process.env.NODE_ENV === 'production'
-
-const assetsCDN = {
-  // webpack build externals
-  externals: {
-    vue: 'Vue',
-    'vue-router': 'VueRouter',
-    vuex: 'Vuex',
-    axios: 'axios',
-    nprogress: 'NProgress',
-    clipboard: 'ClipboardJS',
-    '@antv/data-set': 'DataSet',
-    'js-cookie': 'Cookies'
-  },
-  css: [
-  ],
-  js: [
-    '//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
-    '//cdn.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js',
-    '//cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js',
-    '//cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js',
-    '//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js',
-    '//cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js',
-    '//cdn.jsdelivr.net/npm/@antv/data-set@0.11.4/build/data-set.min.js',
-    '//cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js'
-  ]
-}
-
+const Timestamp = new Date().getTime()
 module.exports = {
-  devServer: {
-    // proxy: {
-    //   '/api': { //此处要与 /services/api.js 中的 API_PROXY_PREFIX 值保持一致
-    //     target: process.env.VUE_APP_API_BASE_URL,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '^/api': ''
-    //     }
-    //   }
-    // }
-  },
-  pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'less',
-      patterns: ['F:\\www\\src\\ekgo\\web\\src\\theme\\theme.less'],
-    }
-  },
-  configureWebpack: config => {
-    config.entry.app = ["babel-polyfill", "whatwg-fetch", "./src/main.js"];
-    config.performance = {
-      hints: false
-    }
-    config.plugins.push(
-      new ThemeColorReplacer({
-        fileName: 'css/theme-colors-[contenthash:8].css',
-        matchColors: getThemeColors(),
-        injectCss: true,
-        resolveCss
-      })
-    )
-    // Ignore all locale files of moment.js
-    config.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
-    // 生产环境下将资源压缩成gzip格式
-    if (isProd) {
-      // add `CompressionWebpack` plugin to webpack plugins
-      config.plugins.push(new CompressionWebpackPlugin({
-        algorithm: 'gzip',
-        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-        threshold: 10240,
-        minRatio: 0.8
-      }))
-    }
-    // if prod, add externals
-    if (isProd) {
-      config.externals = assetsCDN.externals
-    }
-  },
-  chainWebpack: config => {
-    // 生产环境下关闭css压缩的 colormin 项，因为此项优化与主题色替换功能冲突
-    if (isProd) {
-      config.plugin('optimize-css')
-        .tap(args => {
-            args[0].cssnanoOptions.preset[1].colormin = false
-          return args
-        })
-    }
-    // 生产环境下使用CDN
-    if (isProd) {
-      config.plugin('html')
-        .tap(args => {
-          args[0].cdn = assetsCDN
-        return args
-      })
-    }
-  },
-  css: {
-    loaderOptions: {
-      less: {
-        lessOptions: {
-          modifyVars: modifyVars(),
-          javascriptEnabled: true
+    /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
+    /* baseUrl: process.env.NODE_ENV === 'production' ? './' : '/' */
+    publicPath: '/',
+    // webpack配置11
+    // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
+    chainWebpack: () => {
+        // config.optimization.minimize(true);
+        // config.optimization.splitChunks({
+        // 	chunks: 'all'
+        // })
+    },
+    /* 输出文件目录：在npm run build时，生成文件的目录名称 */
+    outputDir: 'dist',
+    /* 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录 */
+    assetsDir: "assets",
+    /* 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度 */
+    productionSourceMap: false,
+    /* 默认情况下，生成的静态资源在它们的文件名中包含了 hash 以便更好的控制缓存，你可以通过将这个选项设为 false 来关闭文件名哈希。(false的时候就是让原来的文件名不改变) */
+    filenameHashing: false,
+    /* 代码保存时进行eslint检测 */
+    lintOnSave: true,
+    /* webpack-dev-server 相关配置 */
+    css: {
+        // 是否使用css分离插件 ExtractTextPlugin
+        extract: true,
+        // 开启 CSS source maps?
+        requireModuleExtension: true,
+        sourceMap: true,
+        // css预设器配置项
+        loaderOptions: {
+            less: {
+                lessOptions: {
+                    javascriptEnabled: true,
+                    modifyVars: {
+                        'vab-color-blue': '#1890ff',
+                        'vab-margin': '20px',
+                        'vab-padding': '20px',
+                        'vab-header-height': '65px',
+                    },
+                },
+            },
+        },
+        // 启用 CSS modules for all css / pre-processor files.
+        modules: false
+    },
+    devServer: {
+        /* 自动打开浏览器 */
+        open: true,
+        /* 设置为0.0.0.0则所有的地址均能访问 */
+        host: '0.0.0.0',
+        port: 8080,
+        https: false,
+        hotOnly: false,
+        /* 使用代理 */
+        // proxy: {
+        // 	'/api': {
+        // 		/* 目标代理服务器地址 */
+        // 		target: '',
+        // 		/* 允许跨域 */
+        // 		changeOrigin: true,
+        // 	},
+        // },
+    },
+    chainWebpack: config => {
+        if (process.env.NODE_ENV === 'production') {
+            // 给js和css配置版本号
+            config.output.filename('js/[name].' + Timestamp + '.js').end();
+            config.output.chunkFilename('js/[name].' + Timestamp + '.js').end();
+            config.plugin('extract-css').tap(() => [{
+                filename: `css/[name].${Timestamp}.css`,
+                chunkFilename: `css/[name].${Timestamp}.css`
+            }])
         }
-      }
+        //最小化代码测试时候会卡顿
+        //config.optimization.minimize(true);
+        //分割代码
+        // config.optimization.splitChunks({
+        //     chunks: 'all'
+        // });
+    },
+    // 修改webpack的配置
+    //安装 npm install compression-webpack-plugin --save-dev
+    configureWebpack: config => {
+
     }
-  },
-  publicPath: process.env.VUE_APP_PUBLIC_PATH,
-  outputDir: 'dist',
-  assetsDir: 'static',
-  productionSourceMap: false
 }
