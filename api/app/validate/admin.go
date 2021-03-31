@@ -19,8 +19,8 @@ func CheckAdminRegister(request model.Admin) error {
 	if err != nil {
 		return err
 	}
-	var row, _ = repository.Admin.Default(request).FindByUserName()
 
+	var row, _ = repository.Admin.Default(request).FindByUserName()
 	if row.Id > 0 {
 		return errors.New("当前账号已存在")
 	}
