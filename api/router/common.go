@@ -1,6 +1,7 @@
 package router
 
 import (
+	"ekgo/app/admin/admins"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +17,7 @@ func Common(Router *gin.RouterGroup) {
 	//{
 	//	Group.GET("/left_menu", menu.LeftMenu) //左侧权限菜单
 	//}
-	//Router.POST("/admin/login", admin.Login) //登录接口
+	Router.POST("/admin/login", admins.Login) //登录接口
 	//Router.GET("/upload/oss", common.Oss)    //阿里云上传凭证
 	//Router.GET("/geo/:pid", common.GeoAll)   //中国省市区地理信息
 }
