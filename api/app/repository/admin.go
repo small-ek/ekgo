@@ -25,7 +25,6 @@ type AdminFactory struct {
 	List  []model.Admin
 	Data  map[string]interface{}
 	Db    *gorm.DB
-	Err   error
 }
 
 //Default

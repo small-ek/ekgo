@@ -27,6 +27,12 @@ go mod download
 ```
 go mod vendor
 ```
+
+###清楚所有包
+```
+go clean -modcache
+```
+
 ###文件自动处理依赖关系
 ```
 go mod tidy
