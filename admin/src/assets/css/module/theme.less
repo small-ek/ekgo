@@ -1,0 +1,328 @@
+#layout.theme-night {
+  #logo {
+    height: 60px;
+    border-bottom: 1px solid #101117;
+    background: #191a23;
+    border-right: 1px solid #101117;
+  }
+  #header {
+    .next-menu {
+      .menu-item:hover {
+        background-color: black !important;
+      }
+    }
+    .prev-menu {
+      .menu-item:hover {
+        background-color: black !important;
+      }
+    }
+    .comp-menu {
+      display: inline-block;
+      height: 60px;
+      line-height: 60px;
+      padding-left: 30px;
+      .menu-item {
+        color: white;
+        height: 60px;
+        line-height: 60px;
+        display: inline-block;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 14.5px;
+      }
+      .is-active {
+        border-top: 3px solid #2d8cf0 !important;
+      }
+    }
+    background: #191a23 !important;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+  }
+  .ant-layout-sider {
+    background: #191a23 !important;
+  }
+  .ant-layout-content {
+    background: black !important;
+    .ant-divider {
+      background-color: black !important;
+    }
+    .ant-card {
+      border: solid 1px #191a23 !important;
+      background: #191a23 !important;
+      color: white !important;
+    }
+    .tab-tool {
+      border: solid 1px black !important;
+      background: #191a23 !important;
+      color: white !important;
+    }
+    .ant-tabs-nav .ant-tabs-tab::before {
+      background-color: gray;
+    }
+    .ant-statistic-title {
+      color: white !important;
+    }
+    .ant-tabs-tab {
+      color: white !important;
+      background-color: #191a23;
+      border-right: 1px solid #191a23;
+      border-left: 1px solid #191a23;
+    }
+    .pear-card-tab {
+      border: black 1px solid;
+      background-color: #191a23 !important;
+    }
+    .ant-tabs-tab-next {
+      color: white;
+      border-left: 1px solid black;
+    }
+    .ant-tabs-tab-prev {
+      color: white;
+      border-right: 1px solid black;
+    }
+    .ant-progress-inner {
+      background-color: black;
+      border-right: 1px solid black;
+    }
+    .tab-tool {
+      border-left: 1px solid black;
+    }
+    .ant-progress-text {
+      color: white !important;
+    }
+  }
+  .ant-drawer-content {
+    background-color: #191a23 !important;
+  }
+}
+// Tab 点样式
+.pear-dot-tab {
+  height: 45.5px;
+  line-height: 45.5px;
+}
+.pear-dot-tab .tab {
+  width: calc(~"(100% - 40px)");
+  display: inline-block;
+}
+.pear-dot-tab .ant-tabs-tab-prev {
+  border-right: 1px solid #f0f2f5;
+  background-color: #f0f2f5;
+  height: 34px !important;
+  line-height: 34px !important;
+  text-align: center;
+}
+.pear-dot-tab .ant-tabs-tab-next {
+  border-left: 1px solid #f0f2f5;
+  background-color: #f0f2f5;
+  height: 34px !important;
+  line-height: 34px !important;
+  text-align: center;
+}
+
+.pear-dot-tab .tab-tool {
+  float: right;
+  top: 6px;
+  right: 6px;
+  border: none;
+}
+.pear-dot-tab .ant-tabs-bar {
+  margin: 0px !important;
+  border: none;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+.pear-dot-tab .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  border-radius: 3px;
+  border: none;
+  margin-right: 4px;
+  margin-left: 4px;
+  height: 34px !important;
+  line-height: 34px !important;
+  color: #808695;
+  background-color: white;
+}
+.pear-dot-tab
+  .ant-tabs.ant-tabs-card
+  .ant-tabs-card-bar
+  .ant-tabs-tab:first-child {
+  margin-left: 6px;
+}
+.pear-dot-tab
+  .ant-tabs.ant-tabs-card
+  .ant-tabs-card-bar
+  .ant-tabs-tab:last-child {
+  margin-right: 6px;
+}
+.pear-dot-tab .ant-tabs-nav-container {
+  height: 34px;
+}
+.pear-dot-tab .ant-tabs-nav .ant-tabs-tab::before {
+  background-color: whitesmoke;
+  height: 8px;
+  width: 8px;
+  border-radius: 50px;
+  position: absolute;
+  margin-top: 14.5px;
+  margin-left: 13px;
+}
+.pear-dot-tab .ant-tabs-nav .ant-tabs-tab > div {
+  margin-left: 13.5px;
+  color: #808695;
+}
+// tab 卡片样式
+.pear-card-tab {
+  height: 40.5px;
+  line-height: 40.5px;
+  z-index: 200;
+  background-color: white !important;
+  border-top: 1px solid whitesmoke;
+  border-bottom: 1px solid whitesmoke;
+}
+.pear-card-tab .tab {
+  width: calc(~"(100% - 40px)");
+  display: inline-block;
+}
+.pear-card-tab .ant-tabs-nav-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.pear-card-tab .ant-tabs-tab-prev {
+  border-right: 1px solid whitesmoke;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 39px !important;
+  text-align: center;
+  opacity: 1;
+  pointer-events: auto;
+  color: rgba(0, 0, 0, 0.65);
+}
+.pear-card-tab .ant-tabs-tab-next {
+  border-left: 1px solid whitesmoke;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 39px !important;
+  text-align: center;
+  opacity: 1;
+  pointer-events: auto;
+  color: rgba(0, 0, 0, 0.65);
+}
+.pear-card-tab .tab-tool {
+  float: right;
+  border: none !important;
+  border-left: 1px solid whitesmoke !important;
+  width: 40px !important;
+  height: 39px !important;
+  line-height: 39px !important;
+}
+.pear-card-tab .ant-tabs-bar {
+  margin: 0px !important;
+  border: none;
+}
+.pear-card-tab .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  border-radius: 0px;
+  border: none;
+  height: 40px !important;
+  line-height: 40px !important;
+  color: #808695;
+  background-color: white;
+  margin-right: 0px;
+  border-right: whitesmoke 1px solid;
+}
+.pear-card-tab .ant-tabs-nav-container {
+  height: 40px;
+}
+.pear-card-tab .ant-tabs-nav .ant-tabs-tab::before {
+  background-color: whitesmoke;
+  height: 8px;
+  width: 8px;
+  border-radius: 50px;
+  position: absolute;
+  margin-top: 17px;
+  margin-left: 13px;
+}
+.pear-card-tab .ant-tabs-nav .ant-tabs-tab > div {
+  margin-left: 13.5px;
+  color: #808695;
+}
+
+// tab 标 签 样 式
+.pear-label-tab {
+  height: 45.5px;
+  line-height: 45.5px;
+}
+.pear-label-tab .tab {
+  width: calc(~"(100% - 40px)");
+  display: inline-block;
+}
+.pear-label-tab .ant-tabs-tab-prev {
+  border-right: 1px solid whitesmoke;
+  height: 34px !important;
+  line-height: 34px !important;
+  text-align: center;
+}
+.pear-label-tab .ant-tabs-tab-next {
+  border-left: 1px solid whitesmoke;
+  height: 34px !important;
+  line-height: 34px !important;
+  text-align: center;
+}
+.pear-label-tab .tab-tool {
+  float: right;
+  top: 6px;
+  right: 6px;
+  border: none;
+}
+.pear-label-tab .ant-tabs-bar {
+  margin: 0px !important;
+  border: none;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+.pear-label-tab .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  border-radius: 3px;
+  border: none;
+  margin-right: 4px;
+  margin-left: 4px;
+  height: 34px !important;
+  line-height: 34px !important;
+  color: #808695;
+  background-color: white;
+}
+.pear-label-tab
+  .ant-tabs.ant-tabs-card
+  .ant-tabs-card-bar
+  .ant-tabs-tab:first-child {
+  margin-left: 6px;
+}
+.pear-label-tab
+  .ant-tabs.ant-tabs-card
+  .ant-tabs-card-bar
+  .ant-tabs-tab:last-child {
+  margin-right: 6px;
+}
+.pear-label-tab .ant-tabs-nav-container {
+  height: 34px;
+}
+.pear-label-tab .ant-tabs-nav .ant-tabs-tab::before {
+  display: none;
+}
+.pear-label-tab .ant-tabs-nav .ant-tabs-tab > div {
+  color: #808695;
+}
+
+/** Ant Design 的 通 用 美 化 */
+
+/** 卡 片 美 化 */
+.ant-card {
+  border-radius: 4px !important;
+}
+.ant-card-bordered {
+  border: none !important;
+}
+.ant-divider {
+  background-color: whitesmoke !important;
+}
+.ant-layout-content {
+  flex: 1 !important;
+}

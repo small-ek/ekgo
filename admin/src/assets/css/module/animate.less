@@ -1,0 +1,35 @@
+/** 路 由 动 画 */
+
+// 动画一
+.fade-right-enter-active {
+  transition: all .60s;
+}
+.fade-right-leave-active{
+  transition: all .60s;
+}
+.fade-right-enter-from {
+  opacity: 0;
+  transform: translateX(-35px);
+}
+.fade-right-leave-to {
+  opacity: 0;
+  transform: translateX(35px);
+  display: none;
+}
+
+// 动画二
+.fade-top-enter-active {
+  transition: all .60s;
+}
+.fade-top-leave-active{
+  transition: all .60s;
+}
+.fade-top-enter-from {
+  opacity: 0;
+  transform: translateY(35px);
+}
+.fade-top-leave-to {
+  opacity: 0;
+  transform: translateY(-35px);
+  display: none;
+}

@@ -12,6 +12,9 @@ func Lang() gin.HandlerFunc {
 		var request = c.Request
 		var language = request.Header["Accept-Language"][0]
 		var firstLanguage = strings.Split(language, ",")
+		if len(firstLanguage) > 0 && firstLanguage[0] == "zh-Hans-CN" {
+			firstLanguage[0] = "zh-CN"
+		}
 		i18n.SetLanguage(firstLanguage[0])
 	}
 }
