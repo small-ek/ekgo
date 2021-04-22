@@ -1,7 +1,5 @@
 <template>
-  <a-config-provider :locale="antdLocal">
-    <router-view></router-view>
-  </a-config-provider>
+  <router-view></router-view>
 </template>
 <script>
 

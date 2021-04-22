@@ -14,7 +14,7 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/lib/pq v1.10.0
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/small-ek/antgo v0.0.0-20210401152702-10f571da32cb
+	github.com/small-ek/antgo v1.1.6
 	github.com/swaggo/swag v1.7.0
 	github.com/unrolled/secure v1.0.8
 	go.uber.org/zap v1.16.0

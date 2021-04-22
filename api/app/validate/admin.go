@@ -2,9 +2,6 @@ package validate
 
 import (
 	"ekgo/app/model"
-	"ekgo/app/repository"
-	"errors"
-	"github.com/small-ek/antgo/validator"
 )
 
 var UserRule = map[string][]string{
@@ -15,7 +12,7 @@ var UserRule = map[string][]string{
 //用户名验证器
 func CheckAdminRegister(request model.Admin) error {
 	//需要验证的字段
-	var err = validator.Default([]string{"username", "password"}, UserRule).Check(request)
+	/*var err = validator.Default([]string{"username", "password"}, UserRule).Check(request)
 	if err != nil {
 		return err
 	}
@@ -23,6 +20,6 @@ func CheckAdminRegister(request model.Admin) error {
 	var row, _ = repository.Admin.Default(request).FindByUserName()
 	if row.Id > 0 {
 		return errors.New("当前账号已存在")
-	}
+	}*/
 	return nil
 }

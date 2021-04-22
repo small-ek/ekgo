@@ -3,8 +3,6 @@ package repository
 import (
 	"ekgo/app/model"
 	"ekgo/boot/db"
-	"github.com/small-ek/antgo/orm"
-	"github.com/small-ek/antgo/request"
 	"gorm.io/gorm"
 )
 
@@ -15,23 +13,39 @@ func init() {
 }
 
 type AdminInterface interface {
-	Default(model.Admin) *AdminFactory
+	Factory(model.Admin, ...*gorm.DB) *Factory
+	New(model.Admin, ...*gorm.DB) *AdminFactory
 	SetDb(Db *gorm.DB) *AdminFactory
 	SetModel(model.Admin) *AdminFactory
-	GetPage(request.PageParam) ([]model.Admin, int64, error)
-}
-type AdminFactory struct {
-	Model model.Admin
-	List  []model.Admin
-	Data  map[string]interface{}
-	Db    *gorm.DB
 }
 
-//Default
-func (m *AdminFactory) Default(model model.Admin) *AdminFactory {
-	m.Model = model
-	m.Db = db.Master
+type AdminFactory struct {
+	Model    model.Admin
+	List     []model.Admin
+	Db       *gorm.DB
+	Factorys Factory
+}
+
+//New
+func (m *AdminFactory) New(model model.Admin, Db ...*gorm.DB) *AdminFactory {
+	if len(Db) > 0 {
+		m.Db = Db[0]
+	} else {
+		m.Db = db.Master
+	}
+	m.Factorys.Model = model
 	return m
+}
+
+//Factory
+func (m *AdminFactory) Factory(model model.Admin, Db ...*gorm.DB) *Factory {
+	if len(Db) > 0 {
+		m.Factorys.Db = Db[0]
+	} else {
+		m.Factorys.Db = db.Master
+	}
+	m.Factorys.Model = model
+	return &m.Factorys
 }
 
 //SetDb
@@ -54,64 +68,6 @@ func (m *AdminFactory) GetModel() model.Admin {
 //GetModelList
 func (m *AdminFactory) GetModelList() []model.Admin {
 	return m.List
-}
-
-//GetPage 获取分页
-func (m *AdminFactory) GetPage(Page request.PageParam) ([]model.Admin, int64, error) {
-	var err = m.Db.Model(&m.Model).Scopes(
-		orm.Filters(Page.Filter),
-		orm.Order(Page.Order),
-		orm.Paginate(Page.PageSize, Page.CurrentPage),
-	).Find(&m.List).Offset(0).Count(&Page.Total).Error
-	return m.List, Page.Total, err
-}
-
-//FindByID 根据ID查询
-func (m *AdminFactory) FindByID() (model.Admin, error) {
-	result := m.Db.First(&m.Model, m.Model.Id)
-	return m.Model, result.Error
-}
-
-//Create 创建数据
-func (m *AdminFactory) Create() (model.Admin, error) {
-	var err = m.Db.Create(&m.Model).Error
-	return m.Model, err
-}
-
-//CreateMap 批量创建
-func (m *AdminFactory) CreateMap(data map[string]interface{}) error {
-	var err = m.Db.Create(&data).Error
-	return err
-}
-
-//Update 更新数据
-func (m *AdminFactory) Update() error {
-	var err = m.Db.Model(&m.Model).Updates(m.Model).Error
-	return err
-}
-
-//UpdateMap Map更新数据
-func (m *AdminFactory) UpdateMap(data map[string]interface{}) error {
-	var err = m.Db.Model(&m.Model).Updates(data).Error
-	return err
-}
-
-//Delete 删除数据
-func (m *AdminFactory) Delete() error {
-	var err = m.Db.Delete(&m.Model, m.Model.Id).Error
-	return err
-}
-
-//DeleteAll 批量删除
-func (m *AdminFactory) DeleteAll(id []int) error {
-	var err = m.Db.Delete(&m.Model, id).Error
-	return err
-}
-
-//DeleteUnscoped 永久删除
-func (m *AdminFactory) DeleteUnscoped() error {
-	var err = m.Db.Delete(&m.Model).Error
-	return err
 }
 
 //FindByUserName 用户名查询

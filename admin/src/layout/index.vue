@@ -1,152 +1,48 @@
 <template>
-  <a-layout id="layout" :class="[theme, layout]">
-    <!-- 侧边栏 -->
-    <div
-      v-if="isMobile && !collapsed"
-      class="layout_mobile_mask"
-      @click="closeSideBar"
-    />
-    <a-layout-sider
-      v-if="layout != 'layout-head'"
-      :width="sideWitch"
-      :collapsed="collapsed"
-      :trigger="null"
-      :collapsedWidth="collapsedWidth"
-      collapsible
-      :class="[
-        fixedSide ? 'fixed-side' : '',
-        isMobile && 'layout_mobile',
-        collapsed && 'layout_collapse'
-      ]"
-    >
+  <a-layout id="layout" class="theme-dark layout-side">
+    <!--左侧-->
+    <a-layout-sider width="240" v-model:collapsed="$store.state.MenuStatus" :trigger="null" collapsible class="fixed-side">
       <div class="pear-layout-left-sider">
-        <!-- 顶部图标 -->
-        <Logo v-if="logo"></Logo>
-        <!-- 垂直菜单 -->
+        <!--Logo-->
+        <Logo></Logo>
+        <!--菜单-->
         <Menu></Menu>
       </div>
     </a-layout-sider>
-    <!-- 右边区域 -->
+
+    <!--右侧-->
     <a-layout>
-      <!-- header区域 -->
-      <a-layout-header>
-        <Header></Header>
+      <!--头部-->
+      <a-layout-header style="background: #fff; padding: 0">
+      <Header></Header>
       </a-layout-header>
-      <!-- 中心区域 -->
+      <!-- main区域 -->
       <a-layout-content
-        :class="[fixedHeader ? 'fixedHeader' : '', tab ? 'muiltTab' : '']"
+          :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
       >
-        <!-- 选项卡页面 -->
-        <Tab v-if="tab"></Tab>
-        <!-- main区域 -->
-        <Content :style="{ overflow: fixedHeader ? 'auto' : '' }"></Content>
-        <!-- 设置页面 -->
-        <Setup></Setup>
+        <router-view></router-view>
       </a-layout-content>
     </a-layout>
+
   </a-layout>
 </template>
 <script>
-import { computed } from "vue";
-import { useStore } from "vuex";
-import Content from "./module/content/index.vue";
-import Header from "./module/header/index.vue";
-import Logo from "./module/logo/index.vue";
-import Tab from "./module/tab/index.vue";
-import Setup from "./module/setup/index.vue";
-import Menu from "./module/menu/index.vue";
-export default {
+import Menu from "./menu/index.vue"
+import Logo from "./logo/index.vue"
+import Header from "./header/index.vue"
+export default ({
   components: {
     Menu,
-    Content,
-    Header,
     Logo,
-    Tab,
-    Setup
+    Header
   },
-  setup() {
-    const { getters, commit } = useStore();
-    const layout = computed(() => getters.layout);
-    const collapsed = computed(() => getters.collapsed);
-    const logo = computed(() => getters.logo);
-    const tab = computed(() => getters.tab);
-    const theme = computed(() => getters.theme);
-    const sideWitch = computed(() => getters.sideWitch);
-    const fixedHeader = computed(() => getters.fixedHeader);
-    const fixedSide = computed(() => getters.fixedSide);
-    const isMobile = computed(() => getters.isMobile);
-    const collapsedWidth = computed(() => getters.collapsedWidth);
-    const closeSideBar = () => {
-      const isComputedMobile = computed(() => getters.isMobile);
-      if (isComputedMobile.value) {
-        commit("layout/TOGGLE_SIDEBAR", true);
-      }
-    };
-    const handleFoldSideBar = () => {
-      const isComputedMobile = computed(() => getters.isMobile);
-      const isCollapsed = computed(() => getters.collapsed);
-      if (isComputedMobile.value && !isCollapsed.value) {
-        commit("layout/TOGGLE_SIDEBAR");
-      }
-    };
-    const handleLayouts = () => {
-      const domWidth = document.body.getBoundingClientRect().width;
-      const isLayoutMobile = domWidth !== 0 && domWidth - 1 < 992;
-      commit("layout/UPDATE_ISMOBILE", isLayoutMobile);
-      if (isLayoutMobile) {
-        setTimeout(() => {
-          handleFoldSideBar();
-        }, 1000);
-      }
-    };
-    handleLayouts();
-    window.addEventListener("resize", handleLayouts);
-
+  data() {
     return {
-      closeSideBar,
-      isMobile,
-      collapsed,
-      fixedHeader,
-      fixedSide,
-      sideWitch,
-      layout,
-      theme,
-      logo,
-      tab,
-      collapsedWidth
-    };
-  }
-};
-</script>
-<style lang="less">
-#layout {
-  height: 100%;
-  .ant-menu-inline-collapsed {
-    width: auto;
-  }
-  .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title {
-    padding: 0 !important;
-    text-align: center;
-  }
-  @ant-menu-hieht: 48px;
-  .ant-menu-vertical > .ant-menu-item,
-  .ant-menu-vertical-left > .ant-menu-item,
-  .ant-menu-vertical-right > .ant-menu-item,
-  .ant-menu-inline > .ant-menu-item,
-  .ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title,
-  .ant-menu-vertical-left > .ant-menu-submenu > .ant-menu-submenu-title,
-  .ant-menu-vertical-right > .ant-menu-submenu > .ant-menu-submenu-title,
-  .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
-    height: @ant-menu-hieht !important;
-    line-height: @ant-menu-hieht !important;
-  }
 
-  .ant-menu-inline-collapsed > .ant-menu-item {
-    padding: 0px !important;
-    text-align: center;
-  }
-}
-</style>
+    }
+  },
+});
+</script>
 <style lang="less" scoped>
 //移动端侧边栏遮罩层
 .layout_mobile_mask {

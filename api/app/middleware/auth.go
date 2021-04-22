@@ -6,7 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/small-ek/antgo/conv"
 	"github.com/small-ek/antgo/jwt"
+	"github.com/small-ek/antgo/os/atime"
 	"github.com/small-ek/antgo/os/config"
+	"time"
 )
 
 //后台管理中间件授权认证登录
@@ -38,7 +40,7 @@ func AdminAuth() gin.HandlerFunc {
 				return
 			}
 
-			if result["exp"].(float64) < conv.GetTimestamp() {
+			if conv.Int64(result["exp"]) < atime.Timestamp(time.Now()) {
 				this.JSON(200, gin.H{
 					"code": 402,
 					"msg":  "登陆已超时,重新登陆",

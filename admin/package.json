@@ -7,15 +7,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@antv/g2": "^4.1.14",
+    "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.1.2",
     "axios": "^0.21.1",
-    "mock2js": "^1.0.6",
-    "mockjs": "^1.1.0",
-    "mockjs2": "^1.0.8",
     "nprogress": "^0.2.0",
-    "path": "^0.12.7",
-    "reqwest": "^2.0.5",
     "vite-plugin-babel-import": "^2.0.2",
     "vue": "^3.0.5",
     "vue-i18n": "^9.1.4",
