@@ -10,9 +10,15 @@ import (
 
 type Factory struct {
 	Model interface{}
+	Value interface{}
 	List  []map[string]interface{}
 	Data  map[string]interface{}
 	Db    *gorm.DB
+}
+
+//Default
+func (m *Factory) Default() *Factory {
+	return m
 }
 
 //New 设置模型
@@ -22,6 +28,7 @@ func (m *Factory) New(model interface{}, Db ...*gorm.DB) *Factory {
 	} else {
 		m.Db = db.Master
 	}
+	m.Value = model
 	m.Model = conv.InterfaceToStruct(model)
 	return m
 }
@@ -34,7 +41,7 @@ func (m *Factory) SetDb(db *gorm.DB) *Factory {
 
 //GetPage 获取分页
 func (m *Factory) GetPage(Page request.PageParam) ([]map[string]interface{}, int64, error) {
-	var err = m.Db.Model(&m.Model).Scopes(
+	var err = m.Db.Model(m.Model).Scopes(
 		orm.Filters(Page.Filter),
 		orm.Order(Page.Order),
 		orm.Paginate(Page.PageSize, Page.CurrentPage),
@@ -50,7 +57,7 @@ func (m *Factory) FindByID(id int) (interface{}, error) {
 
 //Create 创建数据
 func (m *Factory) Create() (interface{}, error) {
-	var err = m.Db.Create(&m.Model).Error
+	var err = m.Db.Create(m.Model).Error
 	return m.Model, err
 }
 
@@ -62,24 +69,24 @@ func (m *Factory) CreateMap(data map[string]interface{}) error {
 
 //Update 更新数据
 func (m *Factory) Update() error {
-	var err = m.Db.Model(&m.Model).Updates(m.Model).Error
+	var err = m.Db.Model(m.Model).Updates(m.Model).Error
 	return err
 }
 
 //UpdateMap Map更新数据
 func (m *Factory) UpdateMap(data map[string]interface{}) error {
-	var err = m.Db.Model(&m.Model).Updates(data).Error
+	var err = m.Db.Model(m.Model).Updates(data).Error
 	return err
 }
 
 //Delete 删除数据
 func (m *Factory) Delete(id int) error {
-	var err = m.Db.Delete(&m.Model, id).Error
+	var err = m.Db.Delete(m.Model, id).Error
 	return err
 }
 
 //DeleteUnscoped 永久删除
 func (m *Factory) DeleteUnscoped() error {
-	var err = m.Db.Delete(&m.Model).Error
+	var err = m.Db.Delete(m.Model).Error
 	return err
 }

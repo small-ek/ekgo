@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"ekgo/app/model"
-	"ekgo/app/repository"
 	"github.com/gin-gonic/gin"
 	"github.com/small-ek/antgo/conv"
 	"github.com/small-ek/antgo/jwt"
@@ -28,10 +27,12 @@ func AdminAuth() gin.HandlerFunc {
 		var public_key = config.Decode().Get("jwt").Get("public_key").Bytes()
 		result, err := jwt.Default(public_key, private_key).Decode(token)
 		if err == nil {
-			model := model.Admin{Id: conv.Int(result["id"])}
-			var row, _ = repository.Admin.Default(model).FindByID()
-
-			if row.Id == 0 || model.Status == "false" {
+			row := model.Admin{Id: conv.Int(result["id"])}
+			//var service = &service.Admin{Model: model}
+			//log.Println(service)
+			//var row, err = service.Show()
+			//log.Println(row)
+			if row.Id == 0 || err != nil {
 				this.JSON(200, gin.H{
 					"code": 402,
 					"msg":  "权限不足,请求失败",

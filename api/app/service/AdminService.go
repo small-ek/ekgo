@@ -19,23 +19,24 @@ type Admin struct {
 
 //Index 分页
 func (s *Admin) Index() (*response.Page, error) {
-	var list, total, err = repository.Admin.Factory(s.Model).GetPage(s.PageParam)
+	list, total, err := repository.Admin.Factory(s.Model).GetPage(s.PageParam)
 	return &response.Page{List: list, Total: total}, err
 }
 
 //Show 查询
-func (s *Admin) Show() (interface{}, error) {
-	var result, err = repository.Admin.Factory(s.Model).FindByID(s.Model.Id)
+func (s *Admin) Show() (model.Admin, error) {
+	var _, err = repository.Admin.Factory(s.Model).FindByID(s.Model.Id)
+	var result = repository.Admin.Default().GetModel()
 	return result, err
 }
 
 //Store 添加
-func (s *Admin) Store() (interface{}, error) {
-	var result, err = repository.Admin.Factory(s.Model).Create()
-	row := result.(model.Admin)
-	row.Password = ""
-	row.Salt = ""
-	return row, err
+func (s *Admin) Store() (model.Admin, error) {
+	var _, err = repository.Admin.Factory(s.Model).Create()
+	var result = repository.Admin.Default().GetModel()
+	result.Password = ""
+	result.Salt = ""
+	return result, err
 }
 
 //Update 修改

@@ -15,6 +15,7 @@ func init() {
 type AdminInterface interface {
 	Factory(model.Admin, ...*gorm.DB) *Factory
 	New(model.Admin, ...*gorm.DB) *AdminFactory
+	Default() *AdminFactory
 	SetDb(Db *gorm.DB) *AdminFactory
 	SetModel(model.Admin) *AdminFactory
 }
@@ -37,6 +38,11 @@ func (m *AdminFactory) New(model model.Admin, Db ...*gorm.DB) *AdminFactory {
 	return m
 }
 
+//Default
+func (m *AdminFactory) Default() *AdminFactory {
+	return m
+}
+
 //Factory
 func (m *AdminFactory) Factory(model model.Admin, Db ...*gorm.DB) *Factory {
 	if len(Db) > 0 {
@@ -44,7 +50,7 @@ func (m *AdminFactory) Factory(model model.Admin, Db ...*gorm.DB) *Factory {
 	} else {
 		m.Factorys.Db = db.Master
 	}
-	m.Factorys.Model = model
+	m.Factorys.New(model)
 	return &m.Factorys
 }
 
@@ -62,12 +68,14 @@ func (m *AdminFactory) SetModel(model model.Admin) *AdminFactory {
 
 //GetModel
 func (m *AdminFactory) GetModel() model.Admin {
-	return m.Model
+	var row = m.Factorys.Model.(*model.Admin)
+	return *row
 }
 
 //GetModelList
 func (m *AdminFactory) GetModelList() []model.Admin {
-	return m.List
+	m.List = m.Factorys.List.(*[]model.Admin)
+	return *m.List
 }
 
 //FindByUserName 用户名查询
