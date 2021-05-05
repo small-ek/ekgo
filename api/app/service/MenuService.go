@@ -2,84 +2,61 @@ package service
 
 import (
 	"ekgo/app/model"
-	"github.com/jinzhu/gorm"
+	"ekgo/app/repository"
+	"github.com/small-ek/antgo/request"
 	"github.com/small-ek/antgo/response"
 )
 
-type MenuInterface interface {
-	Index() *response.Write                      //分页
-	Store() *response.Write                      //添加
-	Update() *response.Write                     //修改
-	Delete() *response.Write                     //删除
-	LeftMenu(admin *model.Admin) *response.Write //左侧菜单权限
-}
-
 type Menu struct {
-	ID        int
-	PageParam response.Page
+	PageParam request.PageParam
 	Model     model.Menu
-	Db        *gorm.DB
+	Menu      repository.MenuFactory
+	RoleModel model.Role
+	Role      repository.RoleFactory
+}
+
+//Index 分页
+func (s *Menu) Index() (*response.Page, error) {
+	list, total, err := s.Menu.Factory(s.Model).GetPage(s.PageParam)
+	return &response.Page{List: list, Total: total}, err
+}
+
+//Show 查询
+func (s *Menu) Show() (map[string]interface{}, error) {
+	var result, err = s.Menu.Factory(s.Model).FindByMap(s.Model.Id)
+	return result, err
+}
+
+//Store 添加
+func (s *Menu) Store() (model.Menu, error) {
+	var _, err = s.Menu.Factory(s.Model).Create()
+	var result = s.Menu.GetModel()
+	return result, err
+}
+
+//Update 修改
+func (s *Menu) Update() error {
+	var err = s.Menu.Factory(s.Model).Update()
+	return err
+}
+
+//Delete 删除
+func (s *Menu) Delete() error {
+	var err = s.Menu.Factory(s.Model).Delete(s.Model.Id)
+	return err
 }
 
 //获取菜单
-func (this *Menu) Index() *response.Write {
-	var list = []model.Menu{}
-	this.Db.Order("sort desc,id asc").Find(&list)
-
-	return &response.Write{
-		Code: 200,
-		Data: list,
-	}
-
-}
-
-//添加
-func (this *Menu) Store() *response.Write {
-	err := this.Db.Create(&this.Model).Error
-
-	if err == nil {
-		return response.Success("保存成功")
-	}
-
-	return response.Success("保存失败", err.Error())
-}
-
-//修改
-func (this *Menu) Update() *response.Write {
-	err := this.Db.Model(&this.Model).Update(this.Model).Error
-
-	if err == nil {
-		return response.Success("修改成功")
-	}
-
-	return response.Success("修改失败", err.Error())
-}
-
-//删除
-func (this *Menu) Delete() *response.Write {
-	err := this.Db.First(&this.Model, this.Model.Id).Error
-
-	if err == nil {
-		this.Db.Where("id=?", this.Model.Id).Delete(&this.Model)
-		return response.Success("删除成功")
-	}
-
-	return response.Success("删除失败", err.Error())
-}
-
-//获取菜单
-func (this *Menu) LeftMenu(user *model.Admin) *response.Write {
+func (s *Menu) LeftMenu(user *model.Admin) []model.Menu {
 	var menu []model.Menu
 	//获取对应的角色
 	if user.Super == "true" {
-		menu = model.GetMenuByList()
+		menu = s.Menu.New(s.Model).GetByList()
 	} else {
-		getRole := model.GetRole(user.RoleId)
-		menu = model.GetRoleMenu(getRole.MenuId, getRole.ParentMenuId)
+		s.Role.Factory(s.RoleModel).FindByID(user.RoleId)
+		var getRole = s.Role.GetModel()
+		menu = s.Menu.New(s.Model).GetRoleMenu(getRole.MenuId, getRole.ParentMenuId)
 	}
+	return menu
 
-	return &response.Write{
-		Code: 200,
-		Data: menu,
-	}
 }

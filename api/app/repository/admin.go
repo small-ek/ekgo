@@ -6,20 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var Admin AdminInterface
-
-func init() {
-	Admin = &AdminFactory{}
-}
-
-type AdminInterface interface {
-	Factory(model.Admin, ...*gorm.DB) *Factory
-	New(model.Admin, ...*gorm.DB) *AdminFactory
-	Default() *AdminFactory
-	SetDb(Db *gorm.DB) *AdminFactory
-	SetModel(model.Admin) *AdminFactory
-}
-
 type AdminFactory struct {
 	Model    model.Admin
 	List     []model.Admin
@@ -27,59 +13,61 @@ type AdminFactory struct {
 	Factorys Factory
 }
 
-//New
-func (m *AdminFactory) New(model model.Admin, Db ...*gorm.DB) *AdminFactory {
+//Factory 继承增删改查公共工厂
+func (r *AdminFactory) Factory(model model.Admin, Db ...*gorm.DB) *Factory {
 	if len(Db) > 0 {
-		m.Db = Db[0]
+		r.Factorys.Db = Db[0]
 	} else {
-		m.Db = db.Master
+		r.Factorys.Db = db.Master
 	}
-	m.Factorys.Model = model
-	return m
+	r.Factorys.New(model)
+	return &r.Factorys
+}
+
+//New
+func (r *AdminFactory) New(model model.Admin, Db ...*gorm.DB) *AdminFactory {
+	if len(Db) > 0 {
+		r.Db = Db[0]
+	} else {
+		r.Db = db.Master
+	}
+	r.Model = model
+	return r
 }
 
 //Default
-func (m *AdminFactory) Default() *AdminFactory {
-	return m
-}
-
-//Factory
-func (m *AdminFactory) Factory(model model.Admin, Db ...*gorm.DB) *Factory {
-	if len(Db) > 0 {
-		m.Factorys.Db = Db[0]
-	} else {
-		m.Factorys.Db = db.Master
-	}
-	m.Factorys.New(model)
-	return &m.Factorys
+func (r *AdminFactory) Default() *AdminFactory {
+	return r
 }
 
 //SetDb
-func (m *AdminFactory) SetDb(Db *gorm.DB) *AdminFactory {
-	m.Db = Db
-	return m
+func (r *AdminFactory) SetDb(Db *gorm.DB) *AdminFactory {
+	r.Db = Db
+	r.Factorys.Db = Db
+	return r
 }
 
 //SetModel
-func (m *AdminFactory) SetModel(model model.Admin) *AdminFactory {
-	m.Model = model
-	return m
+func (r *AdminFactory) SetModel(model model.Admin) *AdminFactory {
+	r.Factorys.Model = model
+	r.Model = model
+	return r
 }
 
 //GetModel
-func (m *AdminFactory) GetModel() model.Admin {
-	var row = m.Factorys.Model.(*model.Admin)
-	return *row
+func (r *AdminFactory) GetModel() model.Admin {
+	var row = r.Factorys.Model.(*model.Admin)
+	r.Model = *row
+	return r.Model
 }
 
 //GetModelList
-func (m *AdminFactory) GetModelList() []model.Admin {
-	m.List = m.Factorys.List.(*[]model.Admin)
-	return *m.List
+func (r *AdminFactory) GetModelList() []model.Admin {
+	return r.List
 }
 
 //FindByUserName 用户名查询
-func (m *AdminFactory) FindByUserName() (model.Admin, error) {
-	err := m.Db.Where("status='true' AND username = ?", m.Model.Username).First(&m.Model).Error
-	return m.Model, err
+func (r *AdminFactory) FindByUserName() (model.Admin, error) {
+	err := r.Db.Where("status='true' AND username = ?", r.Model.Username).First(&r.Model).Error
+	return r.Model, err
 }

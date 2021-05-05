@@ -1,7 +1,16 @@
 <template>
-  <a-layout id="layout" class="theme-dark layout-side">
+  <a-layout id="layout" :class="[$store.state.layout.theme,$store.state.layout.layout]">
     <!--左侧-->
-    <a-layout-sider width="240" v-model:collapsed="$store.state.MenuStatus" :trigger="null" collapsible class="fixed-side">
+    <a-layout-sider
+        v-if="$store.state.layout.layout != 'layout-head'"
+        :width="$store.state.layout.sideWitch" v-model:collapsed="$store.state.layout.collapsed" :trigger="null" collapsible
+        :collapsedWidth="$store.state.layout.collapsedWidth"
+        :class="[
+        $store.state.layout.fixedSide ? 'fixed-side' : '',
+        $store.state.layout.isMobile && 'layout_mobile',
+        $store.state.layout.collapsed && 'layout_collapse'
+      ]"
+    >
       <div class="pear-layout-left-sider">
         <!--Logo-->
         <Logo></Logo>
@@ -14,31 +23,39 @@
     <a-layout>
       <!--头部-->
       <a-layout-header style="background: #fff; padding: 0">
-      <Header></Header>
+        <Header></Header>
       </a-layout-header>
       <!-- main区域 -->
       <a-layout-content
-          :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
+          :class="[$store.state.layout.fixedHeader ? 'fixedHeader' : '', $store.state.layout.tab ? 'muiltTab' : '']"
       >
+        <!-- 选项卡页面 -->
         <router-view></router-view>
+        <!-- 设置页面 -->
+        <Style></Style>
       </a-layout-content>
     </a-layout>
-
   </a-layout>
 </template>
 <script>
 import Menu from "./menu/index.vue"
 import Logo from "./logo/index.vue"
 import Header from "./header/index.vue"
+import Tab from "./tab/index.vue"
+import Style from "./style/index.vue"
+
 export default ({
   components: {
     Menu,
     Logo,
-    Header
+    Header,
+    Style,
+    Tab
   },
   data() {
     return {
-
+      theme: "",
+      layout: ""
     }
   },
 });
@@ -58,15 +75,18 @@ export default ({
   background: #000;
   opacity: 0.5;
 }
+
 //移动端导航栏布局
 .layout_mobile {
   position: fixed !important;
   z-index: 999;
+
   .pear-layout-left-sider {
     right: 0 !important;
     -ms-overflow-style: none;
     overflow: -moz-scrollbars-none;
   }
+
   .pear-layout-left-sider::-webkit-scrollbar {
     width: 0 !important;
   }
@@ -75,12 +95,14 @@ export default ({
     width: 0 !important;
     min-width: 0 !important;
     max-width: 0 !important;
+
     * {
       display: none !important;
       width: 0 !important;
       min-width: 0 !important;
       max-width: 0 !important;
     }
+
     .ant-menu-item,
     .ant-menu-submenu {
       display: none !important;

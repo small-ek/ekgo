@@ -1,9 +1,14 @@
-import { createStore } from 'vuex'
+import {createStore} from 'vuex'
 
-const files = import.meta.globEager("./modules/*.js")
-Object.keys(files).forEach((key) => {
-  files[key]["default"]['namespaced'] = true
+const file = import.meta.globEager("./modules/*.js")
+var modules = {}
+Object.keys(file).forEach((key) => {
+    var fileName = key.split("/")
+    var firstFileName = fileName[2].split(".")
+    var defaults = file[key]["default"]
+    defaults["namespaced"] = true
+    modules[firstFileName[0]] = defaults
 })
 export default createStore({
-  files,
+    modules: modules,
 })

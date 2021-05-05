@@ -17,7 +17,7 @@ type User struct {
 	Email     string     `json:"email"`                          //邮箱
 	Phone     string     `json:"phone"`                          //手机
 	Status    string     `json:"status"`                         //状态
-	Details   Json       `json:"details"`                        //其他信息
+	Details   JSON       `json:"details"`                        //其他信息
 	CreatedAt *Time      `json:"created_at"`                     //
 	UpdatedAt *Time      `json:"updated_at"`                     //
 	DeletedAt *time.Time `json:"deleted_at`                      //

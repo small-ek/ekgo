@@ -1,40 +1,19 @@
 import http from '../http'
+import secret from "../../utils/secret";
 
-const Api = {
-  login: '/login',
-  logout: '/logout',
-  getUserMenusArray: '/getUserMenusArray',
-  getUserMenusTree: '/getUserMenusTree',
+const api = {
+    url: "admin/admins",
+    login_url: "admin/login"
 }
 
-export const login = data => {
-  return http.request({
-    url: Api.login,
-    data: data,
-    method: 'post'
-  })
+export function login(data) {
+    var row = JSON.parse(JSON.stringify(data))
+    if (row["password"]) {
+        row["password"] = secret.Base64Encode(row["password"])
+    }
+    return http.post(api.login_url, row)
 }
 
-export const logout = data => {
-  return http.request({
-    url: Api.logout,
-    data: data,
-    method: 'post'
-  })
-}
-
-export const getUserMenusArray = data => {
-  return http.request({
-    url: Api.getUserMenusArray,
-    data: data,
-    method: 'post'
-  })
-}
-
-export const getUserMenusTree = data => {
-  return http.request({
-    url: Api.getUserMenusTree,
-    data: data,
-    method: 'post'
-  })
+export default {
+    login
 }

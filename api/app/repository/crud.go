@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//Factory 工厂模式 repository都去继承这个
 type Factory struct {
 	Model interface{}
 	Value interface{}
@@ -55,6 +56,13 @@ func (m *Factory) FindByID(id int) (interface{}, error) {
 	return m.Model, result.Error
 }
 
+//FindByMap 根据ID查询
+func (m *Factory) FindByMap(id int) (map[string]interface{}, error) {
+	var row = map[string]interface{}{}
+	result := db.Master.Model(m.Model).First(&row, id)
+	return row, result.Error
+}
+
 //Create 创建数据
 func (m *Factory) Create() (interface{}, error) {
 	var err = m.Db.Create(m.Model).Error
@@ -79,14 +87,20 @@ func (m *Factory) UpdateMap(data map[string]interface{}) error {
 	return err
 }
 
-//Delete 删除数据
+//Delete 软删除数据
 func (m *Factory) Delete(id int) error {
 	var err = m.Db.Delete(m.Model, id).Error
 	return err
 }
 
-//DeleteUnscoped 永久删除
+//DeleteUnscoped 永久删除匹配的记录
 func (m *Factory) DeleteUnscoped() error {
-	var err = m.Db.Delete(m.Model).Error
+	var err = m.Db.Unscoped().Delete(m.Model).Error
 	return err
+}
+
+//FindByUnscoped 查找被软删除的记录
+func (m *Factory) FindByUnscoped(id int) (interface{}, error) {
+	result := db.Master.Unscoped().First(m.Model, id)
+	return m.Model, result.Error
 }

@@ -1,101 +1,112 @@
-/**
- *
- * author: jiabinbin
- * Email: 425605679@qq.com
- * Desc:
- * version: 1.0.0
- */
 import axios from "axios";
-import { useStore } from "vuex";
-import { notification, message as Msg } from "ant-design-vue";
+import config from "../config/index.config"
+import {message} from 'ant-design-vue';
 import store from "../store";
-class Http {
-  constructor(config) {
-    this.config = config || {
-      timeout: 6000,
-      withCredentials: true,
-      baseURL: process.env.VUE_APP_API_BASE_URL,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      }
-    };
-  }
+//post请求头
+var headers = {}
 
-  interceptors(instance) {
-    /**
-     * 请求拦截器
-     */
-    instance.interceptors.request.use(
-      config => {
-        const token = localStorage.getItem("pear_admin_ant_token");
-        /**
-         * 跟据实际情况处理token. eg:
-         * 假设api请求的url为 'api/login', 若当前的请求的url不为登陆的则都带上token
-         * if (!config.url.includes('login')) {
-         *   config.headers.Token = token
-         * }
-         */
-        if (token) {
-          config.headers["Access-Token"] = token;
-        }
-        // 请求时缓存该请求，路由跳转时取消, 如果timeout值过大，可能在上一个次请求还没完成时，切换了页面。
-        config.cancelToken = new axios.CancelToken(async cancel => {
-          await store.dispatch("app/execCancelToken", { cancelToken: cancel });
-        });
-        return config;
-      },
-      error => {
-        return Promise.reject(error);
-      }
-    );
-
-    instance.interceptors.response.use(
-      response => {
-        return response.data;
-      },
-      error => {
-        if (error.response) {
-          const data = error.response.data;
-          if (error.response.status === 403) {
-            notification.error({
-              message: "无权限访问",
-              description: data.message
-            });
-          }
-          if (error.response.status === 401) {
-            const store = useStore();
-            store.dispatch("app/logout").then(() => {
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
-            });
-          }
-        } else {
-          let { message } = error;
-          if (message === "Network Error") {
-            message = "连接异常";
-          }
-          if (message.includes("timeout")) {
-            message = "请求超时";
-          }
-          if (message.includes("Request failed with status code")) {
-            const code = message.substr(message.length - 3);
-            message = "接口" + code + "异常";
-          }
-          Msg.error(message);
-        }
-        return Promise.reject(error);
-      }
-    );
-  }
-
-  request(options) {
-    const instance = axios.create();
-    const requestOptions = Object.assign({}, this.config, options);
-    this.interceptors(instance);
-    return instance(requestOptions);
-  }
+console.log(store.state.user)
+if (store.state.user.token != "") {
+    headers[config.tokenName] = store.state.user.token
 }
 
-const http = new Http();
-export default http;
+var http = axios.create({
+    baseURL: config.url,
+    timeout: config.timeout,
+    headers: headers
+});
+
+//添加请求拦截器
+http.interceptors.request.use(
+    config => {
+        return config;
+    }, error => {
+        console.log(error);
+        console.log("请求错误")
+        return Promise.reject(error);
+    }
+);
+
+//添加响应拦截器
+http.interceptors.response.use(
+    response => {
+        if (response.status && response.data.code === config.invalidCode) {
+            message.error('网络请求失败，请刷新重试');
+            window.location.href = '/login'
+        }
+        return response;
+    }, error => {
+        console.log(error)
+        console.log("拦截错误")
+        return Promise.reject(error);
+    }
+);
+export default {
+    get(url, data) {
+        return new Promise((resolve, reject) => {
+            http.request({
+                method: 'GET',
+                url,
+                params: data,
+            }).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    },
+    post(url, data) {
+        return new Promise((resolve, reject) => {
+            http.request({
+                method: 'POST',
+                url,
+                data: data,
+            }).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+
+                reject(err)
+            });
+        })
+    },
+    put(url, data) {
+        return new Promise((resolve, reject) => {
+            http.request({
+                method: 'PUT',
+                url,
+                data: data,
+            }).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err)
+            });
+        })
+    },
+    patch(url, data) {
+        return new Promise((resolve, reject) => {
+            http.request({
+                method: 'PATCH',
+                url,
+                data: data,
+            }).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err)
+            });
+        })
+    },
+    deletes(url, data) {
+        return new Promise((resolve, reject) => {
+            http.request({
+                method: 'DELETE',
+                url,
+                data: data,
+            }).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err)
+            });
+        })
+    },
+    axios: http
+};

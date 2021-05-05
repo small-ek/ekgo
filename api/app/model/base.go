@@ -2,38 +2,10 @@ package model
 
 import (
 	"database/sql/driver"
-	"encoding/json"
-	"errors"
 	"fmt"
 	_ "github.com/lib/pq"
 	"time"
 )
-
-//JSON类型
-type Json struct {
-	json.RawMessage
-}
-
-// Value get value of Jsonb
-func (j Json) Value() (driver.Value, error) {
-
-	if len(j.RawMessage) == 0 {
-		return nil, nil
-	}
-
-	str, err := j.MarshalJSON()
-	return string(str), err
-}
-
-// Scan scan value into Jsonb
-func (j *Json) Scan(value interface{}) error {
-	bytes, ok := value.([]byte)
-	if !ok {
-		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
-	}
-
-	return json.Unmarshal(bytes, j)
-}
 
 //时间类型
 type Time struct {

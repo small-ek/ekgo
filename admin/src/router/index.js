@@ -1,35 +1,10 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Layout from '../layout/index.vue'
+import routes from './basic_routes.js'
+import {permission} from "./permission.js";
 
-const routes = [
-  {
-    path: '/login',
-    name: '登录',
-    meta: {},
-    component: () => import('../views/login/index.vue'),
-  },
-  {
-    path: "/",
-    name: "首页",
-    component: Layout,
-    children: [
-      {
-        path: '',
-        component: () => import('../views/index/index.vue'),
-        meta: {
-          title: 'Home',
-        }
-      }
-    ],
-  },
-  {
-    path: "/home",
-    name: "Home",
-    component: () => import("../views/home.vue"),
-  },
-];
-
-export default createRouter({
-  history: createWebHistory(),
-  routes,
-});
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+})
+router.beforeEach(permission)
+export default router;

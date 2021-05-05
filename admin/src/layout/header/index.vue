@@ -6,14 +6,15 @@
       <div class="prev-menu">
         <!-- 左侧缩进功能键 -->
         <div class="menu-item" @click="trigger()">
-          <AlignLeftOutlined v-if="collapsed" />
+
+          <AlignLeftOutlined v-if="collapsed"/>
           <!-- 左侧缩进功能键盘 -->
-          <AlignRightOutlined v-else />
+          <AlignRightOutlined v-else/>
         </div>
         <div class="menu-item" @click="refresh">
           <!-- 刷新当前页面路由 -->
-          <ReloadOutlined v-if="routerActive" />
-          <LoadingOutlined v-else />
+          <ReloadOutlined v-if="routerActive"/>
+          <LoadingOutlined v-else/>
         </div>
       </div>
     </template>
@@ -43,18 +44,18 @@
     <!-- 右侧菜单功能项 基本公用 -->
     <div class="next-menu">
       <div class="menu-item" v-if="!fullscreen" @click="full(1)">
-        <ExpandOutlined />
+        <ExpandOutlined/>
       </div>
       <div class="menu-item" v-else @click="full(2)">
-        <CompressOutlined />
+        <CompressOutlined/>
       </div>
       <!--语言包-->
       <a-dropdown class="locale-item">
-        <GlobalOutlined />
+        <GlobalOutlined/>
         <template #overlay>
           <a-menu @click="toggleLang" :selectedKeys="selectedKeys">
-            <a-menu-item key="zh-CN"> 简体中文 </a-menu-item>
-            <a-menu-item key="en-US"> English </a-menu-item>
+            <a-menu-item key="zh-CN"> 简体中文</a-menu-item>
+            <a-menu-item key="en-US"> English</a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
@@ -76,23 +77,23 @@
               >系统设置</a
               >
             </a-menu-item>
-            <a-menu-divider />
+            <a-menu-divider/>
             <a-menu-item key="3">
-              <a-menu-item @click="logOut"> 注销登录 </a-menu-item>
+              <a-menu-item @click="logOut"> 注销登录</a-menu-item>
             </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
       <div v-if="!isMobile" class="menu-item" @click="setting()">
         <!-- 主题设置隐显键 -->
-        <MoreOutlined />
+        <MoreOutlined/>
       </div>
     </div>
   </div>
 </template>
 <script>
 import {computed, ref, unref, watch} from "vue";
-import {useStore} from "vuex";
+import {useStore} from 'vuex'
 import Menu from "../menu/index.vue";
 import Logo from "../logo/index.vue";
 import {useRoute} from "vue-router";
@@ -146,16 +147,16 @@ export default {
     },
   },
   setup() {
-    const { getters, commit, dispatch } = "";
-    const layout = "";
-    const collapsed = "";
-    const fullscreen = "";
+    const {state, commit, dispatch} = useStore()
+    const layout = computed(() => state.layout.layout);
+    const collapsed = computed(() => state.layout.collapsed)
+    const fullscreen = computed(() => state.layout.fullscreen);
     const menuModel = "";
     const theme = "";
     const $route = useRoute();
     const active = ref($route.matched[0].path);
-    const isMobile = true;
-    const routerActive = "";
+    const isMobile = false;
+    const routerActive = computed(() => state.layout.routerActive);
 
     watch(
         computed(() => $route.fullPath),
@@ -165,7 +166,7 @@ export default {
     );
 
     const toPath = (route) => {
-      let { redirect, children, path } = route;
+      let {redirect, children, path} = route;
       if (redirect) {
         return redirect;
       }
@@ -179,9 +180,9 @@ export default {
     const routes = "";
 
     const refresh = async () => {
-      commit("layout/UPDATE_ROUTER_ACTIVE");
+      commit("layout/updateRouterActive");
       setTimeout(() => {
-        commit("layout/UPDATE_ROUTER_ACTIVE");
+        commit("layout/updateRouterActive");
       }, 500);
     };
 
@@ -193,7 +194,7 @@ export default {
     const store = useStore();
     const defaultLang = "";
     const selectedKeys = ref([unref(defaultLang)]);
-    const toggleLang = async ({ key }) => {
+    const toggleLang = async ({key}) => {
       selectedKeys.value = [key];
       // await loadLocaleMessages(i18n, key);
       await store.dispatch("app/setLanguage", key);
@@ -204,9 +205,9 @@ export default {
       layout,
       collapsed,
       fullscreen,
-      trigger: () => commit("layout/TOGGLE_SIDEBAR"),
-      setting: () => commit("layout/TOGGLE_SETTING"),
+      setting: () => commit("layout/updateSettingOpen"),
       updateFullscreen: () => commit("layout/updateFullscreen"),
+      trigger: () => commit("layout/updateCollapsed"),
       menuModel,
       routerActive,
       theme,
