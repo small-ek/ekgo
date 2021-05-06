@@ -71,7 +71,7 @@ cd api
 SET GO111MODULE=on
 
 # 被墙设置GOPROXY环境变量
-SET GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,https://goproxy.io,direct
+SET GOPROXY=https://goproxy.cn,direct
 
 # 安装go依赖包
 go mod tidy
