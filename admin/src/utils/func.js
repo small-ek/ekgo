@@ -127,26 +127,6 @@ export default {
         }
     },
     /**
-     * Dialog判断屏幕是否全屏
-     */
-    isFullscreen() {
-        var width = document.body.clientWidth;
-        if (width < 768) {
-            return true;
-        }
-        return false
-    },
-    /**
-     * 搜索框宽度
-     */
-    searchWidth() {
-        var width = document.body.clientWidth;
-        if (width < 768) {
-            return '80%';
-        }
-        return '35%';
-    },
-    /**
      * form表单是否换行
      */
     formPosition() {
