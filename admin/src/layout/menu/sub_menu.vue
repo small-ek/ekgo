@@ -1,37 +1,36 @@
 <template>
-  <template v-if="item.status">
-    <a-sub-menu v-if="item.children" :key="item.name">
+  <template v-if="row.status">
+    <a-sub-menu v-if="row.children" :key="row.name">
       <template #title>
+        <component :is="$antIcons[row.icon]"/>
         <span>
-<!--          <icon-font style="color: aliceblue" :type="menuInfo.meta.icon" />-->
-          <span>{{ item.title }}</span>
+          <span>{{ row.title }}</span>
         </span>
       </template>
-      <subMenu :item="row" v-for="row in item.children" :key="row.title"/>
+      <subMenu :row="item" v-for="item in row.children" :key="row.title"/>
     </a-sub-menu>
-    <a-menu-item v-else :key="item.title">
-      <!--      <icon-font style="color: aliceblue" :type="menuInfo.meta.icon" />-->
-      <span>{{ item.title }}</span>
+    <a-menu-item v-else :key="row.title">
+      <component :is="$antIcons[row.icon]"/>
+      <span>{{ row.title }}</span>
     </a-menu-item>
   </template>
 </template>
 
 <script>
-import {defineComponent} from 'vue'
-
-export default defineComponent({
+export default {
   name: 'subMenu',
   components: {},
   props: {
-    item: {
+    row: {
       type: Object,
       default: () => ({})
     }
   },
   setup(props) {
 
-  }
-})
+    return {}
+  },
+}
 </script>
 
 <style scoped></style>

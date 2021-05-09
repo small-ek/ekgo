@@ -1,7 +1,11 @@
 <template>
   <div id="menu">
-    <a-menu :mode="$store.state.layout.layout== 'layout-head' ? 'horizontal' : 'inline'" :theme="$store.state.layout.theme=== 'theme-dark' || $store.state.layout.theme === 'theme-night' ? 'dark' : 'light'" v-model:openKeys="openKey" @openChange="openChange">
-      <subMenu :item="item" v-for="item in list"/>
+    <a-menu
+        :mode="$store.state.layout.layout== 'layout-head' ? 'horizontal' : 'inline'"
+        :theme="$store.state.layout.theme=== 'theme-dark' || $store.state.layout.theme === 'theme-night' ? 'dark' : 'light'"
+        v-model:openKeys="openKey"
+        @openChange="openChange">
+      <subMenu :row="row" v-for="row in list"/>
     </a-menu>
   </div>
 </template>
@@ -26,7 +30,6 @@ export default ({
         },
     );
 
-    const rootPath = ref("");
     const openChange = function (openKeys) {
       commit("layout/updateOpenKey", {openKeys});
     };
@@ -41,7 +44,6 @@ export default ({
       foldSide,
       openChange,
       openKey,
-      rootPath,
       list
     }
   }
