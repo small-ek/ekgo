@@ -4,7 +4,8 @@ import Menu from '../../config/menu.json';
 import func from "../../utils/func";
 
 const state = () => ({
-    routesList: local.get("router") ? local.get("router") : []
+    routesList: local.get("router") ? local.get("router") : [],
+    routers: local.get("router") ? local.get("router") : []
 })
 const getters = {}
 const mutations = {
@@ -14,8 +15,13 @@ const mutations = {
         } else {
             state.routesList = func.toTree(result.data)
         }
+        state.router = Menu
+        local.set("routers", state.routers, Menu)
         local.set("router", state.routesList, config.loginTimeout)
     },
+    setRoutes(state){
+
+    }
 }
 const actions = {}
 export default {state, getters, mutations, actions}

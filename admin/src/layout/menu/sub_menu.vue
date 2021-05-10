@@ -10,8 +10,10 @@
       <subMenu :row="item" v-for="item in row.children" :key="row.title"/>
     </a-sub-menu>
     <a-menu-item v-else :key="row.title">
-      <component :is="$antIcons[row.icon]"/>
-      <span>{{ row.title }}</span>
+      <router-link :to="row.path">
+        <component :is="$antIcons[row.icon]"/>
+        <span>{{ row.title }}</span>
+      </router-link>
     </a-menu-item>
   </template>
 </template>
