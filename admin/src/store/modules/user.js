@@ -8,8 +8,12 @@ const state = () => ({
 const getters = {}
 const mutations = {
     setUserInfo(state, userInfo) {
-        state.userInfo = userInfo
-        local.set("user_info", userInfo, config.loginTimeout)
+        var row = JSON.parse(JSON.stringify(userInfo))
+        if (row[config.tokenName]) {
+            delete row[config.tokenName]
+        }
+        state.userInfo = row
+        local.set("user_info", row, config.loginTimeout)
     },
     setToken(state, token) {
         state.token = token
@@ -21,8 +25,8 @@ const actions = {
         try {
             const {code, data} = row
             if (code === 200) {
+                commit('setToken', data[config.tokenName])
                 commit('setUserInfo', data)
-                commit('setToken', data["authorization"])
             } else {
             }
         } catch (e) {

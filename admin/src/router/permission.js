@@ -1,12 +1,13 @@
 import NProgress from "nprogress";
 import store from "../store/index"
+import router from "../router/index";
 
 const setTitle = title => {
     // 如有i18n在这里修改
     document.title = `ek-admin-${title}`
 }
 /**
- * 权限控制
+ * 路由拦截器
  * @param to
  * @param from
  * @param next
@@ -20,6 +21,11 @@ export const permission = async (to, from, next) => {
     if (!to.fullPath.includes('/login') && !store.state.user.token) {
         next({path: '/login'})
     } else {
+
+        if (!router.getRoutes().map(it => it.path).includes(to.fullPath)) {
+            console.log('========== 开始加载用户权限菜单 ==========')
+
+        }
         next()
     }
 }

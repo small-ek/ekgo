@@ -5,7 +5,6 @@ import store from "../store";
 //post请求头
 var headers = {}
 
-console.log(store.state.user)
 if (store.state.user.token != "") {
     headers[config.tokenName] = store.state.user.token
 }
@@ -32,7 +31,7 @@ http.interceptors.response.use(
     response => {
         if (response.status && response.data.code === config.invalidCode) {
             message.error('网络请求失败，请刷新重试');
-            window.location.href = '/login'
+            //window.location.href = '/login'
         }
         return response;
     }, error => {

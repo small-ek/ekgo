@@ -5,6 +5,7 @@
         :theme="$store.state.layout.theme=== 'theme-dark' || $store.state.layout.theme === 'theme-night' ? 'dark' : 'light'"
         v-model:openKeys="openKey"
         @openChange="openChange">
+
       <subMenu :row="row" v-for="row in list"/>
     </a-menu>
   </div>
@@ -19,8 +20,7 @@ export default ({
   components: {subMenu},
   setup() {
     const {state, commit} = useStore();
-
-    const list = state.routes.routesList;
+    const list = state.routes.menu;
     const openKey = ref(['sub1']);
 
     watch(

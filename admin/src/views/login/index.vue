@@ -11,7 +11,8 @@
           <a-input placeholder="用户名" v-model:value="form.username" autocomplete="off"/>
         </a-form-item>
         <a-form-item name="password">
-          <a-input placeholder="密 码" v-model:value="form.password" type="password" @keyup.enter="onSubmit" autocomplete="off"/>
+          <a-input placeholder="密 码" v-model:value="form.password" type="password" @keyup.enter="onSubmit"
+                   autocomplete="off"/>
         </a-form-item>
         <!--                <a-form-item>-->
         <!--                  <a-checkbox :checked="true">-->
@@ -68,13 +69,13 @@ export default defineComponent({
     const onSubmit = () => {
       loading.value = true
       formRef.value.validate().then(() => {
-
+        //登录
         user.login(toRaw(form)).then(async result => {
           if (result.code == 200) {
             await dispatch('user/login', result)
             //设置菜单
-            await menu.getUserMenu(result.data["authorization"]).then(res => {
-              commit('routes/setRoutesList', res.data)
+            await menu.getUserMenu(result.data["authorization"]).then(async res => {
+              await dispatch('routes/setRouter', res.data.data)
               setTimeout(() => {
                 router.push("/")
               }, 200)
