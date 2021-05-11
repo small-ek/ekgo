@@ -4,7 +4,7 @@ import Menu from '../../config/menu.json';
 import func from "../../utils/func";
 
 const state = () => ({
-    router: local.get("router") ? local.get("router") : [],
+    routers: local.get("routers") ? local.get("routers") : [],
     menu: local.get("menu") ? local.get("menu") : []
 })
 const getters = {}
@@ -29,8 +29,8 @@ const mutations = {
      * @param state
      */
     setRouters(state, result) {
-        state.router = result
-        local.set("router", result, config.loginTimeout)
+        state.routers = result
+        local.set("routers", result, config.loginTimeout)
     }
 }
 const actions = {
@@ -42,10 +42,11 @@ const actions = {
      */
     async setRouter({commit}, row) {
         try {
+            //这里可能浏览器兼容性问题，不支持localStorage
             commit('setMenu', row)
             commit('setRouters', row)
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
     },
 }
