@@ -13,22 +13,26 @@ const setTitle = title => {
  */
 export const setRouteComponent = (routes, basePath = '/') => {
     let res = []
-    for (const item of routes) {
+    for (let i = 0; i < routes.length; i++) {
+        var value = routes[i]
         const data = {
-            path: item.path,
-            component: () => import('@/views' + item.path + ".vue"),
+            path: value.path,
+            component: () => import('../views/user/index.vue'),
             meta: {
-                title: item.title,
-                status: item.status
+                title: value.title,
+                status: value.status
             }
         }
 
-        if (item.title && item.path && item.path != '/') {
+        if (value.title && value.path && value.parent_id == 0) {
             res.push(data)
+        }else{
+
         }
 
-        if (item.children) {
-            const tempRoutes = setRouteComponent(item.children, data.path)
+        if (value.children) {
+            const tempRoutes = setRouteComponent(value.children, data.path)
+            console.log(tempRoutes)
             if (tempRoutes.length >= 1) {
                 res = [...res, ...tempRoutes]
             }
@@ -53,12 +57,22 @@ export const permission = async (to, from, next) => {
         next({path: '/login'})
     } else {
 
+        console.log(to.fullPath)
+        console.log(router.getRoutes().map(it => it.path).includes(to.fullPath))
+
         if (!router.getRoutes().map(it => it.path).includes(to.fullPath)) {
             console.log('========== 开始加载用户权限菜单 ==========')
-            const menu = setRouteComponent(store.state.routes.menu)
+            var menus = store.state.routes.menu
+            console.log(menus)
+            const menu = setRouteComponent(menus)
             console.log(menu)
-
-            router.addRoute({ path: '/user/index', component: () => import('../views/user/index.vue') })
+            router.addRoute({
+                path: '/',
+                name: "用户",
+                meta: {title: '登录',},
+                component: Layout,
+                children: menu
+            })
             console.log(router.getRoutes())
         }
         next()
