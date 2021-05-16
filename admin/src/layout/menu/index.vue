@@ -4,7 +4,9 @@
         :mode="$store.state.layout.layout== 'layout-head' ? 'horizontal' : 'inline'"
         :theme="$store.state.layout.theme=== 'theme-dark' || $store.state.layout.theme === 'theme-night' ? 'dark' : 'light'"
         v-model:openKeys="openKey"
-        @openChange="openChange">
+        @openChange="openChange"
+        v-model:selectedKeys="selectKey"
+    >
 
       <subMenu :row="row" v-for="row in list"/>
     </a-menu>
@@ -23,6 +25,7 @@ export default ({
     const list = state.routes.menu;
     const openKey = ref(['sub1']);
 
+    const selectKey = ref(['用户']);
     watch(
         () => openKey,
         val => {
@@ -44,7 +47,8 @@ export default ({
       foldSide,
       openChange,
       openKey,
-      list
+      list,
+      selectKey
     }
   }
 });

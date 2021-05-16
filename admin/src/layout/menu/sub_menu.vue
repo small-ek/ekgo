@@ -1,6 +1,6 @@
 <template>
   <template v-if="row.status">
-    <a-sub-menu v-if="row.children" :key="row.name">
+    <a-sub-menu v-if="row.children" :key="row.title">
       <template #title>
         <component :is="$antIcons[row.icon]"/>
         <span>
@@ -9,7 +9,7 @@
       </template>
       <subMenu :row="item" v-for="item in row.children" :key="row.title"/>
     </a-sub-menu>
-    <a-menu-item v-else :key="row.title">
+    <a-menu-item v-else-if="row.status" :key="row.title">
       <router-link :to="row.path">
         <component :is="$antIcons[row.icon]"/>
         <span>{{ row.title }}</span>
