@@ -15,6 +15,7 @@
 <script>
 import {useStore} from "vuex";
 import subMenu from "./sub_menu.vue";
+import {useRoute} from "vue-router";
 import {ref, watch} from "vue";
 
 export default ({
@@ -22,7 +23,7 @@ export default ({
   setup() {
     const {state, commit} = useStore();
     const list = state.routes.menu;
-    console.log(list)
+    const route = useRoute();
     const openKey = ref(['sub1']);
 
     const selectKey = ref(['用户']);
@@ -32,7 +33,18 @@ export default ({
           console.log('openKeys', val);
         },
     );
+    const changeLayout = model => {
+      console.log(model)
+      if (model.layout === "layout-comp") {
+        console.log(route)
+        let topPath = route.matched[0].path;
+        console.log(topPath)
+        // menu.value = state.routes.routers.find(r => r.path === topPath).children;
+        // console.log(menu)
+      }
+    };
 
+    watch(state.layout, n => changeLayout(n));
     const openChange = function (openKeys) {
       commit("layout/updateOpenKey", {openKeys});
     };

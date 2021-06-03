@@ -30,13 +30,13 @@
 
     <!-- 实现综合布局方式 -->
     <div v-if="layout == 'layout-comp'" class="comp-menu">
-      <template :key="index" v-for="(route, index) in routes">
+      <template :key="index" v-for="(row, index) in routes">
         <router-link
-            :to="toPath(route)"
+            :to="toPath(row)"
             class="menu-item"
-            :class="[active === route.path ? 'is-active' : '']"
+            :class="[active === row.children[0]['path'] ? 'is-active' : '']"
         >
-          <span>{{ route.title }}</span>
+          <span>{{ row.title }}</span>
         </router-link>
       </template>
     </div>
@@ -158,7 +158,7 @@ export default {
     watch(
         computed(() => $route.fullPath),
         () => {
-          active.value = $route.matched[0].path;
+          active.value = $route.matched[1].path;
         }
     );
 
@@ -167,15 +167,16 @@ export default {
       if (redirect) {
         return redirect;
       }
+
       while (children && children[0]) {
-        // path = _path.resolve(path, children[0].path);
+        path = children[0].path;
         children = children[0].children;
       }
       return path;
     };
 
     const routes = computed(() => state.routes.menu).value.filter((r) => r.status == "true");
-
+    console.log(routes)
     const refresh = async () => {
       commit("layout/updateRouterActive");
       setTimeout(() => {
