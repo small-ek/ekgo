@@ -36,7 +36,7 @@
             class="menu-item"
             :class="[active === route.path ? 'is-active' : '']"
         >
-          <span>{{ route.meta.title }}</span>
+          <span>{{ route.title }}</span>
         </router-link>
       </template>
     </div>
@@ -61,25 +61,22 @@
       </a-dropdown>
       <!--头像-->
       <a-dropdown class="avatar-item">
-        <a-avatar
-            src="https://portrait.gitee.com/uploads/avatars/user/1611/4835367_Jmysy_1578975358.png"
-        ></a-avatar>
+        <a-avatar src="https://portrait.gitee.com/uploads/avatars/user/1611/4835367_Jmysy_1578975358.png">
+        </a-avatar>
         <template #overlay>
           <a-menu class="avatar-dropdown">
             <a-menu-item key="0">
               <router-link to="/account/center">个人中心</router-link>
             </a-menu-item>
             <a-menu-item key="1">
-              <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="http://www.taobao.com/"
-              >系统设置</a
-              >
+              <a target="_blank"
+                 rel="noopener noreferrer"
+                 href="http://www.taobao.com/"
+              >系统设置</a>
             </a-menu-item>
             <a-menu-divider/>
             <a-menu-item key="3">
-              <a-menu-item @click="logOut"> 注销登录</a-menu-item>
+              <a-menu-item @click="logOut">注销登录</a-menu-item>
             </a-menu-item>
           </a-menu>
         </template>
@@ -97,7 +94,7 @@ import {useStore} from 'vuex'
 import Menu from "../menu/index.vue";
 import Logo from "../logo/index.vue";
 import {useRoute} from "vue-router";
-import {AlignLeftOutlined, AlignRightOutlined, BellOutlined, CompressOutlined, ExpandOutlined, GlobalOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined,} from "@ant-design/icons-vue";
+import {AlignLeftOutlined, AlignRightOutlined, BellOutlined, CompressOutlined, ExpandOutlined, GlobalOutlined, LoadingOutlined, MoreOutlined, ReloadOutlined} from "@ant-design/icons-vue";
 
 export default {
   components: {
@@ -177,7 +174,7 @@ export default {
       return path;
     };
 
-    const routes = "";
+    const routes = computed(() => state.routes.menu).value.filter((r) => r.status == "true");
 
     const refresh = async () => {
       commit("layout/updateRouterActive");

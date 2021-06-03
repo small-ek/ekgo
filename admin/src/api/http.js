@@ -41,6 +41,14 @@ http.interceptors.response.use(
     }
 );
 export default {
+    setHeaders(key, value) {
+        headers[key] = value
+        http = axios.create({
+            baseURL: config.url,
+            timeout: config.timeout,
+            headers: headers
+        })
+    },
     get(url, data) {
         return new Promise((resolve, reject) => {
             http.request({

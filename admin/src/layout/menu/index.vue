@@ -7,8 +7,7 @@
         @openChange="openChange"
         v-model:selectedKeys="selectKey"
     >
-
-      <subMenu :row="row" v-for="row in list"/>
+      <subMenu v-for="(row,index) in list" :row="row" :index="index"/>
     </a-menu>
   </div>
 </template>
@@ -23,6 +22,7 @@ export default ({
   setup() {
     const {state, commit} = useStore();
     const list = state.routes.menu;
+    console.log(list)
     const openKey = ref(['sub1']);
 
     const selectKey = ref(['用户']);
