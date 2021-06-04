@@ -104,3 +104,9 @@ func (m *Factory) FindByUnscoped(id int) (interface{}, error) {
 	result := db.Master.Unscoped().First(m.Model, id)
 	return m.Model, result.Error
 }
+
+//FindByInIds 根据id查找多个
+func (m *Factory) FindByInIds(ids []int) (interface{}, error) {
+	result := db.Master.Find(m.List, ids)
+	return m.List, result.Error
+}
