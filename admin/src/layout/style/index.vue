@@ -434,11 +434,14 @@ export default {
       commit("layout/updateKeepAlive");
     };
     const updateColor = function (color) {
+      console.log(color)
+
       window.less.modifyVars({
         "@primary-color": color,
         "@link-color": color,
         "@btn-primary-bg": color,
       });
+      console.log(window.less.modifyVars)
       commit("layout/updateColor", color);
     };
     const handleChange = function (value) {

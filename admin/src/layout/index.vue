@@ -1,5 +1,10 @@
 <template>
   <a-layout id="layout" :class="[$store.state.layout.theme,$store.state.layout.layout]">
+    <div
+        v-if="$store.state.layout.isMobile&&!$store.state.layout.collapsed"
+        class="layout_mobile_mask"
+        @click="onCloseSideBar"
+    />
     <!--左侧-->
     <a-layout-sider
         v-if="$store.state.layout.layout != 'layout-head'"
@@ -43,6 +48,7 @@ import Logo from "./logo/index.vue"
 import Header from "./header/index.vue"
 import Tab from "./tab/index.vue"
 import Style from "./style/index.vue"
+import {useStore} from "vuex";
 
 export default ({
   components: {
@@ -52,12 +58,32 @@ export default ({
     Style,
     Tab
   },
-  data() {
-    return {
-      theme: "",
-      layout: ""
+  setup() {
+    const {commit, state} = useStore();
+    const onCloseSideBar = () => {
+      // const isComputedMobile = computed(() => state.layout.isMobile);
+      commit("layout/updateCollapsed", false);
+
     }
-  },
+    const handleLayouts = () => {
+      const domWidth = document.body.getBoundingClientRect().width;
+      const isLayoutMobile = domWidth !== 0 && domWidth - 1 < 992;
+      commit("layout/updateIsMobile", isLayoutMobile);
+      if (isLayoutMobile) {
+        commit("layout/updateLayout","layout-side")
+
+        setTimeout(() => {
+
+        }, 1000);
+      }else{}
+    };
+    handleLayouts();
+    window.addEventListener("resize", handleLayouts);
+
+    return {
+      onCloseSideBar
+    }
+  }
 });
 </script>
 <style lang="less" scoped>

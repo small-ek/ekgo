@@ -20,6 +20,7 @@ export default defineConfig({
         }
     },
     css: {
+        sourceMap: true,
         preprocessorOptions: {
             less: {
                 javascriptEnabled: true,
@@ -30,6 +31,6 @@ export default defineConfig({
         host: 'localhost',
         port: 8080,
         open: true,
-        hmr:{ overlay: false }
+        hmr: {overlay: false}
     },
 })

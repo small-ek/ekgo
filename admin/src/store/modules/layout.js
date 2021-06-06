@@ -160,8 +160,6 @@ const state = () => ({
     routerActive: true,
     // 浏览器全屏
     fullscreen: false,
-    // 路由列表
-    routes: [],
 
     // 是否是移动端
     isMobile: false
@@ -241,6 +239,9 @@ const mutations = {
     },
     updateTabType(state, tabType) {
         state.tabType = tabType;
+    },
+    updateIsMobile(state, isMobile) {
+        state.isMobile = isMobile;
     },
 }
 //异步操作事件

@@ -7,7 +7,7 @@
         @openChange="openChange"
         v-model:selectedKeys="selectKey"
     >
-      <subMenu v-for="(row,index) in list" :row="row" :index="index"/>
+      <subMenu v-for="(row,index) in list" :row="row" :index="index" @click="onFoldSide"/>
     </a-menu>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default ({
   components: {subMenu},
   setup() {
     const {state, commit} = useStore();
-    const list = state.routes.menu;
+    var list = ref(state.routes.menu);
     const route = useRoute();
     const openKey = ref(['sub1']);
 
@@ -33,30 +33,31 @@ export default ({
           console.log('openKeys', val);
         },
     );
+    watch(state.routes, n => changeLayout(n));
+    watch(state.layout, n => changeLayout(n));
+
     const changeLayout = model => {
-      console.log(model)
-      if (model.layout === "layout-comp") {
-        console.log(route)
-        let topPath = route.matched[0].path;
-        console.log(topPath)
-        // menu.value = state.routes.routers.find(r => r.path === topPath).children;
-        // console.log(menu)
+      if (state.layout.layout === "layout-comp") {
+        list.value = state.routes.subMenu;
+      } else {
+        list.value = state.routes.menu;
       }
     };
 
-    watch(state.layout, n => changeLayout(n));
+
+
     const openChange = function (openKeys) {
       commit("layout/updateOpenKey", {openKeys});
+
     };
 
-    const foldSide = () => {
-      const isComputedMobile = computed(() => state.layout.isMobile);
-      if (isComputedMobile.value) {
-        commit("layout/updateCollapsed", true);
+    const onFoldSide = () => {
+      if (state.layout.isMobile) {
+        commit("layout/updateCollapsed", false);
       }
-    };
+    }
     return {
-      foldSide,
+      onFoldSide,
       openChange,
       openKey,
       list,

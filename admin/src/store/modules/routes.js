@@ -5,7 +5,8 @@ import func from "../../utils/func";
 
 const state = () => ({
     routers: local.get("routers") ? local.get("routers") : [],
-    menu: local.get("menu") ? local.get("menu") : []
+    menu: local.get("menu") ? local.get("menu") : [],
+    subMenu: local.get("subMenu") ? local.get("subMenu") : []
 })
 const getters = {}
 const mutations = {
@@ -31,7 +32,16 @@ const mutations = {
     setRouters(state, result) {
         state.routers = result
         local.set("routers", result, config.loginTimeout)
-    }
+    },
+    /**
+     * 设置子菜单
+     * @param state
+     * @param result
+     */
+    setSubMenu(state, result) {
+        state.subMenu = result
+        local.set("subMenu", result, config.loginTimeout)
+    },
 }
 const actions = {
     /**

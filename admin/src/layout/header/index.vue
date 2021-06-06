@@ -32,7 +32,8 @@
     <div v-if="layout == 'layout-comp'" class="comp-menu">
       <template :key="index" v-for="(row, index) in routes">
         <router-link
-            :to="toPath(row)"
+            :to="row.children[0].path"
+            @click="onUpdateSubMenu(row.children)"
             class="menu-item"
             :class="[active === row.children[0]['path'] ? 'is-active' : '']"
         >
@@ -172,11 +173,19 @@ export default {
         path = children[0].path;
         children = children[0].children;
       }
+
       return path;
     };
 
+    /**
+     * 更新左侧菜单
+     * @param row
+     */
+    const onUpdateSubMenu = (row) => {
+      commit("routes/setSubMenu", row);
+    }
     const routes = computed(() => state.routes.menu).value.filter((r) => r.status == "true");
-    console.log(routes)
+
     const refresh = async () => {
       commit("layout/updateRouterActive");
       setTimeout(() => {
@@ -184,6 +193,11 @@ export default {
       }, 500);
     };
 
+    /**
+     * 退出
+     * @param e
+     * @returns {Promise<void>}
+     */
     const logOut = async (e) => {
       await dispatch("user/logout");
       window.location.reload();
@@ -203,19 +217,20 @@ export default {
       layout,
       collapsed,
       fullscreen,
-      setting: () => commit("layout/updateSettingOpen"),
-      updateFullscreen: () => commit("layout/updateFullscreen"),
-      trigger: () => commit("layout/updateCollapsed"),
       menuModel,
       routerActive,
       theme,
-      refresh,
       routes,
       active,
+      selectedKeys,
+      setting: () => commit("layout/updateSettingOpen"),
+      updateFullscreen: () => commit("layout/updateFullscreen"),
+      trigger: () => commit("layout/updateCollapsed"),
+      refresh,
       toPath,
       logOut,
       toggleLang,
-      selectedKeys,
+      onUpdateSubMenu,
     };
   },
 };
