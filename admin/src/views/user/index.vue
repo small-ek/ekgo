@@ -1,5 +1,5 @@
 <template>
-<div>122112</div>
+<div class="primarybg">122112</div>
 </template>
 
 <script>

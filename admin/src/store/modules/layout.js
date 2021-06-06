@@ -1,3 +1,4 @@
+import {session,local} from "../../utils/storage";
 import config from "../../config/index.config";
 //单一状态树
 const state = () => ({
@@ -11,9 +12,9 @@ const state = () => ({
      * */
     layout: config.layout == null
         ? "layout-side"
-        : localStorage.getItem("layout") == null
+        : local.get("layout") == null
             ? config.layout
-            : localStorage.getItem("layout"),
+            : local.get("layout"),
 
     /**
      * 系统主题（整体色调）
@@ -23,18 +24,18 @@ const state = () => ({
      */
     theme: config.theme == null
         ? "theme-dark"
-        : localStorage.getItem("theme") == null
+        : local.get("theme") == null
             ? config.theme
-            : localStorage.getItem("theme"),
+            : local.get("theme"),
 
     /**
      * 主题颜色(主题颜色)
      */
     color: config.color == null
         ? "theme-green"
-        : localStorage.getItem("color") == null
+        : local.get("color") == null
             ? config.color
-            : localStorage.getItem("color"),
+            : local.get("color"),
 
     /**
      * 侧边状态
@@ -43,9 +44,9 @@ const state = () => ({
      * */
     collapsed: config.collapsed == null
         ? false
-        : localStorage.getItem("collapsed") == null
+        : local.get("collapsed") == null
             ? config.collapsed
-            : localStorage.getItem("collapsed"),
+            : local.get("collapsed"),
 
     /**
      * 菜单头部
@@ -54,9 +55,9 @@ const state = () => ({
      * */
     logo: config.logo == null
         ? true
-        : localStorage.getItem("logo") == null
+        : local.get("logo") == null
             ? config.logo
-            : localStorage.getItem("logo"),
+            : local.get("logo"),
 
     /**
      * 是否开启多标签页
@@ -65,17 +66,17 @@ const state = () => ({
      * */
     tab: config.tab == null
         ? true
-        : localStorage.getItem("tab") == null
+        : local.get("tab") == null
             ? config.tab
-            : localStorage.getItem("tab"),
+            : local.get("tab"),
 
     /**
      * 保持状态
      * true -- 是
      * false -- 否
      */
-    keepAlive: config.keepAlive == null ? true : localStorage.getItem("keepAlive") == null
-        ? config.keepAlive : localStorage.getItem("keepAlive")
+    keepAlive: config.keepAlive == null ? true : local.get("keepAlive") == null
+        ? config.keepAlive : local.get("keepAlive")
     ,
     /**
      * 多标签页样式
@@ -84,9 +85,9 @@ const state = () => ({
      */
     tabType: config.tabType == null
         ? "pear-dot-tab"
-        : localStorage.getItem("tabType") == null
+        : local.get("tabType") == null
             ? config.tabType
-            : localStorage.getItem("tabType"),
+            : local.get("tabType"),
 
     /**
      * 侧边菜单栏宽度
@@ -106,9 +107,9 @@ const state = () => ({
      */
     fixedHeader: config.fixedHeader == null
         ? true
-        : localStorage.getItem("fixedHeader") == null
+        : local.get("fixedHeader") == null
             ? config.fixedHeader
-            : localStorage.getItem("fixedHeader"),
+            : local.get("fixedHeader"),
 
     /**
      * 固定侧边
@@ -117,9 +118,9 @@ const state = () => ({
      */
     fixedSide: config.fixedSide == null
         ? true
-        : localStorage.getItem("fixedSide") == null
+        : local.get("fixedSide") == null
             ? config.fixedSide
-            : localStorage.getItem("fixedSide"),
+            : local.get("fixedSide"),
 
     /**
      * 路由动画
@@ -128,9 +129,9 @@ const state = () => ({
      */
     routerAnimate: config.routerAnimate == null
         ? ""
-        : localStorage.getItem("routerAnimate") == null
+        : local.get("routerAnimate") == null
             ? config.routerAnimate
-            : localStorage.getItem("routerAnimate"),
+            : local.get("routerAnimate"),
 
     /**
      * 配色列表
@@ -147,8 +148,8 @@ const state = () => ({
     },
 
     // 选项卡内容存储
-    panes: sessionStorage.getItem("pear_tabs")
-        ? JSON.parse(sessionStorage.getItem("pear_tabs"))
+    panes: session.get("tabs")
+        ? JSON.parse(session.get("tabs"))
         : [],
     // 当前激活选项卡
     activeKey: "",
@@ -220,7 +221,7 @@ const mutations = {
     },
     updateLanguage(state, payload) {
         state.language = payload
-        localStorage.setItem('pear_lang', payload)
+        local.set('pear_lang', payload)
     },
     updateLayout(state, layout) {
         state.layout = layout;
@@ -242,6 +243,9 @@ const mutations = {
     },
     updateIsMobile(state, isMobile) {
         state.isMobile = isMobile;
+    },
+    updatePanes(state, panes) {
+        state.panes = panes;
     },
 }
 //异步操作事件

@@ -35,6 +35,8 @@
           :class="[$store.state.layout.fixedHeader ? 'fixedHeader' : '', $store.state.layout.tab ? 'muiltTab' : '']"
       >
         <!-- 选项卡页面 -->
+        <Tab v-if="$store.state.layout.tab"></Tab>
+        <!-- 选项卡页面 -->
         <router-view></router-view>
         <!-- 设置页面 -->
         <Style></Style>
@@ -70,12 +72,13 @@ export default ({
       const isLayoutMobile = domWidth !== 0 && domWidth - 1 < 992;
       commit("layout/updateIsMobile", isLayoutMobile);
       if (isLayoutMobile) {
-        commit("layout/updateLayout","layout-side")
+        commit("layout/updateLayout", "layout-side")
 
         setTimeout(() => {
 
         }, 1000);
-      }else{}
+      } else {
+      }
     };
     handleLayouts();
     window.addEventListener("resize", handleLayouts);

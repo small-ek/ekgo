@@ -23,6 +23,7 @@ export default defineConfig({
         sourceMap: true,
         preprocessorOptions: {
             less: {
+                "modifyVars":{},
                 javascriptEnabled: true,
             }
         },
