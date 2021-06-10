@@ -15,7 +15,7 @@ import (
 type Admin struct {
 	PageParam request.PageParam
 	Model     model.Admin
-	repository.AdminFactory
+	repository.AdminRepository
 }
 
 //Index 分页

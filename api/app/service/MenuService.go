@@ -10,9 +10,9 @@ import (
 type Menu struct {
 	PageParam request.PageParam
 	Model     model.Menu
-	Menu      repository.MenuFactory
+	Menu      repository.MenuRepository
 	RoleModel model.Role
-	Role      repository.RoleFactory
+	Role      repository.RoleRepository
 }
 
 //Index 分页
