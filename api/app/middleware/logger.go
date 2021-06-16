@@ -46,7 +46,7 @@ func Logger() gin.HandlerFunc {
 			logger.Write.Info("接口请求",
 				zap.Any("ip", ip),
 				zap.Any("path", path),
-				zap.Any("request", string(body)),
+				zap.Any("request", body),
 				zap.Any("run_time", run_time),
 				zap.Any("status", status),
 				zap.Any("method", method),

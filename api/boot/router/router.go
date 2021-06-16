@@ -17,6 +17,9 @@ func Load() *gin.Engine {
 	go func() {
 		Router.Use(middleware.Logger())
 	}()
+	//捕获异常
+	Router.Use(middleware.Recovery())
+
 	var system = config.Decode().Get("system")
 	//跨域
 	if system.Get("cors").Bool() == true {
