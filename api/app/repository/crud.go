@@ -2,7 +2,6 @@ package repository
 
 import (
 	"ekgo/boot/db"
-	"github.com/small-ek/antgo/conv"
 	"github.com/small-ek/antgo/orm"
 	"github.com/small-ek/antgo/request"
 	"gorm.io/gorm"
@@ -28,7 +27,7 @@ func (b *Base) New(model interface{}, Db ...*gorm.DB) *Base {
 	} else {
 		b.Db = db.Master
 	}
-	b.Model = conv.InterfaceToStruct(model)
+	b.Model = model
 	return b
 }
 

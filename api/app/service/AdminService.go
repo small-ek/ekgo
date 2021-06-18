@@ -20,13 +20,13 @@ type Admin struct {
 
 //Index 分页
 func (s *Admin) Index() (*response.Page, error) {
-	list, total, err := s.Factory(s.Model).GetPage(s.PageParam)
+	list, total, err := s.Factory(&s.Model).GetPage(s.PageParam)
 	return &response.Page{List: list, Total: total}, err
 }
 
 //Show 查询
 func (s *Admin) Show() (model.Admin, error) {
-	var _, err = s.Factory(s.Model).FindByID(s.Model.Id)
+	var _, err = s.Factory(&s.Model).FindByID(s.Model.Id)
 	var result = s.GetModel()
 	result.Password = ""
 	result.Salt = ""
@@ -35,7 +35,7 @@ func (s *Admin) Show() (model.Admin, error) {
 
 //Store 添加
 func (s *Admin) Store() (model.Admin, error) {
-	var _, err = s.Factory(s.Model).Create()
+	var _, err = s.Factory(&s.Model).Create()
 	var result = s.GetModel()
 	result.Password = ""
 	result.Salt = ""
@@ -44,13 +44,13 @@ func (s *Admin) Store() (model.Admin, error) {
 
 //Update 修改
 func (s *Admin) Update() error {
-	var err = s.Factory(s.Model).Update()
+	var err = s.Factory(&s.Model).Update()
 	return err
 }
 
 //Delete 删除
 func (s *Admin) Delete() error {
-	var err = s.Factory(s.Model).Delete(s.Model.Id)
+	var err = s.Factory(&s.Model).Delete(s.Model.Id)
 	return err
 }
 

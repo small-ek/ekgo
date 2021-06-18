@@ -14,7 +14,7 @@ type AdminRepository struct {
 }
 
 //Factory 继承增删改查公共工厂
-func (r *AdminRepository) Factory(model model.Admin, Db ...*gorm.DB) *Base {
+func (r *AdminRepository) Factory(model *model.Admin, Db ...*gorm.DB) *Base {
 	if len(Db) > 0 {
 		r.Base.Db = Db[0]
 	} else {
