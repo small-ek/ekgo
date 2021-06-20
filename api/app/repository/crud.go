@@ -49,7 +49,7 @@ func (b *Base) GetPage(Page request.PageParam) ([]map[string]interface{}, int64,
 		orm.Filters(Page.Filter),
 		orm.Order(Page.Order),
 		orm.Paginate(Page.PageSize, Page.CurrentPage),
-	).Find(&b.List).Offset(0).Count(&Page.Total).Error
+	).Find(&b.List).Offset(-1).Limit(-1).Count(&Page.Total).Error
 	return b.List, Page.Total, err
 }
 

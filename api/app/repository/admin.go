@@ -20,8 +20,13 @@ func (r *AdminRepository) Factory(model *model.Admin, Db ...*gorm.DB) *Base {
 	} else {
 		r.Base.Db = db.Master
 	}
-	r.Base.New(model)
+	r.Base.New(model, r.Base.Db)
 	return &r.Base
+}
+
+//GetModel
+func (r *AdminRepository) GetModel() model.Admin {
+	return *r.Base.Model.(*model.Admin)
 }
 
 //New
@@ -33,34 +38,6 @@ func (r *AdminRepository) New(model model.Admin, Db ...*gorm.DB) *AdminRepositor
 	}
 	r.Model = model
 	return r
-}
-
-//Default
-func (r *AdminRepository) Default() *AdminRepository {
-	return r
-}
-
-//SetDb
-func (r *AdminRepository) SetDb(Db *gorm.DB) *AdminRepository {
-	r.Db = Db
-	r.Base.Db = Db
-	return r
-}
-
-//SetModel
-func (r *AdminRepository) SetModel(model model.Admin) *AdminRepository {
-	r.Model = model
-	return r
-}
-
-//GetModel
-func (r *AdminRepository) GetModel() model.Admin {
-	return *r.Base.Model.(*model.Admin)
-}
-
-//GetModelList
-func (r *AdminRepository) GetModelList() []model.Admin {
-	return r.List
 }
 
 //FindByUserName 用户名查询
