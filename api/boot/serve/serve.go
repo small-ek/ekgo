@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-func Load() {
+func init() {
 	//设置打印日志行号和文件名
 	log.SetFlags(log.Llongfile | log.LstdFlags)
 	flag.Parse()
@@ -24,6 +24,10 @@ func Load() {
 	//设置数据库
 	db.Register()
 	defer db.Close()
+}
+
+//Load
+func Load() {
 	//获取配置地址
 	var address = config.Decode().Get("system").Get("address").String()
 	//启动服务
