@@ -9,6 +9,7 @@ import (
 	"github.com/small-ek/antgo/os/config"
 	"github.com/small-ek/antgo/request"
 	"github.com/small-ek/antgo/response"
+	"log"
 	"time"
 )
 
@@ -57,10 +58,13 @@ func (s *Admin) Delete() error {
 //Login 登录
 func (s *Admin) Login() (map[string]interface{}, error) {
 	var result, err = s.New(s.Model).FindByUserName()
+	log.Println(result)
+	log.Println(err)
 	if result.Id > 0 && err == nil {
 		var ClearTextPassword, _ = base64.Decode(s.Model.Password)
 		var password = hash.Sha256(result.Salt + ClearTextPassword)
-
+		log.Println(password)
+		log.Println(result.Password)
 		if password == result.Password {
 			var private_key = config.Decode().Get("jwt").Get("private_key").Bytes()
 			var public_key = config.Decode().Get("jwt").Get("public_key").Bytes()

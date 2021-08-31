@@ -32,7 +32,6 @@ func Mysql() *gorm.DB {
 	var _, userName, password, host, port, database, conf, log = GetDbConfig()
 
 	var dns = userName + ":" + password + "@tcp(" + host + ":" + port + ")/" + database + "?" + conf
-
 	var db, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dns,   // DSN data source name
 		DefaultStringSize:         256,   // string 类型字段的默认长度
