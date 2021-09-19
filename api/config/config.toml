@@ -24,11 +24,11 @@ split = 24
 #主库设置
 [database]
 connection = "mysql"
-host = "47.103.147.249"
+host = "127.0.0.1"
 port = "3306"
 database = "ekgo"
 username = "root"
-password = "PI@3.1415926!"
+password = ""
 config = "charset=utf8mb4&parseTime=True&loc=Local"
 log = true
 #阿里云配置
