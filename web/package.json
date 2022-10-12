@@ -27,7 +27,7 @@
     "@vue/cli-plugin-vuex": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
     "compression-webpack-plugin": "^4.0.0",
-    "docxtemplater": "^3.17.9",
+    "docxtemplater": "^3.31.5",
     "less-loader": "^6.1.1",
     "node-sass": "^4.14.1",
     "pizzip": "^3.0.6",
